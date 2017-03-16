@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="udacitynano.com.br.cafelegal">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="udacitynano.com.br.cafelegal.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -18,6 +20,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="udacitynano.com.br.cafelegal.LoginActivity"
+            android:label="@string/title_activity_sign_in" />
+        <activity
+            android:name="udacitynano.com.br.cafelegal.AdvogadoDetailsActivity"
+            android:label="@string/title_activity_advogado_details"
+            android:parentActivityName="udacitynano.com.br.cafelegal.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="udacitynano.com.br.cafelegal.MainActivity" />
         </activity>
     </application>
 

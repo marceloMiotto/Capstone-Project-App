@@ -4,5 +4,35 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+
+    <!-- Strings related to Menu -->
     <string name="action_settings">Settings</string>
+    <string name="menu_header_site">www.cafelegal.net</string>
+    <string name="menu_header_title">Café Legal</string>
+
+
+
+
+    <!-- Strings related to login -->
+    <string name="title_activity_sign_in">Entrar</string>
+    <string name="title_activity_sign_up">Cadastrar</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Senha</string>
+    <string name="action_sign_in">Entrar</string>
+    <string name="action_sign_up">Cadastrar</string>
+    <string name="error_invalid_email">Email inválido</string>
+    <string name="error_invalid_password">Esta senha é muito pequena</string>
+    <string name="error_incorrect_password">Esta senha esta incorreta</string>
+    <string name="error_field_required">Este campo é obrigatório</string>
+    <string name="auth_failed">A autenticação falhou</string>
+
+
+    <!-- Strings related to Convite Fragment -->
+    <string name="hello_blank_fragment">Hello</string>
+
+
+    <!-- String related to Activity Advogado Details -->
+    <string name="title_activity_advogado_details">Advogado x</string>
+
+
 </resources>
