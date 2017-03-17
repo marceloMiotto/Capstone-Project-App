@@ -1,11 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="udacitynano.com.br.cafelegal.AdvogadoDetailsActivityFragment"
-    tools:showIn="@layout/activity_advogado_details">
+    android:layout_width="395dp"
+    android:layout_height="531dp"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="udacitynano.com.br.cafelegal.MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/round_border"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/detailsAdvogadoNome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Nome Test" />
+
+    <TextView
+        android:id="@+id/detailsAdvogadoNumeroOAB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="OAB Test" />
+
+    <TextView
+        android:id="@+id/detailsAdvogadoEspecialidadeUm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Especialidade Um" />
+
+    <TextView
+        android:id="@+id/detailsAdvogadoEspecialidadeDois"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Especialidade Dois" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_lock_lock" />
+
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+</LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
