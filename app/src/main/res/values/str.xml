@@ -34,5 +34,30 @@
     <!-- String related to Activity Advogado Details -->
     <string name="title_activity_advogado_details">Advogado x</string>
 
+    <!-- String related to Fragment Perfil -->
+    <string name="prompt_perfil_nome_edit_text">Nome</string>
+    <string name="prompt_perfil_nome_meio_edit_text">Nome do meio</string>
+    <string name="prompt_perfil_sobrenome_edit_text">Sobrenome</string>
+    <string name="prompt_perfil_email_edit_text">Email</string>
+    <string name="prompt_perfil_cep_edit_text">CEP</string>
+    <string name="prompt_perfil_endereco_edit_text">Endereço</string>
+    <string name="prompt_perfil_numero_edit_text">Número</string>
+    <string name="prompt_perfil_complemento_edit_text">Complemento</string>
+    <string name="prompt_perfil_bairro_edit_text">Bairro</string>
+    <string name="prompt_perfil_cidade_edit_text">Cidade</string>
+    <string name="prompt_perfil_estado_edit_text">Estado</string>
+    <string name="prompt_perfil_pais_edit_text">País</string>
+    <string name="prompt_perfil_sexo_edit_text">Sexo</string>
+    <string name="button_label_perfil_save">Salvar</string>
+    <!-- String perfil advogado -->
+    <string name="prompt_perfil_numero_oab_edit_text">Número OAB</string>
+    <string name="prompt_perfil_seccional_edit_text">Seccional</string>
+    <string name="prompt_perfil_tipo_inscricao_edit_text">Tipo Inscrição</string>
+    <string name="prompt_perfil_fone_comercial_edit_text">Telefone Comercial</string>
+    <string name="prompt_perfil_twitter_edit_text">Twitter</string>
+    <string name="prompt_perfil_linkedin_edit_text">Linked In</string>
+    <string name="prompt_perfil_especialistaUm_edit_text">Especialidade</string>
+    <string name="prompt_perfil_especialista_dois_edit_text">Especialidade</string>
+
 
 </resources>
