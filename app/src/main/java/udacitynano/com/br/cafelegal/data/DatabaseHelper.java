@@ -1,0 +1,67 @@
+package udacitynano.com.br.cafelegal.data;
+
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class DatabaseHelper extends SQLiteOpenHelper{
+
+    private Context mContext;
+    private static final int DATABASE_VERSION = 1;
+
+    static final String DATABASE_NAME = "cafelegal.db";
+
+    public DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            mContext = context;
+    }
+
+        @Override
+        public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+            final String SQL_CREATE_PESSOA_TABLE = "CREATE TABLE " + DatabaseContract.PessoaEntry.TABLE_NAME + " (" +
+                    DatabaseContract.PessoaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " INTEGER, " +
+                    DatabaseContract.PessoaEntry.COLUMN_NOME + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_NOME_MEIO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_SOBRENOME + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_EMAIL + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_CEP + " INTEGER, " +
+                    DatabaseContract.PessoaEntry.COLUMN_ENDERECO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_NUMERO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_COMPLEMENTO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_BAIRRO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_CIDADE + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_ESTADO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_PAIS + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_SEXO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_NUMERO_INSC_OAB + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_SECCIONAL + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_TIPO_INSCRICAO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_FONE_COMERCIAL + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_CONFIRMADO_CNA + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_TWITTER + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_LINKEDIN + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_UM + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_DOIS + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_NOTIFICATION_REGISTRADO + " TEXT, " +
+                    DatabaseContract.PessoaEntry.COLUMN_LATITUTE + " REAL, " +
+                    DatabaseContract.PessoaEntry.COLUMN_LONGITUDE + " REAL " +
+                    " );";
+
+
+
+            sqLiteDatabase.execSQL(SQL_CREATE_PESSOA_TABLE);
+            Log.e("Debug","Debug02 "+SQL_CREATE_PESSOA_TABLE);
+
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+            //TODO implement the onUpgrade
+
+        }
+
+}
