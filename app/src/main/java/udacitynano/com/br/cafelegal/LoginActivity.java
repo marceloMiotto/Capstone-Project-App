@@ -337,7 +337,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 }else{
 
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent = new Intent(getApplicationContext(), WelcomeActivity.class);
 
                 }
 
@@ -345,7 +345,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 startActivity(intent);
                 finish();
-                
+
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

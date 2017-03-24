@@ -70,8 +70,11 @@
     <string name="welcome_button_concordo">Ok, Entendi!</string>
 
 
-
-
+    <!-- Strings shared preferences -->
+    <string name="preference_file_key">udacitynano.com.br.cafelegal.PREFERENCE_FILE_KEY</string>
+    <string name="preference_user_type_key">PREFERENCE_USER_TYPE_KEY</string>
+    <string name="preference_user_type_advogado">ADVOGADO</string>
+    <string name="preference_user_type_cliente">CLIENTE</string>
 
 
 </resources>
