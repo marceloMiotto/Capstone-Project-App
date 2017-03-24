@@ -67,8 +67,8 @@
     <string name="welcome_button_yes">Sim</string>
     <string name="welcome_button_no">Não</string>
     <string name="welcome_advogado_aviso">Por favor, preencha o cadastro do perfil. Após este cadastro você estará disponível na lista de busca dos usuários</string>
-    <string name="welcome_button_concordo">Ok, Entendi!</string>
-
+    <string name="welcome_button_aviso_perfil">Preencher agora</string>
+    <string name="welcome_button_aviso_perfil_depois">Preencher depois</string>
 
     <!-- Strings shared preferences -->
     <string name="preference_file_key">udacitynano.com.br.cafelegal.PREFERENCE_FILE_KEY</string>

@@ -52,12 +52,20 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 editor.commit();
                 break;
 
-            case R.id.welcome_button_concordo:
+            case R.id.welcome_button_aviso_perfil:
+
+                intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.welcome_button_aviso_perfil_depois:
+
                 intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 break;
 
             default: //default is client
+
                 editor.putString(getString(R.string.preference_user_type_key), getString(R.string.preference_user_type_cliente));
                 editor.commit();
                 intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -65,10 +73,5 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
 
-        /* TODO leitura dos shared
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
-         long highScore = sharedPref.getInt(getString(R.string.saved_high_score), defaultValue);
-         */
     }
 }

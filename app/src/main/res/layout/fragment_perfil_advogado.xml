@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/perfilEspecialistaDoisEditTextEditText"
+                    android:id="@+id/perfilEspecialistaDoisEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_perfil_especialista_dois_edit_text"

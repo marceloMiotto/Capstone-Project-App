@@ -3,10 +3,16 @@ package udacitynano.com.br.cafelegal;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import butterknife.ButterKnife;
+import butterknife.BindView;
+import udacitynano.com.br.cafelegal.singleton.UserType;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +23,54 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class PerfilFragment extends Fragment {
+
+    @BindView(R.id.perfilNomeEditText)
+    EditText mPerfilNomeEditText;
+    @BindView(R.id.perfilNomeMeioEditText)
+    EditText mPerfilNomeMeioEditText;
+    @BindView(R.id.perfilSobrenomeEditText)
+    EditText mPerfilSobrenomeEditText;
+    @BindView(R.id.perfilEmailEditText)
+    EditText mPerfilEmailEditText;
+    @BindView(R.id.perfilCEPEditText)
+    EditText mPerfilCEPEditText;
+    @BindView(R.id.perfilEnderecoEditText)
+    EditText mPerfilEnderecoEditText;
+    @BindView(R.id.perfilNumeroEditText)
+    EditText mPerfilNumeroEditText;
+    @BindView(R.id.perfilComplementoEditText)
+    EditText mPerfilComplementoEditText;
+    @BindView(R.id.perfilBairroEditText)
+    EditText mPerfilBairroEditText;
+    @BindView(R.id.perfilCidadeEditText)
+    EditText mPerfilCidadeEditText;
+    @BindView(R.id.perfilEstadoEditText)
+    EditText mPerfilEstadoEditText;
+    @BindView(R.id.perfilPaisEditText)
+    EditText mPerfilPaisEditText;
+    @BindView(R.id.perfilSexoEditText)
+    EditText mPerfilSexoEditText;
+    @BindView(R.id.perfilNumeroOABEditText)
+    EditText mPerfilNumeroOABEditText;
+    @BindView(R.id.perfilSeccionalEditText)
+    EditText mPerfilSeccionalEditText;
+    @BindView(R.id.perfilTipoInscricaoEditText)
+    EditText mPerfilTipoInscricaoEditText;
+    @BindView(R.id.perfilFoneComercialEditText)
+    EditText mPerfilFoneComercialEditText;
+    @BindView(R.id.perfilTwitterEditText)
+    EditText mPerfilTwitterEditText;
+    @BindView(R.id.perfilLinkedInEditText)
+    EditText mPerfilLinkedInEditText;
+    @BindView(R.id.perfilEspecialistaUmEditText)
+    EditText mPerfilEspecialistaUmEditText;
+    @BindView(R.id.perfilEspecialistaDoisEditText)
+    EditText mPerfilEspecialistaDoisEditText;
+    @BindView(R.id.perfil_fab)
+    FloatingActionButton mPerfil_fab;
+
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -57,13 +111,24 @@ public class PerfilFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        ButterKnife.bind(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+
+        View view;
+        if(UserType.isAdvogado()){
+            view = inflater.inflate(R.layout.fragment_perfil_advogado, container, false);
+        }
+        else{
+            view = inflater.inflate(R.layout.fragment_perfil_cliente, container, false);
+        }
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
