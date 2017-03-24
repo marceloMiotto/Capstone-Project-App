@@ -85,8 +85,8 @@
                 android:id="@+id/buttonChangeScreen"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/login_button_space"
-                android:background="@drawable/button_border"
                 android:onClick="onClick"
+                style="?android:attr/buttonBarButtonStyle"
                 />
 
         </LinearLayout>

@@ -3,11 +3,14 @@ package udacitynano.com.br.cafelegal;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.AppLaunchChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener  {
@@ -307,11 +311,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     // The user's ID, unique to the Firebase project. Do NOT use this value to
                     // authenticate with your backend server, if you have one. Use
-                    // FirebaseUser.getToken() instead.
+                    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                    mUser.getToken(true)
+                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                    if (task.isSuccessful()) {
+                                        String idToken = task.getResult().getToken();
+                                        Log.e("Debug4","User token "+idToken);
+                                        // Send token to your backend via HTTPS
+                                        // ...
+                                    } else {
+                                        String error = task.getException().getMessage();
+                                        Log.e("Debug",error);
+                                    }
+                                }
+                            });
                     String uid = user.getUid();
                     Log.e("Debug4","User id "+uid);
                 }
-                //test finish();
+
+                Intent intent;
+                if( AppLaunchChecker.hasStartedFromLauncher(getApplicationContext()) ){
+
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                }else{
+
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                }
+
+                AppLaunchChecker.onActivityCreate((Activity) getApplicationContext());
+
+                startActivity(intent);
+                finish();
+                
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

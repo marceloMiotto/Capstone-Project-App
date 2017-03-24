@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="udacitynano.com.br.cafelegal.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,17 +22,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="udacitynano.com.br.cafelegal.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_sign_in" />
         <activity
-            android:name="udacitynano.com.br.cafelegal.AdvogadoDetailsActivity"
+            android:name=".AdvogadoDetailsActivity"
             android:label="@string/title_activity_advogado_details"
-            android:parentActivityName="udacitynano.com.br.cafelegal.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="udacitynano.com.br.cafelegal.MainActivity" />
         </activity>
+        <activity
+            android:name=".WelcomeActivity"
+            android:label="@string/title_activity_welcome"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
