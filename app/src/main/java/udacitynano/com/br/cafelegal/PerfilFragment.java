@@ -1,17 +1,22 @@
 package udacitynano.com.br.cafelegal;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 
 /**
@@ -48,26 +53,30 @@ public class PerfilFragment extends Fragment {
     EditText mPerfilEstadoEditText;
     @BindView(R.id.perfilPaisEditText)
     EditText mPerfilPaisEditText;
-    @BindView(R.id.perfilSexoEditText)
-    EditText mPerfilSexoEditText;
-    @BindView(R.id.perfilNumeroOABEditText)
+    @BindView(R.id.perfil_sexo_spinner)
+    Spinner sexoSpinner;
+
+    @Nullable @BindView(R.id.perfilNumeroOABEditText)
     EditText mPerfilNumeroOABEditText;
-    @BindView(R.id.perfilSeccionalEditText)
+    @Nullable @BindView(R.id.perfilSeccionalEditText)
     EditText mPerfilSeccionalEditText;
-    @BindView(R.id.perfilTipoInscricaoEditText)
+    @Nullable @BindView(R.id.perfilTipoInscricaoEditText)
     EditText mPerfilTipoInscricaoEditText;
-    @BindView(R.id.perfilFoneComercialEditText)
+    @Nullable @BindView(R.id.perfilFoneComercialEditText)
     EditText mPerfilFoneComercialEditText;
-    @BindView(R.id.perfilTwitterEditText)
+    @Nullable @BindView(R.id.perfilTwitterEditText)
     EditText mPerfilTwitterEditText;
-    @BindView(R.id.perfilLinkedInEditText)
+    @Nullable @BindView(R.id.perfilLinkedInEditText)
     EditText mPerfilLinkedInEditText;
-    @BindView(R.id.perfilEspecialistaUmEditText)
+    @Nullable @BindView(R.id.perfilEspecialistaUmEditText)
     EditText mPerfilEspecialistaUmEditText;
-    @BindView(R.id.perfilEspecialistaDoisEditText)
+    @Nullable @BindView(R.id.perfilEspecialistaDoisEditText)
     EditText mPerfilEspecialistaDoisEditText;
+
     @BindView(R.id.perfil_fab)
-    FloatingActionButton mPerfil_fab;
+    FloatingActionButton mPerfilFab;
+
+    View view;
 
 
 
@@ -112,14 +121,15 @@ public class PerfilFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        ButterKnife.bind(getActivity());
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view;
+
+
         if(UserType.isAdvogado()){
             view = inflater.inflate(R.layout.fragment_perfil_advogado, container, false);
         }
@@ -127,6 +137,20 @@ public class PerfilFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_perfil_cliente, container, false);
         }
 
+        ButterKnife.bind(this,view);
+
+        mPerfilFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Fab Test",Toast.LENGTH_SHORT).show();
+                Snackbar.make(view,"Snack Test",Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.sexo_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sexoSpinner.setAdapter(adapter);
 
         return view;
     }

@@ -1,5 +1,8 @@
 package udacitynano.com.br.cafelegal;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -7,13 +10,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import udacitynano.com.br.cafelegal.singleton.UserType;
+import udacitynano.com.br.cafelegal.util.Constant;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+                  ,ConviteFragment.OnFragmentInteractionListener
+                  ,HistoricoConvitesFragment.OnFragmentInteractionListener
+                  ,ListaAdvogadosFragment.OnFragmentInteractionListener
+                  ,MapaAdvogadosProximosFragment.OnFragmentInteractionListener
+                  ,PerfilFragment.OnFragmentInteractionListener
+{
 
     @Override
     @SuppressWarnings("deprecation")
@@ -31,8 +42,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        if(UserType.isAdvogado()){
+        UserType userType = UserType.getInstance(this);
+        if(userType.isAdvogado()){
             navigationView.inflateMenu(R.menu.activity_main_advogado_drawer);
         }
         else{
@@ -40,6 +51,15 @@ public class MainActivity extends AppCompatActivity
         }
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        if(getIntent().getStringExtra(Constant.INTENT_FRAGMENT_TYPE).equals(Constant.PERFIL_FRAGMENT)){
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance("",""));
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+
     }
 
     @Override
@@ -56,8 +76,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        //return true;
-        return false;
+        return true;
+
     }
 
     @Override
@@ -68,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sign_out) {
             return true;
         }
 
@@ -81,22 +101,65 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+
         if (id == R.id.nav_convite) {
-            // Handle the camera action
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_menu_switch,ConviteFragment.newInstance("",""));
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.nav_map) {
+
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_menu_switch,MapaAdvogadosProximosFragment.newInstance("",""));
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_perfil) {
 
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance("",""));
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.nav_historico_convites) {
+
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_menu_switch,HistoricoConvitesFragment.newInstance("",""));
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_adv_list) {//only for clients
 
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaAdvogadosFragment.newInstance("",""));
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.nav_convites_abertos) {//only for lawyers
 
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaConvitesAbertosFragment.newInstance("",""));
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+       Log.e("Debug","Fragment listner "+uri );
     }
 }

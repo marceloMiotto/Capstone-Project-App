@@ -2,7 +2,6 @@ package udacitynano.com.br.cafelegal.singleton;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import udacitynano.com.br.cafelegal.R;
 
@@ -11,12 +10,14 @@ public class UserType {
     private static UserType ourInstance;
     private static String mUserType = "";
     private static Context mContext;
-    private static boolean isAdvogado = false;
 
     public static synchronized UserType getInstance(Context context) {
 
+        mContext = context;
+
         if(ourInstance == null){
             ourInstance = new UserType();
+            mUserType = getSharedUserType();
         }
         return ourInstance;
     }
@@ -26,17 +27,27 @@ public class UserType {
 
     public static boolean isAdvogado(){
 
-        if(mUserType.equals("")){
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-            String userType = sharedPref.getString(mContext.getString(R.string.preference_user_type_key),mContext.getString(R.string.preference_user_type_cliente));
-            if(userType.equals(mContext.getString(R.string.preference_user_type_cliente))){
-                isAdvogado = false;
-            }
-            else{
-                isAdvogado = true;
-            }
+        if (mUserType.equals(mContext.getString(R.string.preference_user_type_not_defined))) {
+            mUserType = getSharedUserType();
         }
-        return isAdvogado;
+
+        if (mUserType.equals(mContext.getString(R.string.preference_user_type_cliente)) ||
+                mUserType.equals(mContext.getString(R.string.preference_user_type_not_defined))) {
+            return false;
+        }
+
+        return true;
     }
 
+    public static String getAppUserType(){
+        return getSharedUserType();
+    }
+
+    private static String getSharedUserType(){
+
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        return sharedPref.getString(mContext.getString(R.string.preference_user_type_key),mContext.getString(R.string.preference_user_type_not_defined));
+
+    }
 }

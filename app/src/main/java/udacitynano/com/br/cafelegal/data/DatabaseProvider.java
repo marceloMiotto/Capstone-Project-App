@@ -16,14 +16,20 @@ public class DatabaseProvider extends ContentProvider {
     private   DatabaseHelper mOpenHelper;
     private static SQLiteDatabase sqLiteDatabase;
 
-    static final int PESSOA = 100;
+    static final int PESSOA  = 100;
+    static final int CONVITE = 101;
 
     private static final SQLiteQueryBuilder sPessoasQueryBuilder;
+    private static final SQLiteQueryBuilder sConvitesQueryBuilder;
 
     static{
         sPessoasQueryBuilder = new SQLiteQueryBuilder();
 
         sPessoasQueryBuilder.setTables(DatabaseContract.PessoaEntry.TABLE_NAME);
+
+        sConvitesQueryBuilder = new SQLiteQueryBuilder();
+
+        sConvitesQueryBuilder.setTables(DatabaseContract.ConviteEntry.TABLE_NAME);
 
     }
 
@@ -48,6 +54,25 @@ public class DatabaseProvider extends ContentProvider {
     }
 
 
+    private Cursor getConvites(String[] projection, String selection,
+                              String[] selectionArgs,String sortOrder) {
+
+
+
+        Cursor conviteCursor = sConvitesQueryBuilder.query(sqLiteDatabase,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        Log.e("Debug","Debug10 first result "+ conviteCursor.getCount());
+
+        return conviteCursor;
+    }
+
     static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -55,6 +80,7 @@ public class DatabaseProvider extends ContentProvider {
 
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, DatabaseContract.PATH_PESSOA, PESSOA);
+        matcher.addURI(authority, DatabaseContract.PATH_CONVITE, CONVITE);
         return matcher;
     }
 
@@ -74,6 +100,11 @@ public class DatabaseProvider extends ContentProvider {
                         DatabaseContract.PessoaEntry.TABLE_NAME, selection, selectionArgs);
                 break;
 
+            case CONVITE:
+                rowsDeleted = sqLiteDatabase.delete(
+                        DatabaseContract.ConviteEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -90,6 +121,10 @@ public class DatabaseProvider extends ContentProvider {
 
             case PESSOA:
                 return DatabaseContract.PessoaEntry.CONTENT_TYPE;
+
+            case CONVITE:
+                return DatabaseContract.ConviteEntry.CONTENT_TYPE;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -108,6 +143,16 @@ public class DatabaseProvider extends ContentProvider {
                 long _id = sqLiteDatabase.insert(DatabaseContract.PessoaEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = DatabaseContract.PessoaEntry.buildUserUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+
+            case CONVITE: {
+                //normalizeDate(values);
+                long _id = sqLiteDatabase.insert(DatabaseContract.ConviteEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = DatabaseContract.ConviteEntry.buildUserUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -144,6 +189,14 @@ public class DatabaseProvider extends ContentProvider {
                 break;
             }
 
+            case CONVITE: {
+                Log.e("Debug","Debug07 "+projection.toString());
+
+                retCursor = getConvites(projection, selection, selectionArgs, sortOrder);
+                Log.e("Debug","Debug08 "+retCursor.getCount());
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -166,9 +219,16 @@ public class DatabaseProvider extends ContentProvider {
                         selectionArgs);
                 break;
 
+            case CONVITE:
+                //normalizeDate(values);
+                rowsUpdated = sqLiteDatabase.update(DatabaseContract.ConviteEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
         if (rowsUpdated != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
@@ -191,6 +251,25 @@ public class DatabaseProvider extends ContentProvider {
                     for (ContentValues value : values) {
                         //normalizeDate(value);
                         long _id = sqLiteDatabase.insert(DatabaseContract.PessoaEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    sqLiteDatabase.setTransactionSuccessful();
+                } finally {
+                    sqLiteDatabase.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+
+                return returnCount;
+
+            case CONVITE:
+                sqLiteDatabase.beginTransaction();
+
+                try {
+                    for (ContentValues value : values) {
+                        //normalizeDate(value);
+                        long _id = sqLiteDatabase.insert(DatabaseContract.ConviteEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

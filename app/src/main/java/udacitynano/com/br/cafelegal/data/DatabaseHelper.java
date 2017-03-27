@@ -52,8 +52,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     " );";
 
 
+            final String SQL_CREATE_CONVITE_TABLE = "CREATE TABLE " + DatabaseContract.ConviteEntry.TABLE_NAME + " (" +
+                    DatabaseContract.ConviteEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER + " INTEGER, " +
+                    DatabaseContract.ConviteEntry.COLUMN_CONVIDA_ID + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_RESPONDE_ID + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_CONVITE_TRANSMITIDO + " TEXT " +
+                    " );";
 
             sqLiteDatabase.execSQL(SQL_CREATE_PESSOA_TABLE);
+            sqLiteDatabase.execSQL(SQL_CREATE_CONVITE_TABLE);
             Log.e("Debug","Debug02 "+SQL_CREATE_PESSOA_TABLE);
 
         }

@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,8 +10,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="?android:attr/colorBackground"
     tools:context="udacitynano.com.br.cafelegal.MainActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/perfil_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="onClick"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <ScrollView
         android:id="@+id/perfil_fragment_cliente"
@@ -20,4 +30,7 @@
      <include layout="@layout/fragment_perfil"/>
 
     </ScrollView>
-</LinearLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

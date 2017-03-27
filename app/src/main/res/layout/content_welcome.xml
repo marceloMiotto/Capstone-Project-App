@@ -47,7 +47,7 @@
 
 
     <TextView
-        android:id="@+id/welcome_aviso_advogado_textview"
+        android:id="@+id/welcome_aviso_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/welcome_question"
@@ -56,6 +56,7 @@
         tools:visibility="visible" />
 
     <LinearLayout
+        android:id="@+id/buttons_aviso_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"

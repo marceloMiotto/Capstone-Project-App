@@ -2,24 +2,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_convite"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="@string/menu_convites_item_title" />
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="@string/menu_maps_item_title" />
+
+        <item
+            android:id="@+id/nav_adv_list"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_lista_advogados_item_title" />
 
         <item
             android:id="@+id/nav_perfil"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="@string/menu_perfil_item_title" />
 
         <item
             android:id="@+id/nav_historico_convites"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="@string/menu_historico_convites_item_title" />
 
     </group>
 

@@ -3,14 +3,12 @@ package udacitynano.com.br.cafelegal;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.AppLaunchChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
+import udacitynano.com.br.cafelegal.singleton.UserType;
+import udacitynano.com.br.cafelegal.util.Constant;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener  {
 
@@ -37,8 +38,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     //
-    private UserLoginTask mAuthTask = null;
-
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -47,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button mButtonSignIn;
     private Button mButtonChangeScreen;
     private boolean mSignIn = true;
+    private Context mContext;
+    private String mSignInResult = "X";
 
 
     @Override
@@ -76,16 +77,58 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                showProgress(false);
                 if (user != null) {
-                    // User is signed in
+                    if (user != null) {
+                        // Name, email address, and profile photo Url
+                        String name = user.getDisplayName();
+                        String email = user.getEmail();
+                        Uri photoUrl = user.getPhotoUrl();
+
+                        // The user's ID, unique to the Firebase project. Do NOT use this value to
+                        // authenticate with your backend server, if you have one. Use
+                        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                        mUser.getToken(true)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                        if (task.isSuccessful()) {
+                                            String idToken = task.getResult().getToken();
+                                            Log.e("Debug4","User token "+idToken);
+                                            // Send token to your backend via HTTPS
+                                            // ...
+                                        } else {
+                                            String error = task.getException().getMessage();
+                                            Log.e("Debug",error);
+                                        }
+                                    }
+                                });
+                        String uid = user.getUid();
+                        Log.e("Debug4","User id "+uid);
+                    }
+
+                    Intent intent;
+                    UserType userType = UserType.getInstance(mContext);
+                    Log.e("Debug","Login activity user type "+ userType.getAppUserType());
+                    if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
+                        intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    }else{
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
+                    }
+
+                    startActivity(intent);
+                    finish();
                     Log.d("Debug3", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
                     Log.d("Debug3", "onAuthStateChanged:signed_out");
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
                 }
-                // ...
             }
         };
+
+        mContext = this;
     }
 
     @Override
@@ -140,9 +183,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -181,8 +221,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            authenticationFirebase(email, password);
         }
     }
 
@@ -232,131 +271,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public void authenticationFirebase(String email, String password) {
 
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            Log.e("Debug5","sign in "+mSignIn);
-            if (mSignIn) {
-                //TODO verify the account
-                mAuth.signInWithEmailAndPassword(mEmail, mPassword)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Log.d("Debug4", "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    Log.w("Debug4", "signInWithEmail:failed", task.getException());
-                                    Toast.makeText(LoginActivity.this, R.string.auth_failed,
-                                            Toast.LENGTH_SHORT).show();
-                                }
-
-                                // ...
+        if (mSignIn) {
+            //TODO verify the account
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("Debug4", "signInWithEmail:onComplete:" + task.isSuccessful());
+                            mSignInResult = "OK";
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Log.w("Debug4", "signInWithEmail:failed", task.getException());
+                                Toast.makeText(LoginActivity.this, R.string.auth_failed,
+                                        Toast.LENGTH_SHORT).show();
                             }
-                        });
-            } else {
 
-                // TODO: register the new account here.
 
-                mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Log.d("Debug4", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        }
+                    });
+        } else {
 
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(LoginActivity.this, R.string.auth_failed,
-                                            Toast.LENGTH_SHORT).show();
-                                }
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("Debug4", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, R.string.auth_failed,
+                                        Toast.LENGTH_SHORT).show();
 
-                                // ...
                             }
-                        });
 
-            }
-            return true;
+                        }
+                    });
+
         }
 
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    // Name, email address, and profile photo Url
-                    String name = user.getDisplayName();
-                    String email = user.getEmail();
-                    Uri photoUrl = user.getPhotoUrl();
-
-                    // The user's ID, unique to the Firebase project. Do NOT use this value to
-                    // authenticate with your backend server, if you have one. Use
-                    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-                    mUser.getToken(true)
-                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                    if (task.isSuccessful()) {
-                                        String idToken = task.getResult().getToken();
-                                        Log.e("Debug4","User token "+idToken);
-                                        // Send token to your backend via HTTPS
-                                        // ...
-                                    } else {
-                                        String error = task.getException().getMessage();
-                                        Log.e("Debug",error);
-                                    }
-                                }
-                            });
-                    String uid = user.getUid();
-                    Log.e("Debug4","User id "+uid);
-                }
-
-                Intent intent;
-                if( AppLaunchChecker.hasStartedFromLauncher(getApplicationContext()) ){
-
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
-
-                }else{
-
-                    intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-
-                }
-
-                AppLaunchChecker.onActivityCreate((Activity) getApplicationContext());
-
-                startActivity(intent);
-                finish();
-
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
     }
 }
 

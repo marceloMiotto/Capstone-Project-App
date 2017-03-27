@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="?android:attr/colorBackground"
     tools:context="udacitynano.com.br.cafelegal.MainActivity">
 
     <ImageView
@@ -198,29 +199,21 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/perfilSexoEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_perfil_sexo_edit_text"
-            android:imeOptions="actionUnspecified"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </android.support.design.widget.TextInputLayout>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/perfil_fab"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:text="@string/perfil_label_spinner_sexo"
+        style="@style/InputLabel" />
+    <Spinner
+        android:id="@+id/perfil_sexo_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        />
+
+
 
 
 </LinearLayout>

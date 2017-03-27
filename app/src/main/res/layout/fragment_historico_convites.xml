@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/colorBackground"
-    tools:context="udacitynano.com.br.cafelegal.ListaConvitesAbertosFragment">
+    tools:context="udacitynano.com.br.cafelegal.HistoricoConvitesFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
