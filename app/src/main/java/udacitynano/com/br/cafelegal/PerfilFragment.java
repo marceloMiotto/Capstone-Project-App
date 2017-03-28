@@ -2,6 +2,7 @@ package udacitynano.com.br.cafelegal;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -138,7 +139,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        PerfilService perfilServiceMain = new PerfilService();
 
         if(UserType.isAdvogado()){
             view = inflater.inflate(R.layout.fragment_perfil_advogado, container, false);
@@ -195,7 +196,12 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     );
 
                     PerfilService perfilService = new PerfilService();
-                    perfilService.setPerfil(advogado);
+                    if(userType.getUserId() < 0){
+                        long id = perfilService.createPerfil(advogado);
+                        setSharedId(id);
+                    }else{
+                        perfilService.updatePerfil(advogado);
+                    }
 
                 }else{
 
@@ -216,7 +222,13 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     );
 
                     PerfilService perfilService = new PerfilService();
-                    perfilService.setPerfil(cliente);
+
+                    if(userType.getUserId() < 0){
+                        long id = perfilService.createPerfil(cliente);
+                        setSharedId(id);
+                    }else{
+                        perfilService.updatePerfil(cliente);
+                    }
 
                 }
 
@@ -238,6 +250,79 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mPerfilEspecialistaUmSpinner.setAdapter(especialidadeAdapter);
         mPerfilEspecialistaDoisSpinner.setAdapter(especialidadeAdapter);
+
+        UserType userType = UserType.getInstance(getActivity());
+        if(userType.isAdvogado()) {
+            //getPerfil advogado
+            Advogado pessoa = (Advogado) perfilServiceMain.getPerfil(userType.getAppUserType());
+            mPerfilNomeEditText.setText(pessoa.getNome());
+            mPerfilNomeMeioEditText.setText(pessoa.getNomeMeio());
+            mPerfilSobrenomeEditText.setText(pessoa.getSobrenome());
+            mPerfilEmailEditText.setText(pessoa.getEmail());
+            mPerfilCEPEditText.setText(pessoa.getCep());
+            mPerfilEnderecoEditText.setText(pessoa.getEndereco());
+            mPerfilNumeroEditText.setText(pessoa.getNumero());
+            mPerfilComplementoEditText.setText(pessoa.getComplemento());
+            mPerfilBairroEditText.setText(pessoa.getBairro());
+            mPerfilCidadeEditText.setText(pessoa.getCidade());
+            mPerfilEstadoEditText.setText(pessoa.getEstado());
+            mPerfilPaisEditText.setText(pessoa.getPais());
+            for(int i=0; i < adapter.getCount(); i++) {
+                if(pessoa.getSexo().trim().equals(adapter.getItem(i).toString())){
+                    sexoSpinner.setSelection(i);
+                    break;
+                }
+            }
+            mPerfilNumeroOABEditText.setText(pessoa.getNumeroInscricaoOAB());
+
+            for(int i=0; i < seccionalAdapter.getCount(); i++) {
+                if(pessoa.getSeccional().trim().equals(adapter.getItem(i).toString())){
+                    mSeccionalSpinner.setSelection(i);
+                    break;
+                }
+            }
+            mPerfilTipoInscricaoTextView.setText(pessoa.getTipoInscricao());
+            mPerfilFoneComercialEditText.setText(pessoa.getTelefoneComercial());
+            mPerfilTwitterEditText.setText(pessoa.getTwitter());
+            mPerfilLinkedInEditText.setText(pessoa.getLinkedIn());
+            for(int i=0; i < especialidadeAdapter.getCount(); i++) {
+                if(pessoa.getEspecialistaUm().trim().equals(adapter.getItem(i).toString())){
+                    mPerfilEspecialistaUmSpinner.setSelection(i);
+                    break;
+                }
+            }
+            for(int i=0; i < especialidadeAdapter.getCount(); i++) {
+                if(pessoa.getSexo().trim().equals(adapter.getItem(i).toString())){
+                    mPerfilEspecialistaDoisSpinner.setSelection(i);
+                    break;
+                }
+            }
+        }else{
+
+            Cliente pessoa = (Cliente) perfilServiceMain.getPerfil(userType.getAppUserType());
+            mPerfilNomeEditText.setText(pessoa.getNome());
+            mPerfilNomeMeioEditText.setText(pessoa.getNomeMeio());
+            mPerfilSobrenomeEditText.setText(pessoa.getSobrenome());
+            mPerfilEmailEditText.setText(pessoa.getEmail());
+            mPerfilCEPEditText.setText(pessoa.getCep());
+            mPerfilEnderecoEditText.setText(pessoa.getEndereco());
+            mPerfilNumeroEditText.setText(pessoa.getNumero());
+            mPerfilComplementoEditText.setText(pessoa.getComplemento());
+            mPerfilBairroEditText.setText(pessoa.getBairro());
+            mPerfilCidadeEditText.setText(pessoa.getCidade());
+            mPerfilEstadoEditText.setText(pessoa.getEstado());
+            mPerfilPaisEditText.setText(pessoa.getPais());
+
+            for(int i=0; i < adapter.getCount(); i++) {
+                if(pessoa.getSexo().trim().equals(adapter.getItem(i).toString())){
+                    sexoSpinner.setSelection(i);
+                    break;
+                }
+            }
+
+
+        }
+
 
         return view;
     }
@@ -313,6 +398,14 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         void onFragmentInteraction(Uri uri);
     }
 
+
+    private void setSharedId(long id){
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(getString(R.string.preference_user_type_id), id);
+        editor.commit();
+    }
 
 
 }
