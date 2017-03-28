@@ -10,6 +10,7 @@ public class UserType {
     private static UserType ourInstance;
     private static String mUserType = "";
     private static Context mContext;
+    private static long mUserId;
 
     public static synchronized UserType getInstance(Context context) {
 
@@ -17,7 +18,8 @@ public class UserType {
 
         if(ourInstance == null){
             ourInstance = new UserType();
-            mUserType = getSharedUserType();
+            mUserType   = getAppUserType();
+            mUserId     = getUserId();
         }
         return ourInstance;
     }
@@ -28,7 +30,7 @@ public class UserType {
     public static boolean isAdvogado(){
 
         if (mUserType.equals(mContext.getString(R.string.preference_user_type_not_defined))) {
-            mUserType = getSharedUserType();
+            mUserType = getAppUserType();
         }
 
         if (mUserType.equals(mContext.getString(R.string.preference_user_type_cliente)) ||
@@ -40,7 +42,21 @@ public class UserType {
     }
 
     public static String getAppUserType(){
-        return getSharedUserType();
+
+        if (mUserType.equals(mContext.getString(R.string.preference_user_type_not_defined))) {
+            mUserType = getSharedUserType();
+        }
+
+        return mUserType;
+    }
+
+    public static long getUserId(){
+
+        if(mUserId < 0){
+            mUserId = getSharedUserId();
+        }
+
+        return mUserId;
     }
 
     private static String getSharedUserType(){
@@ -50,4 +66,13 @@ public class UserType {
         return sharedPref.getString(mContext.getString(R.string.preference_user_type_key),mContext.getString(R.string.preference_user_type_not_defined));
 
     }
+
+    private static long getSharedUserId(){
+
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        return sharedPref.getLong(mContext.getString(R.string.preference_user_type_id),-1);
+
+    }
+
 }

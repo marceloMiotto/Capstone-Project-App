@@ -77,6 +77,13 @@
     <string name="preference_user_type_advogado">ADVOGADO</string>
     <string name="preference_user_type_cliente">CLIENTE</string>
     <string name="preference_user_type_not_defined">Not Defined</string>
+
+    <string name="preference_user_type_id">PREFERENCE_USER_TYPE_KEY</string>
+
+
+
+
+    <!-- menu -->
     <string name="menu_convites_abertos_item_title">Convites Abertos</string>
     <string name="menu_convites_item_title">Convite Cafezinho</string>
     <string name="menu_maps_item_title">Advogados Próximos</string>
@@ -84,6 +91,11 @@
     <string name="menu_historico_convites_item_title">Histórico Convites</string>
     <string name="menu_lista_advogados_item_title">Advogados</string>
     <string name="perfil_label_spinner_sexo">Sexo</string>
+    <string name="perfil_label_spinner_seccional">Conselho Seccional</string>
+    <string name="perfil_tipo_inscricao_advogado">Advogado</string>
+    <string name="prompt_perfil_tipo_inscricao_text_view">Tipo inscrição</string>
+    <string name="perfil_label_spinner_especialista_um">Especialidade Direito</string>
+    <string name="perfil_label_spinner_especialista_dois">Especialidade Direito</string>
 
 
 </resources>

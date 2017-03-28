@@ -10,14 +10,22 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import udacitynano.com.br.cafelegal.model.Advogado;
+import udacitynano.com.br.cafelegal.model.Cliente;
+import udacitynano.com.br.cafelegal.model.Pessoa;
+import udacitynano.com.br.cafelegal.service.PerfilService;
 import udacitynano.com.br.cafelegal.singleton.UserType;
+
+import static udacitynano.com.br.cafelegal.R.array.seccional;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +35,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
  * Use the {@link PerfilFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PerfilFragment extends Fragment {
+public class PerfilFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     @BindView(R.id.perfilNomeEditText)
     EditText mPerfilNomeEditText;
@@ -58,27 +66,29 @@ public class PerfilFragment extends Fragment {
 
     @Nullable @BindView(R.id.perfilNumeroOABEditText)
     EditText mPerfilNumeroOABEditText;
-    @Nullable @BindView(R.id.perfilSeccionalEditText)
-    EditText mPerfilSeccionalEditText;
-    @Nullable @BindView(R.id.perfilTipoInscricaoEditText)
-    EditText mPerfilTipoInscricaoEditText;
+    @Nullable @BindView(R.id.perfil_seccional_spinner)
+    Spinner mSeccionalSpinner;
+    @Nullable @BindView(R.id.perfilTipoInscricaoTextView)
+    TextView mPerfilTipoInscricaoTextView;
     @Nullable @BindView(R.id.perfilFoneComercialEditText)
     EditText mPerfilFoneComercialEditText;
     @Nullable @BindView(R.id.perfilTwitterEditText)
     EditText mPerfilTwitterEditText;
     @Nullable @BindView(R.id.perfilLinkedInEditText)
     EditText mPerfilLinkedInEditText;
-    @Nullable @BindView(R.id.perfilEspecialistaUmEditText)
-    EditText mPerfilEspecialistaUmEditText;
-    @Nullable @BindView(R.id.perfilEspecialistaDoisEditText)
-    EditText mPerfilEspecialistaDoisEditText;
-
+    @BindView(R.id.perfil_especialista_um_spinner)
+    Spinner mPerfilEspecialistaUmSpinner;
+    @BindView(R.id.perfil_especialista_dois_spinner)
+    Spinner mPerfilEspecialistaDoisSpinner;
     @BindView(R.id.perfil_fab)
     FloatingActionButton mPerfilFab;
 
     View view;
 
-
+    private String mSexoChoosen;
+    private String mSeccionalChoosen;
+    private String mEspecialidadeUmChoosen;
+    private String mEspecialidadeDoisChoosen;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -139,11 +149,77 @@ public class PerfilFragment extends Fragment {
 
         ButterKnife.bind(this,view);
 
+        sexoSpinner.setOnItemSelectedListener(this);
+        mSeccionalSpinner.setOnItemSelectedListener(this);
+        mPerfilEspecialistaUmSpinner.setOnItemSelectedListener(this);
+        mPerfilEspecialistaDoisSpinner.setOnItemSelectedListener(this);
+
         mPerfilFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Fab Test",Toast.LENGTH_SHORT).show();
                 Snackbar.make(view,"Snack Test",Snackbar.LENGTH_SHORT).show();
+
+
+                UserType userType = UserType.getInstance(getActivity());
+                if(userType.isAdvogado()){
+
+                    int cep;
+                    if(mPerfilCEPEditText.getText().toString().equals("")){
+                        cep = 0;
+                    }else{
+                        cep = Integer.valueOf(mPerfilCEPEditText.getText().toString());
+                    }
+                    Pessoa advogado = new Advogado(userType.getUserId()
+                            , mPerfilNomeEditText.getText().toString()
+                            , mPerfilNomeMeioEditText.getText().toString()
+                            , mPerfilSobrenomeEditText.getText().toString()
+                            , mPerfilEmailEditText.getText().toString()
+                            , cep
+                            , mPerfilEnderecoEditText.getText().toString()
+                            , mPerfilNumeroEditText.getText().toString()
+                            , mPerfilComplementoEditText.getText().toString()
+                            , mPerfilBairroEditText.getText().toString()
+                            , mPerfilCidadeEditText.getText().toString()
+                            , mPerfilEstadoEditText.getText().toString()
+                            , mPerfilPaisEditText.getText().toString()
+                            , mSexoChoosen
+                            , mPerfilNumeroOABEditText.getText().toString()
+                            , mSeccionalChoosen
+                            , mPerfilTipoInscricaoTextView.getText().toString()
+                            , mPerfilFoneComercialEditText.getText().toString()
+                            , mPerfilTwitterEditText.getText().toString()
+                            , mPerfilLinkedInEditText.getText().toString()
+                            , mEspecialidadeUmChoosen
+                            , mEspecialidadeDoisChoosen
+                    );
+
+                    PerfilService perfilService = new PerfilService();
+                    perfilService.setPerfil(advogado);
+
+                }else{
+
+                    Pessoa cliente = new Cliente(userType.getUserId()
+                            , mPerfilNomeEditText.getText().toString()
+                            , mPerfilNomeMeioEditText.getText().toString()
+                            , mPerfilSobrenomeEditText.getText().toString()
+                            , mPerfilEmailEditText.getText().toString()
+                            , Integer.valueOf(mPerfilCEPEditText.getText().toString())
+                            , mPerfilEnderecoEditText.getText().toString()
+                            , mPerfilNumeroEditText.getText().toString()
+                            , mPerfilComplementoEditText.getText().toString()
+                            , mPerfilBairroEditText.getText().toString()
+                            , mPerfilCidadeEditText.getText().toString()
+                            , mPerfilEstadoEditText.getText().toString()
+                            , mPerfilPaisEditText.getText().toString()
+                            , mSexoChoosen
+                    );
+
+                    PerfilService perfilService = new PerfilService();
+                    perfilService.setPerfil(cliente);
+
+                }
+
             }
         });
 
@@ -151,6 +227,17 @@ public class PerfilFragment extends Fragment {
                 R.array.sexo_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sexoSpinner.setAdapter(adapter);
+
+        ArrayAdapter<CharSequence> seccionalAdapter = ArrayAdapter.createFromResource(getActivity(),
+                seccional, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSeccionalSpinner.setAdapter(seccionalAdapter);
+
+        ArrayAdapter<CharSequence> especialidadeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.especialidade, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mPerfilEspecialistaUmSpinner.setAdapter(especialidadeAdapter);
+        mPerfilEspecialistaDoisSpinner.setAdapter(especialidadeAdapter);
 
         return view;
     }
@@ -179,6 +266,38 @@ public class PerfilFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Spinner spinner = (Spinner) parent;
+        switch (spinner.getId()){
+            case R.id.perfil_sexo_spinner:
+                mSexoChoosen = parent.getItemAtPosition(position).toString();
+                break;
+
+            case R.id.perfil_seccional_spinner:
+                mSeccionalChoosen = parent.getItemAtPosition(position).toString();
+                break;
+
+
+            case R.id.perfil_especialista_um_spinner:
+                mEspecialidadeUmChoosen = parent.getItemAtPosition(position).toString();
+                break;
+
+            case R.id.perfil_especialista_dois_spinner:
+                mEspecialidadeDoisChoosen = parent.getItemAtPosition(position).toString();
+                break;
+
+            default:
+
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -193,4 +312,7 @@ public class PerfilFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
 }

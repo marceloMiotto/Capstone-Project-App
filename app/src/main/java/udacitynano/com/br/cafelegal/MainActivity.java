@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity
                   ,ListaAdvogadosFragment.OnFragmentInteractionListener
                   ,MapaAdvogadosProximosFragment.OnFragmentInteractionListener
                   ,PerfilFragment.OnFragmentInteractionListener
+                  ,ListaConvitesAbertosFragment.OnFragmentInteractionListener
 {
 
     @Override

@@ -5,4 +5,79 @@
         <item>Masculino</item>
         <item>Outros</item>
     </string-array>
+
+    <string-array name="seccional">
+        <item>Acre</item>
+        <item>Alagoas</item>
+        <item>Amapá</item>
+        <item>Amazonas</item>
+        <item>Bahia</item>
+        <item>Ceará</item>
+        <item>Distrito Federal</item>
+        <item>Espirito Santo</item>
+        <item>Goias</item>
+        <item>Maranhão</item>
+        <item>Mato Grosso</item>
+        <item>Mato Grosso do Sul</item>
+        <item>Minas Gerais</item>
+        <item>Pará</item>
+        <item>Paraíba</item>
+        <item>Paraná</item>
+        <item>Pernambuco</item>
+        <item>Piauí</item>
+        <item>Rio de Janeiro</item>
+        <item>Rio Grande do Norte</item>
+        <item>Rio Grande do Sul</item>
+        <item>Rondônia</item>
+        <item>Roraima</item>
+        <item>Santa Catarina</item>
+        <item>São Paulo</item>
+        <item>Sergipe</item>
+        <item>Tocantins</item>
+    </string-array>
+
+    <string-array name="especialidade">
+        <item>Administrativo</item>
+        <item>Aeronáutico, Espacial e Marítimo</item>
+        <item>Aeroespacial</item>
+        <item>Agrário</item>
+        <item>Ambiental</item>
+        <item>em Arbitragem</item>
+        <item>de Biotecnologia / Biodireito</item>
+        <item>Cível</item>
+        <item>Comercial, Falências, Concordata</item>
+        <item>Desportivo</item>
+        <item>Constitucional</item>
+        <item>do Consumidor</item>
+        <item>Eleitoral</item>
+        <item>Empresarial</item>
+        <item>de Família</item>
+        <item>Humanos</item>
+        <item>Imobiliário / de Propriedade</item>
+        <item>Infancia e Juventude</item>
+        <item>Internacional</item>
+        <item>Marcas e Patentes</item>
+        <item>Marítimo</item>
+        <item>Médico</item>
+        <item>do Mercado de Capitais</item>
+        <item>Militar</item>
+        <item>Minerario</item>
+        <item>Municipal</item>
+        <item>de Negócios</item>
+        <item>Penal</item>
+        <item>Previdenciário</item>
+        <item>de Propriedade Intelectual</item>
+        <item>Público</item>
+        <item>Rural</item>
+        <item>Sanitário</item>
+        <item>do Seguro</item>
+        <item>Sindical</item>
+        <item>Societário</item>
+        <item>de Telecomunicações e Internet / Informática</item>
+        <item>do Trabalho / Trabalhista</item>
+        <item>Tributário</item>
+        <item>Urbanístico</item>
+    </string-array>
+
+
 </resources>

@@ -20,21 +20,18 @@ public class Advogado extends Pessoa {
 
     public Advogado() { }
 
-    public Advogado(long id, String nome, String nomeMeio, String sobrenome, String email, int cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String pais, String sexo, String numeroInscricaoOAB, String seccional, String tipoInscricao, String telefoneComercial, String confirmadoCNA, String twitter, String linkedIn
-            , String especialistaUm, String especialistaDois, String notificationRegistration, double latitude, double longitude) {
+    public Advogado(long id, String nome, String nomeMeio, String sobrenome, String email, int cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String pais, String sexo, String numeroInscricaoOAB, String seccional, String tipoInscricao, String telefoneComercial, String twitter, String linkedIn
+            , String especialistaUm, String especialistaDois) {
         super(id, nome, nomeMeio, sobrenome, email, cep, endereco, numero,complemento, bairro, cidade, estado, pais, sexo);
         this.numeroInscricaoOAB = numeroInscricaoOAB;
         this.seccional = seccional;
         this.tipoInscricao = tipoInscricao;
         this.telefoneComercial = telefoneComercial;
-        this.confirmadoCNA = confirmadoCNA;
         this.twitter = twitter;
         this.linkedIn = linkedIn;
         this.especialistaUm = especialistaUm;
         this.especialistaDois = especialistaDois;
         this.notificationRegistration = notificationRegistration;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     public String getNumeroInscricaoOAB() {
