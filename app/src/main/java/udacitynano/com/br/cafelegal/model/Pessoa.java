@@ -3,6 +3,9 @@ package udacitynano.com.br.cafelegal.model;
 
 public abstract class Pessoa {
 
+    //@SerializedName("id") usar caso algum seja diferente
+
+
     private long   id; //this is the server Id
     private String nome;
     private String nomeMeio;

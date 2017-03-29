@@ -10,5 +10,6 @@
     <!-- labels -->
     <dimen name="input_label_vertical_spacing">8dp</dimen>
     <dimen name="input_label_horizontal_spacing">4dp</dimen>
+    <dimen name="card_view_lista_advogados_margin_top">15dp</dimen>
 
 </resources>

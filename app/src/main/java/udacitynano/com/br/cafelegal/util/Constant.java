@@ -10,4 +10,11 @@ public interface Constant {
     String MAPA_ADVOGADOS_PROXIMOS_FRAGMENT = "mapa_advogados_proximos_fragment";
     String PERFIL_FRAGMENT = "perfil_fragment";
 
+    //Network
+
+
+    String SERVER_API_CAFE_LEGAL = "https://cafelegal.net/webapi/";
+    String PESSOA_CAFE_LEGAL  = "cale/pessoa";
+    String CONVITE_CAFE_LEGAL = "cale/convite";
+
 }

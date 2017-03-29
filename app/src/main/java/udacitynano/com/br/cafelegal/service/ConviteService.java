@@ -5,11 +5,8 @@ public class ConviteService {
 
     public int sendConvite(long conviteId){
 
-
-
         return 0;
 
     }
-
 
 }

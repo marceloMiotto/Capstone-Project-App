@@ -6,10 +6,11 @@
     android:background="?android:attr/colorBackground"
     tools:context="udacitynano.com.br.cafelegal.HistoricoConvitesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+  <android.support.v7.app.AlertController.RecycleListView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/convite_historico_recyclerView"
+      />
+
 
 </android.support.design.widget.CoordinatorLayout>

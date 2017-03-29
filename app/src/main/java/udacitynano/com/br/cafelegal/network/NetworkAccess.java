@@ -5,11 +5,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class AccessNetwork {
+public class NetworkAccess {
 
     Context mContext;
 
-    AccessNetwork(Context context){
+    NetworkAccess(Context context){
         mContext = context;
     };
 
@@ -22,3 +22,4 @@ public class AccessNetwork {
 
 
 }
+

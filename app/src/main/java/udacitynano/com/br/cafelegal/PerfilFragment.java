@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +19,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.service.PerfilService;
+import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
+import udacitynano.com.br.cafelegal.util.Constant;
 
+import static android.R.attr.id;
 import static udacitynano.com.br.cafelegal.R.array.seccional;
 
 /**
@@ -158,6 +171,14 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         mPerfilFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int requestMethod;
+                String apiResource;
+                Pessoa cliente;
+                Pessoa advogado;
+                String stringJsonObject = "";
+                JSONObject jsonObject = null;
+
                 Toast.makeText(getActivity(),"Fab Test",Toast.LENGTH_SHORT).show();
                 Snackbar.make(view,"Snack Test",Snackbar.LENGTH_SHORT).show();
 
@@ -171,7 +192,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     }else{
                         cep = Integer.valueOf(mPerfilCEPEditText.getText().toString());
                     }
-                    Pessoa advogado = new Advogado(userType.getUserId()
+                    advogado = new Advogado(userType.getUserId()
                             , mPerfilNomeEditText.getText().toString()
                             , mPerfilNomeMeioEditText.getText().toString()
                             , mPerfilSobrenomeEditText.getText().toString()
@@ -195,17 +216,22 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mEspecialidadeDoisChoosen
                     );
 
-                    PerfilService perfilService = new PerfilService();
+                    apiResource = "/advogado";
+
                     if(userType.getUserId() < 0){
-                        long id = perfilService.createPerfil(advogado);
+                        requestMethod = Request.Method.POST;
                         setSharedId(id);
                     }else{
-                        perfilService.updatePerfil(advogado);
+                        requestMethod = Request.Method.PUT;
                     }
+
+                    Gson gson = new Gson();
+                    stringJsonObject = gson.toJson(advogado);
+                    Log.e("Debug","Advogado json "+stringJsonObject);
 
                 }else{
 
-                    Pessoa cliente = new Cliente(userType.getUserId()
+                    cliente = new Cliente(userType.getUserId()
                             , mPerfilNomeEditText.getText().toString()
                             , mPerfilNomeMeioEditText.getText().toString()
                             , mPerfilSobrenomeEditText.getText().toString()
@@ -221,16 +247,48 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mSexoChoosen
                     );
 
-                    PerfilService perfilService = new PerfilService();
+                    apiResource = "/cliente";
 
                     if(userType.getUserId() < 0){
-                        long id = perfilService.createPerfil(cliente);
+                        requestMethod = Request.Method.POST;
                         setSharedId(id);
                     }else{
-                        perfilService.updatePerfil(cliente);
+                        requestMethod = Request.Method.PUT;
                     }
 
+                    Gson gson = new Gson();
+                    stringJsonObject = gson.toJson(cliente);
+                    Log.e("Debug","Cliente json "+stringJsonObject);
+
                 }
+
+
+                try {
+                    jsonObject = new JSONObject(stringJsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e("Debug","server api link "+Constant.SERVER_API_CAFE_LEGAL+apiResource);
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                        (requestMethod, Constant.SERVER_API_CAFE_LEGAL+apiResource, jsonObject , new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                               Log.e("Debug","Pessoa id "+response.toString());
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // TODO Auto-generated method stub
+                                Log.e("Debug","Pessoa error: "+error);
+                            }
+                        });
+
+                // Access the RequestQueue through your singleton class.
+                NetworkSingleton.getInstance(getActivity()).addJSONToRequestQueue(jsObjRequest);
+
 
             }
         });
@@ -319,8 +377,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     break;
                 }
             }
-
-
         }
 
 
