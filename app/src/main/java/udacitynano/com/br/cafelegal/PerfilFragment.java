@@ -19,10 +19,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -38,7 +39,6 @@ import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
-import static android.R.attr.id;
 import static udacitynano.com.br.cafelegal.R.array.seccional;
 
 /**
@@ -103,6 +103,8 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     private String mSeccionalChoosen;
     private String mEspecialidadeUmChoosen;
     private String mEspecialidadeDoisChoosen;
+
+    private JSONObject jsonObject;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -177,7 +179,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                 Pessoa cliente;
                 Pessoa advogado;
                 String stringJsonObject = "";
-                JSONObject jsonObject = null;
+
 
                 Toast.makeText(getActivity(),"Fab Test",Toast.LENGTH_SHORT).show();
                 Snackbar.make(view,"Snack Test",Snackbar.LENGTH_SHORT).show();
@@ -216,13 +218,14 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mEspecialidadeDoisChoosen
                     );
 
-                    apiResource = "/advogado";
+                    apiResource = Constant.ADVOGADO;
 
                     if(userType.getUserId() < 0){
                         requestMethod = Request.Method.POST;
-                        setSharedId(id);
                     }else{
-                        requestMethod = Request.Method.PUT;
+                        //TODO remove test only requestMethod = Request.Method.PUT;
+                        requestMethod = Request.Method.POST;
+
                     }
 
                     Gson gson = new Gson();
@@ -247,13 +250,13 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mSexoChoosen
                     );
 
-                    apiResource = "/cliente";
+                    apiResource = Constant.CLIENTE;
 
                     if(userType.getUserId() < 0){
                         requestMethod = Request.Method.POST;
-                        setSharedId(id);
                     }else{
-                        requestMethod = Request.Method.PUT;
+                        //TODO remove test only requestMethod = Request.Method.PUT;
+                        requestMethod = Request.Method.POST;
                     }
 
                     Gson gson = new Gson();
@@ -270,24 +273,43 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                 }
 
                 Log.e("Debug","server api link "+Constant.SERVER_API_CAFE_LEGAL+apiResource);
-                JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                        (requestMethod, Constant.SERVER_API_CAFE_LEGAL+apiResource, jsonObject , new Response.Listener<JSONObject>() {
+                StringRequest stringRequest = new StringRequest(requestMethod, Constant.SERVER_API_CAFE_LEGAL + apiResource, new Response.Listener<String>() {
 
-                            @Override
-                            public void onResponse(JSONObject response) {
-                               Log.e("Debug","Pessoa id "+response.toString());
-                            }
-                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Debug", "Pessoa id " + response.toString());
+                        Snackbar.make(view, "Perfil Salvo", Snackbar.LENGTH_SHORT).show();
+                        if(UserType.getInstance(getActivity()).getUserId() < 0){
+                            setSharedId(Long.valueOf(response.toString()));
+                        }
 
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // TODO Auto-generated method stub
-                                Log.e("Debug","Pessoa error: "+error);
-                            }
-                        });
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        Log.e("Debug", "Pessoa error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+                        Snackbar.make(view, "Erro ao enviar para o servidor. " + error.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                ) {
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        return jsonObject.toString().getBytes();
+                    }
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+                };
 
                 // Access the RequestQueue through your singleton class.
-                NetworkSingleton.getInstance(getActivity()).addJSONToRequestQueue(jsObjRequest);
+                NetworkSingleton.getInstance(getActivity()).addStringRequestQueue(stringRequest);
 
 
             }
@@ -309,6 +331,9 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         mPerfilEspecialistaUmSpinner.setAdapter(especialidadeAdapter);
         mPerfilEspecialistaDoisSpinner.setAdapter(especialidadeAdapter);
 
+
+        //TODO fazer o loader
+        /*
         UserType userType = UserType.getInstance(getActivity());
         if(userType.isAdvogado()) {
             //getPerfil advogado
@@ -378,7 +403,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                 }
             }
         }
-
+     */
 
         return view;
     }
@@ -461,6 +486,8 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(getString(R.string.preference_user_type_id), id);
         editor.commit();
+
+        Log.e("Debug","User id: "+id);
     }
 
 

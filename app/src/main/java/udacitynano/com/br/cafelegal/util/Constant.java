@@ -13,8 +13,11 @@ public interface Constant {
     //Network
 
 
-    String SERVER_API_CAFE_LEGAL = "https://cafelegal.net/webapi/";
-    String PESSOA_CAFE_LEGAL  = "cale/pessoa";
-    String CONVITE_CAFE_LEGAL = "cale/convite";
+    String SERVER_API_CAFE_LEGAL = "https://www.cafelegal.net/webapi/cale";
+    //String PESSOA_CAFE_LEGAL  = "/pessoa";
+    String CONVITE_CAFE_LEGAL = "/convite";
+    String ADVOGADO = "/pessoa/advogado";
+    String ADVOGADOS = "/pessoa/advogados";
+    String CLIENTE = "/pessoa/cliente";
 
 }
