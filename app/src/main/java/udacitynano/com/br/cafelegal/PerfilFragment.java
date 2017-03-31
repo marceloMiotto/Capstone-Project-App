@@ -1,8 +1,12 @@
 package udacitynano.com.br.cafelegal;
 
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,8 +32,12 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Pessoa;
@@ -39,6 +47,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 import static udacitynano.com.br.cafelegal.R.array.seccional;
+import static udacitynano.com.br.cafelegal.R.id.perfil_especialista_um_spinner;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,8 +57,10 @@ import static udacitynano.com.br.cafelegal.R.array.seccional;
  * Use the {@link PerfilFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PerfilFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class PerfilFragment extends Fragment implements AdapterView.OnItemSelectedListener
+                                                      , LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final int PERFIL_LOADER_ID = 11;
     @BindView(R.id.perfilNomeEditText)
     EditText mPerfilNomeEditText;
     @BindView(R.id.perfilNomeMeioEditText)
@@ -89,7 +100,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     EditText mPerfilTwitterEditText;
     @Nullable @BindView(R.id.perfilLinkedInEditText)
     EditText mPerfilLinkedInEditText;
-    @BindView(R.id.perfil_especialista_um_spinner)
+    @BindView(perfil_especialista_um_spinner)
     Spinner mPerfilEspecialistaUmSpinner;
     @BindView(R.id.perfil_especialista_dois_spinner)
     Spinner mPerfilEspecialistaDoisSpinner;
@@ -102,6 +113,8 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     private String mSeccionalChoosen;
     private String mEspecialidadeUmChoosen;
     private String mEspecialidadeDoisChoosen;
+    Pessoa mCliente;
+    Pessoa mAdvogado;
 
     private JSONObject jsonObject;
 
@@ -169,17 +182,20 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         mPerfilEspecialistaUmSpinner.setOnItemSelectedListener(this);
         mPerfilEspecialistaDoisSpinner.setOnItemSelectedListener(this);
 
+        //TODO LOADER TEST
+        // Prepare the loader.  Either re-connect with an existing one,
+        // or start a new one.
+        getLoaderManager().initLoader(PERFIL_LOADER_ID, null, this);
+
         mPerfilFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 int requestMethod;
                 String apiResource;
-                Pessoa cliente = null;
-                Pessoa advogado = null;
                 String stringJsonObject = "";
 
-                UserType userType = UserType.getInstance(getActivity());
+                final UserType userType = UserType.getInstance(getActivity());
                 if(userType.isAdvogado()){
 
                     int cep;
@@ -188,7 +204,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     }else{
                         cep = Integer.valueOf(mPerfilCEPEditText.getText().toString());
                     }
-                    advogado = new Advogado(userType.getUserId()
+                    mAdvogado = new Advogado(userType.getUserId()
                             , mPerfilNomeEditText.getText().toString()
                             , mPerfilNomeMeioEditText.getText().toString()
                             , mPerfilSobrenomeEditText.getText().toString()
@@ -214,12 +230,12 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                     apiResource = Constant.ADVOGADO;
                     Gson gson = new Gson();
-                    stringJsonObject = gson.toJson(advogado);
+                    stringJsonObject = gson.toJson(mAdvogado);
                     Log.e("Debug","Advogado json "+stringJsonObject);
 
                 }else{
 
-                    cliente = new Cliente(userType.getUserId()
+                    mCliente = new Cliente(userType.getUserId()
                             , mPerfilNomeEditText.getText().toString()
                             , mPerfilNomeMeioEditText.getText().toString()
                             , mPerfilSobrenomeEditText.getText().toString()
@@ -235,9 +251,10 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mSexoChoosen
                     );
 
+                    Log.e("Debug","Sexo escolhido: "+mSexoChoosen);
                     apiResource = Constant.CLIENTE;
                     Gson gson = new Gson();
-                    stringJsonObject = gson.toJson(cliente);
+                    stringJsonObject = gson.toJson(mCliente);
                     Log.e("Debug","Advogado json "+stringJsonObject);
 
                 }
@@ -261,12 +278,13 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     public void onResponse(String response) {
                         Log.e("Debug", "Pessoa id " + response.toString());
                         Snackbar.make(view, "Perfil Salvo", Snackbar.LENGTH_SHORT).show();
-                        if(UserType.getInstance(getActivity()).getUserId() <= 0){
+                        if (UserType.getInstance(getActivity()).getUserId() <= 0) {
                             setSharedId(Long.valueOf(response.toString()));
                         }
 
-                    }
+                        createUserOnSQLite();
 
+                    }
                 }, new Response.ErrorListener() {
 
                     @Override
@@ -274,6 +292,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                         // TODO Auto-generated method stub
                         Log.e("Debug", "Pessoa error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
                         Snackbar.make(view, "Erro ao enviar para o servidor. " + error.getMessage(), Snackbar.LENGTH_SHORT).show();
+
                     }
 
                 }
@@ -296,37 +315,8 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                 //create or update on sqlite
                 Log.e("Debug","uesr type get user: "+userType.getUserId());
 
-                if(userType.isAdvogado()){
-                    if(userType.getUserId() <= 0){
-                    //CREATE LOCAL PERFIL
-                    advogado.setId(userType.getUserId());
-                    long result = perfilServiceMain.createPerfil(getActivity(),advogado);
-                    if(result <= 0){
-                        Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
-                    }
-                }else {
-                    requestMethod = Request.Method.PUT;
-                    int result = perfilServiceMain.updatePerfil(getActivity(), advogado);
-                    if (result <= 0) {
-                        Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
-                    }
-                 }
-                }else { //cliente
-                    if(userType.getUserId() <= 0){
-                        cliente.setId(userType.getUserId());
-                        //CREATE LOCAL PERFIL
-                        long result = perfilServiceMain.createPerfil(getActivity(),cliente);
-                        if(result <= 0){
-                            Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        int result = perfilServiceMain.updatePerfil(getActivity(),cliente);
-                        if(result <= 0){
-                            Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
-                        }
-                    }
+                updateUserOnSQLite();
 
-                }
 
             }
         });
@@ -346,80 +336,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mPerfilEspecialistaUmSpinner.setAdapter(especialidadeAdapter);
         mPerfilEspecialistaDoisSpinner.setAdapter(especialidadeAdapter);
-
-
-        //TODO fazer o loader
-        /*
-        UserType userType = UserType.getInstance(getActivity());
-        if(userType.isAdvogado()) {
-            //getPerfil advogado
-            Advogado pessoa = (Advogado) perfilServiceMain.getPerfil(userType.getAppUserType());
-            mPerfilNomeEditText.setText(pessoa.getNome());
-            mPerfilNomeMeioEditText.setText(pessoa.getNomeMeio());
-            mPerfilSobrenomeEditText.setText(pessoa.getSobrenome());
-            mPerfilEmailEditText.setText(pessoa.getEmail());
-            mPerfilCEPEditText.setText(pessoa.getCep());
-            mPerfilEnderecoEditText.setText(pessoa.getEndereco());
-            mPerfilNumeroEditText.setText(pessoa.getNumero());
-            mPerfilComplementoEditText.setText(pessoa.getComplemento());
-            mPerfilBairroEditText.setText(pessoa.getBairro());
-            mPerfilCidadeEditText.setText(pessoa.getCidade());
-            mPerfilEstadoEditText.setText(pessoa.getEstado());
-            mPerfilPaisEditText.setText(pessoa.getPais());
-            for(int i=0; i < adapter.getCount(); i++) {
-                if(pessoa.getSexo().trim().equals(adapter.getItem(i).toString())){
-                    sexoSpinner.setSelection(i);
-                    break;
-                }
-            }
-            mPerfilNumeroOABEditText.setText(pessoa.getNumeroInscricaoOAB());
-
-            for(int i=0; i < seccionalAdapter.getCount(); i++) {
-                if(pessoa.getSeccional().trim().equals(adapter.getItem(i).toString())){
-                    mSeccionalSpinner.setSelection(i);
-                    break;
-                }
-            }
-            mPerfilTipoInscricaoTextView.setText(pessoa.getTipoInscricao());
-            mPerfilFoneComercialEditText.setText(pessoa.getTelefoneComercial());
-            mPerfilTwitterEditText.setText(pessoa.getTwitter());
-            mPerfilLinkedInEditText.setText(pessoa.getLinkedIn());
-            for(int i=0; i < especialidadeAdapter.getCount(); i++) {
-                if(pessoa.getEspecialistaUm().trim().equals(adapter.getItem(i).toString())){
-                    mPerfilEspecialistaUmSpinner.setSelection(i);
-                    break;
-                }
-            }
-            for(int i=0; i < especialidadeAdapter.getCount(); i++) {
-                if(pessoa.getSexo().trim().equals(adapter.getItem(i).toString())){
-                    mPerfilEspecialistaDoisSpinner.setSelection(i);
-                    break;
-                }
-            }
-        }else{
-
-            Cliente pessoa = (Cliente) perfilServiceMain.getPerfil(userType.getAppUserType());
-            mPerfilNomeEditText.setText(pessoa.getNome());
-            mPerfilNomeMeioEditText.setText(pessoa.getNomeMeio());
-            mPerfilSobrenomeEditText.setText(pessoa.getSobrenome());
-            mPerfilEmailEditText.setText(pessoa.getEmail());
-            mPerfilCEPEditText.setText(pessoa.getCep());
-            mPerfilEnderecoEditText.setText(pessoa.getEndereco());
-            mPerfilNumeroEditText.setText(pessoa.getNumero());
-            mPerfilComplementoEditText.setText(pessoa.getComplemento());
-            mPerfilBairroEditText.setText(pessoa.getBairro());
-            mPerfilCidadeEditText.setText(pessoa.getCidade());
-            mPerfilEstadoEditText.setText(pessoa.getEstado());
-            mPerfilPaisEditText.setText(pessoa.getPais());
-
-            for(int i=0; i < adapter.getCount(); i++) {
-                if(pessoa.getSexo().trim().equals(adapter.getItem(i).toString())){
-                    sexoSpinner.setSelection(i);
-                    break;
-                }
-            }
-        }
-     */
 
         return view;
     }
@@ -454,19 +370,22 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         switch (spinner.getId()){
             case R.id.perfil_sexo_spinner:
                 mSexoChoosen = parent.getItemAtPosition(position).toString();
+                Log.e("Debug","Case mSexoChoosen: "+mSexoChoosen + " - spinner id"+spinner.getId());
                 break;
 
             case R.id.perfil_seccional_spinner:
                 mSeccionalChoosen = parent.getItemAtPosition(position).toString();
+                Log.e("Debug","Case mSeccionalChoosen: "+mSeccionalChoosen+ " - spinner id"+spinner.getId());
                 break;
 
-
-            case R.id.perfil_especialista_um_spinner:
+            case perfil_especialista_um_spinner:
                 mEspecialidadeUmChoosen = parent.getItemAtPosition(position).toString();
+                Log.e("Debug","Case mEspecialidadeUmChoosen: "+mEspecialidadeUmChoosen+ " - spinner id"+spinner.getId());
                 break;
 
             case R.id.perfil_especialista_dois_spinner:
                 mEspecialidadeDoisChoosen = parent.getItemAtPosition(position).toString();
+                Log.e("Debug","Case mEspecialidadeDoisChoosen: "+mEspecialidadeDoisChoosen+ " - spinner id"+spinner.getId());
                 break;
 
             default:
@@ -477,6 +396,112 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        String[] projection = {
+                 DatabaseContract.PessoaEntry.COLUMN_NOME
+               , DatabaseContract.PessoaEntry.COLUMN_NOME_MEIO
+               , DatabaseContract.PessoaEntry.COLUMN_SOBRENOME
+               , DatabaseContract.PessoaEntry.COLUMN_EMAIL
+               , DatabaseContract.PessoaEntry.COLUMN_CEP
+               , DatabaseContract.PessoaEntry.COLUMN_ENDERECO
+               , DatabaseContract.PessoaEntry.COLUMN_NUMERO
+               , DatabaseContract.PessoaEntry.COLUMN_COMPLEMENTO
+               , DatabaseContract.PessoaEntry.COLUMN_BAIRRO
+               , DatabaseContract.PessoaEntry.COLUMN_CIDADE
+               , DatabaseContract.PessoaEntry.COLUMN_ESTADO
+               , DatabaseContract.PessoaEntry.COLUMN_PAIS
+               , DatabaseContract.PessoaEntry.COLUMN_SEXO
+               , DatabaseContract.PessoaEntry.COLUMN_NUMERO_INSC_OAB
+               , DatabaseContract.PessoaEntry.COLUMN_SECCIONAL
+               , DatabaseContract.PessoaEntry.COLUMN_TIPO_INSCRICAO
+               , DatabaseContract.PessoaEntry.COLUMN_FONE_COMERCIAL
+               , DatabaseContract.PessoaEntry.COLUMN_TWITTER
+               , DatabaseContract.PessoaEntry.COLUMN_LINKEDIN
+               , DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_UM
+               , DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_DOIS
+
+
+        };
+        String selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+"."+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
+        String[] selectionArgs = {String.valueOf(UserType.getInstance(getActivity()).getUserId())};
+
+        Log.e("Debug","Perfil Service pessoaValues "+projection);
+        Log.e("Debug","Perfil Service  selectionClause "+selectionClause);
+        Log.e("Debug","Perfil Service  selectionArgs "+selectionArgs[0]);
+
+        CursorLoader loader = new CursorLoader(
+                this.getActivity(),
+                DatabaseContract.PessoaEntry.CONTENT_URI,
+                projection,
+                selectionClause,
+                selectionArgs,
+                null);
+        return loader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        if (cursor != null) {
+            Log.e("Debug", "Lodader count " + cursor.getCount());
+        }else{
+            Log.e("Debug","Loader Cursor null");
+        }
+
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            mPerfilNomeEditText.setText(cursor.getString(0));
+            mPerfilNomeMeioEditText.setText(cursor.getString(1));
+            mPerfilSobrenomeEditText.setText(cursor.getString(2));
+            mPerfilEmailEditText.setText(cursor.getString(3));
+            mPerfilCEPEditText.setText(cursor.getString(4));
+            mPerfilEnderecoEditText.setText(cursor.getString(5));
+            mPerfilNumeroEditText.setText(cursor.getString(6));
+            mPerfilComplementoEditText.setText(cursor.getString(7));
+            mPerfilBairroEditText.setText(cursor.getString(8));
+            mPerfilCidadeEditText.setText(cursor.getString(9));
+            mPerfilEstadoEditText.setText(cursor.getString(10));
+            mPerfilPaisEditText.setText(cursor.getString(11));
+
+            List<String> strSexo = Arrays.asList(getResources().getStringArray(R.array.sexo_array));
+
+            sexoSpinner.setSelection(strSexo.indexOf(cursor.getString(12)));
+
+            UserType userType = UserType.getInstance(getActivity());
+            if (userType.isAdvogado()) {
+                mPerfilNumeroOABEditText.setText(cursor.getString(13));
+
+                List<String> strSeccional = Arrays.asList(getResources().getStringArray(R.array.seccional));
+                mSeccionalSpinner.setSelection(strSeccional.indexOf(cursor.getString(14)));
+                Log.e("Debug","Spinner mSeccionalSpinner: "+cursor.getString(14) + " - INDEX NO ARRAY "+ strSeccional.indexOf(cursor.getString(14)));
+
+                mPerfilTipoInscricaoTextView.setText(cursor.getString(15));
+                mPerfilFoneComercialEditText.setText(cursor.getString(16));
+                mPerfilTwitterEditText.setText(cursor.getString(17));
+                mPerfilLinkedInEditText.setText(cursor.getString(18));
+
+                List<String> strEspecial1 = Arrays.asList(getResources().getStringArray(R.array.especialidade));
+                mPerfilEspecialistaUmSpinner.setSelection(strEspecial1.indexOf(cursor.getString(19)));
+
+                List<String> strEspecial2 = Arrays.asList(getResources().getStringArray(R.array.especialidade));
+                mPerfilEspecialistaDoisSpinner.setSelection(strEspecial2.indexOf(cursor.getString(20)));
+
+            }
+
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
 
     }
 
@@ -506,5 +531,59 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         Log.e("Debug","Shared User id: "+id);
     }
 
+
+    private void updateUserOnSQLite(){
+        //TODO UPDATE THE RECORD ON SQLITE
+        PerfilService perfilService = new PerfilService();
+        if (UserType.getInstance(getActivity()).isAdvogado()) {
+            mAdvogado.setId(UserType.getInstance(getActivity()).getUserId());
+            if (UserType.getInstance(getActivity()).getUserId() > 0) {
+                int result = perfilService.updatePerfil(getActivity(), mAdvogado);
+                if (result <= 0) {
+                    Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        } else { //cliente
+            mCliente.setId(UserType.getInstance(getActivity()).getUserId());
+            if (UserType.getInstance(getActivity()).getUserId() > 0) {
+                int result = perfilService.updatePerfil(getActivity(), mCliente);
+                if (result <= 0) {
+                    Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+    }
+
+    private void createUserOnSQLite(){
+        //TODO CREATE THE RECORD ON SQLITE
+        PerfilService perfilService = new PerfilService();
+        if (UserType.getInstance(getActivity()).isAdvogado()) {
+
+            mAdvogado.setId(UserType.getInstance(getActivity()).getUserId());
+
+            if (UserType.getInstance(getActivity()).getUserId() <= 0) {
+                //CREATE LOCAL PERFIL
+                long result = perfilService.createPerfil(getActivity(), mAdvogado);
+                if (result <= 0) {
+                    Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        } else { //cliente
+
+            mCliente.setId(UserType.getInstance(getActivity()).getUserId());
+
+            if (UserType.getInstance(getActivity()).getUserId() <= 0) {
+
+                //CREATE LOCAL PERFIL
+                long result = perfilService.createPerfil(getActivity(), mCliente);
+                if (result <= 0) {
+                    Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+
+    }
 
 }

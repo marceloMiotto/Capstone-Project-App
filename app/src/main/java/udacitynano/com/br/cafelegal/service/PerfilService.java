@@ -21,13 +21,7 @@ public class PerfilService {
         String selectionClause = "";
 
         ContentValues pessoaValues = new ContentValues();
-        if (UserType.getInstance(context).isAdvogado()) {
 
-            advogado = (Advogado) pessoa;
-        }
-
-
-        pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_ID_SERVER, pessoa.getId());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOME, pessoa.getNome());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOME_MEIO, pessoa.getNomeMeio());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SOBRENOME, pessoa.getSobrenome());
@@ -44,8 +38,11 @@ public class PerfilService {
 
         if (UserType.getInstance(context).isAdvogado()) {
 
+            advogado = (Advogado) pessoa;
+
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NUMERO_INSC_OAB, advogado.getNumeroInscricaoOAB());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SECCIONAL, advogado.getSeccional());
+            Log.e("Debug","Perfil Service seccional: "+advogado.getSeccional());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_TIPO_INSCRICAO, advogado.getTipoInscricao());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_FONE_COMERCIAL, advogado.getTelefoneComercial());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_CONFIRMADO_CNA, advogado.getConfirmadoCNA());
@@ -61,6 +58,10 @@ public class PerfilService {
 
         selectionArgs[0] = String.valueOf(pessoa.getId());
         selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+"."+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
+
+        Log.e("Debug","Perfil Service pessoaValues "+pessoaValues);
+        Log.e("Debug","Perfil Service  selectionClause "+selectionClause);
+        Log.e("Debug","Perfil Service  selectionArgs "+selectionArgs[0]);
 
         int updateUri = context.getContentResolver().update(
                 DatabaseContract.PessoaEntry.CONTENT_URI,
