@@ -27,6 +27,13 @@
         </intent-filter>
         </activity>
 
+
+        <provider
+            android:name=".data.DatabaseProvider"
+            android:authorities="udacitynano.com.br.cafelegal.app"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".AdvogadoDetailsActivity"
             android:label="@string/title_activity_advogado_details"

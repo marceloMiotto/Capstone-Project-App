@@ -52,7 +52,7 @@ public class UserType {
 
     public static long getUserId(){
 
-        if(mUserId < 0){
+        if(mUserId <= 0){
             mUserId = getSharedUserId();
         }
 

@@ -106,7 +106,7 @@ public class DatabaseProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException("Delete Unknown uri: " + uri);
         }
 
         return rowsDeleted;
@@ -126,7 +126,7 @@ public class DatabaseProvider extends ContentProvider {
                 return DatabaseContract.ConviteEntry.CONTENT_TYPE;
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException("getType Unknown uri: " + uri);
         }
     }
 
@@ -159,7 +159,7 @@ public class DatabaseProvider extends ContentProvider {
             }
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException("Insert Unknown uri: " + uri);
         }
         getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
@@ -198,7 +198,7 @@ public class DatabaseProvider extends ContentProvider {
             }
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException("Query Unknown uri: " + uri);
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
@@ -209,6 +209,7 @@ public class DatabaseProvider extends ContentProvider {
                       String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
+        Log.e("Debug","match "+match);
         int rowsUpdated;
 
         switch (match) {
@@ -226,7 +227,7 @@ public class DatabaseProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new UnsupportedOperationException("Update Unknown uri: " + uri);
         }
 
         if (rowsUpdated != 0) {

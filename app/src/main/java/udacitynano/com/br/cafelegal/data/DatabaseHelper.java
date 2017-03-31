@@ -9,7 +9,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper{
 
     private Context mContext;
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "cafelegal.db";
 
@@ -69,7 +69,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-            //TODO implement the onUpgrade
+            //TODO only for tests
+            String SQL_DROP_TABLE_PESSOA =
+                    "DROP TABLE IF EXISTS " + DatabaseContract.PessoaEntry.TABLE_NAME;
+
+
+            String SQL_DROP_TABLE_CONVITE =
+                    "DROP TABLE IF EXISTS " + DatabaseContract.ConviteEntry.TABLE_NAME;
+
+
+            sqLiteDatabase.execSQL(SQL_DROP_TABLE_PESSOA);
+            sqLiteDatabase.execSQL(SQL_DROP_TABLE_CONVITE);
+
+            onCreate(sqLiteDatabase);
 
         }
 

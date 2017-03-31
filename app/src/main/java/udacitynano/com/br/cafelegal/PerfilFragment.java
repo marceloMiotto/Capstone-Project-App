@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -154,7 +153,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        PerfilService perfilServiceMain = new PerfilService();
+        final PerfilService perfilServiceMain = new PerfilService();
 
         if(UserType.isAdvogado()){
             view = inflater.inflate(R.layout.fragment_perfil_advogado, container, false);
@@ -176,14 +175,9 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 int requestMethod;
                 String apiResource;
-                Pessoa cliente;
-                Pessoa advogado;
+                Pessoa cliente = null;
+                Pessoa advogado = null;
                 String stringJsonObject = "";
-
-
-                Toast.makeText(getActivity(),"Fab Test",Toast.LENGTH_SHORT).show();
-                Snackbar.make(view,"Snack Test",Snackbar.LENGTH_SHORT).show();
-
 
                 UserType userType = UserType.getInstance(getActivity());
                 if(userType.isAdvogado()){
@@ -219,15 +213,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     );
 
                     apiResource = Constant.ADVOGADO;
-
-                    if(userType.getUserId() < 0){
-                        requestMethod = Request.Method.POST;
-                    }else{
-                        //TODO remove test only requestMethod = Request.Method.PUT;
-                        requestMethod = Request.Method.POST;
-
-                    }
-
                     Gson gson = new Gson();
                     stringJsonObject = gson.toJson(advogado);
                     Log.e("Debug","Advogado json "+stringJsonObject);
@@ -251,20 +236,17 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     );
 
                     apiResource = Constant.CLIENTE;
-
-                    if(userType.getUserId() < 0){
-                        requestMethod = Request.Method.POST;
-                    }else{
-                        //TODO remove test only requestMethod = Request.Method.PUT;
-                        requestMethod = Request.Method.POST;
-                    }
-
                     Gson gson = new Gson();
                     stringJsonObject = gson.toJson(cliente);
-                    Log.e("Debug","Cliente json "+stringJsonObject);
+                    Log.e("Debug","Advogado json "+stringJsonObject);
 
                 }
 
+                if(userType.getUserId() <= 0){
+                    requestMethod = Request.Method.POST;
+                }else{
+                    requestMethod = Request.Method.PUT;
+                }
 
                 try {
                     jsonObject = new JSONObject(stringJsonObject);
@@ -279,7 +261,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     public void onResponse(String response) {
                         Log.e("Debug", "Pessoa id " + response.toString());
                         Snackbar.make(view, "Perfil Salvo", Snackbar.LENGTH_SHORT).show();
-                        if(UserType.getInstance(getActivity()).getUserId() < 0){
+                        if(UserType.getInstance(getActivity()).getUserId() <= 0){
                             setSharedId(Long.valueOf(response.toString()));
                         }
 
@@ -311,6 +293,40 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                 // Access the RequestQueue through your singleton class.
                 NetworkSingleton.getInstance(getActivity()).addStringRequestQueue(stringRequest);
 
+                //create or update on sqlite
+                Log.e("Debug","uesr type get user: "+userType.getUserId());
+
+                if(userType.isAdvogado()){
+                    if(userType.getUserId() <= 0){
+                    //CREATE LOCAL PERFIL
+                    advogado.setId(userType.getUserId());
+                    long result = perfilServiceMain.createPerfil(getActivity(),advogado);
+                    if(result <= 0){
+                        Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
+                    }
+                }else {
+                    requestMethod = Request.Method.PUT;
+                    int result = perfilServiceMain.updatePerfil(getActivity(), advogado);
+                    if (result <= 0) {
+                        Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
+                    }
+                 }
+                }else { //cliente
+                    if(userType.getUserId() <= 0){
+                        cliente.setId(userType.getUserId());
+                        //CREATE LOCAL PERFIL
+                        long result = perfilServiceMain.createPerfil(getActivity(),cliente);
+                        if(result <= 0){
+                            Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        int result = perfilServiceMain.updatePerfil(getActivity(),cliente);
+                        if(result <= 0){
+                            Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
 
             }
         });
@@ -487,7 +503,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         editor.putLong(getString(R.string.preference_user_type_id), id);
         editor.commit();
 
-        Log.e("Debug","User id: "+id);
+        Log.e("Debug","Shared User id: "+id);
     }
 
 

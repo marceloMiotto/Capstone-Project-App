@@ -14,7 +14,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 public class PerfilService {
 
 
-    public void updatePerfil(Context context, Pessoa pessoa) {
+    public int updatePerfil(Context context, Pessoa pessoa) {
 
         Advogado advogado = null;
         String[] selectionArgs = {""};
@@ -60,7 +60,7 @@ public class PerfilService {
         }
 
         selectionArgs[0] = String.valueOf(pessoa.getId());
-        selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
+        selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+"."+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
 
         int updateUri = context.getContentResolver().update(
                 DatabaseContract.PessoaEntry.CONTENT_URI,
@@ -69,6 +69,7 @@ public class PerfilService {
                 selectionArgs
         );
 
+        return updateUri;
 
     }
 
