@@ -67,7 +67,7 @@ public class DatabaseContract {
                 public static final String COLUMN_CONVIDA_ID          = "convida_id";
                 public static final String COLUMN_RESPONDE_ID         = "responde_id";
                 public static final String COLUMN_DATA_CONVITE        = "data_convite";
-                public static final String COLUMN_CONVITE_TRANSMITIDO = "convite_transmitido";
+                public static final String COLUMN_CONVITE_ACEITO      = "convite_transmitido";
 
 
 

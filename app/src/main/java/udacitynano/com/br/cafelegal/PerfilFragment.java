@@ -272,6 +272,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                 }
 
                 Log.e("Debug","server api link "+Constant.SERVER_API_CAFE_LEGAL+apiResource);
+
                 StringRequest stringRequest = new StringRequest(requestMethod, Constant.SERVER_API_CAFE_LEGAL + apiResource, new Response.Listener<String>() {
 
                     @Override

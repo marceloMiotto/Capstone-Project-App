@@ -82,7 +82,7 @@ public class ConviteFragment extends Fragment {
             public void onClick(View v) {
 
                 String resultMsg;
-                ConviteService conviteService = new ConviteService();
+                ConviteService conviteService = new ConviteService(getActivity());
                 UserType userType = UserType.getInstance(getActivity());
                 if(conviteService.sendConvite(userType.getUserId()) == 0){
                     resultMsg = "Convite enviado com sucesso";
