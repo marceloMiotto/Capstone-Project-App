@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import org.json.JSONException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import udacitynano.com.br.cafelegal.service.ConviteService;
@@ -81,14 +83,19 @@ public class ConviteFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String resultMsg;
-                ConviteService conviteService = new ConviteService(getActivity());
+                String resultMsg = "";
+                ConviteService conviteService = new ConviteService(getActivity(),mView);
                 UserType userType = UserType.getInstance(getActivity());
-                if(conviteService.sendConvite(userType.getUserId()) == 0){
-                    resultMsg = "Convite enviado com sucesso";
-                }else{
-                    resultMsg = "Erro ao enviar o convite. Tente mais tarde!";
-                };
+                try {
+                    if(conviteService.sendConvite(userType.getUserId()) == 0){
+                        resultMsg = "Convite enviado com sucesso";
+                    }else{
+                        resultMsg = "Erro ao enviar o convite. Tente mais tarde!";
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ;
 
                 Snackbar.make(mView,resultMsg,Snackbar.LENGTH_SHORT).show();
             }

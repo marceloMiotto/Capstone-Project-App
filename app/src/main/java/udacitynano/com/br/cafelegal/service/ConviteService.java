@@ -7,6 +7,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,40 +33,50 @@ import udacitynano.com.br.cafelegal.util.Constant;
 public class ConviteService {
 
     final Context mContext;
+    final View mView;
 
-    public ConviteService(Context context) {
+    public ConviteService(Context context, View view) {
 
         mContext = context;
+        mView = view;
+
     }
 
     public int sendConvite(long userId) throws JSONException {
 
         //TODO get area location
-        Convite convite = new Convite(userId, 0, "", "", "", "");
-        Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
-        JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
 
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL, jsonConvite , new Response.Listener<JSONObject>() {
+        final Convite convite = new Convite(userId, 0, "", "", "", "");
+        Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
+        final JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
+        Log.e("Debug","jsonConvite "+jsonConvite.toString());
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONObject response) {
-                Log.e("Debug", "Pessoa id " + response.toString());
-                //Snackbar.make(mContext, "Perfil Salvo", Snackbar.LENGTH_SHORT).show();
+            public void onResponse(String response) {
+                Log.e("Debug", "Convite id " + response.toString());
+                Snackbar.make(mView, "Convite Criado", Snackbar.LENGTH_SHORT).show();
+                convite.setId(Long.valueOf(response.toString()));
+                createConvite(mContext,convite);
             }
-
-
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 // TODO Auto-generated method stub
                 Log.e("Debug", "Pessoa error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
-                //Snackbar.make(mContext, "Erro ao enviar para o servidor. " + error.getMessage(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mView, "Erro ao enviar para o servidor. " + error.getMessage(), Snackbar.LENGTH_SHORT).show();
 
             }
 
-        }) {
+        }
 
+        ) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return jsonConvite.toString().getBytes();
+            }
 
             @Override
             public String getBodyContentType() {
@@ -74,7 +85,7 @@ public class ConviteService {
         };
 
         // Access the RequestQueue through your singleton class.
-        NetworkSingleton.getInstance(mContext).addJSONToRequestQueue(jsonRequest);
+        NetworkSingleton.getInstance(mContext).addStringRequestQueue(stringRequest);
 
 
         return 0;
@@ -135,7 +146,7 @@ public class ConviteService {
 
         conviteId = ContentUris.parseId(insertedUri);
 
-        Log.e("Debug","Insert service pessoaId "+conviteId);
+        Log.e("Debug","Insert service conviteId "+conviteId);
 
         return conviteId;
     }

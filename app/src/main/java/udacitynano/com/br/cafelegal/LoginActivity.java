@@ -109,12 +109,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Intent intent;
                     UserType userType = UserType.getInstance(mContext);
                     Log.e("Debug","Login activity user type "+ userType.getAppUserType());
-                    if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
+                    //TODO create new user every time just for tests. REMOVE
+                    //if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
                         intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    }else{
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
-                    }
+                    //}else{
+                    //    intent = new Intent(getApplicationContext(), MainActivity.class);
+                    //    intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
+                   // }
 
                     startActivity(intent);
                     finish();

@@ -78,7 +78,7 @@
     <string name="preference_user_type_cliente">CLIENTE</string>
     <string name="preference_user_type_not_defined">Not Defined</string>
 
-    <string name="preference_user_type_id">PREFERENCE_USER_TYPE_KEY</string>
+    <string name="preference_user_type_id">PREFERENCE_USER_TYPE_ID</string>
 
 
 

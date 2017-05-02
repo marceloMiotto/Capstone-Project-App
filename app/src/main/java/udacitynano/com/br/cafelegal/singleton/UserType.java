@@ -2,6 +2,7 @@ package udacitynano.com.br.cafelegal.singleton;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import udacitynano.com.br.cafelegal.R;
 
@@ -71,6 +72,7 @@ public class UserType {
 
         SharedPreferences sharedPref = mContext.getSharedPreferences(
                 mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        Log.e("Debug12","preference user type id "+mContext.getString(R.string.preference_user_type_id));
         return sharedPref.getLong(mContext.getString(R.string.preference_user_type_id),-1);
 
     }
