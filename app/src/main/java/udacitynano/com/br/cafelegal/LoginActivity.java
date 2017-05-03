@@ -20,13 +20,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
@@ -96,6 +106,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Log.e("Debug4","User token "+idToken);
                                             // Send token to your backend via HTTPS
                                             // ...
+                                            try {
+                                                sendRegistrationToServer(idToken);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            Log.e("Debug4","Notification server? ");
                                         } else {
                                             String error = task.getException().getMessage();
                                             Log.e("Debug",error);
@@ -130,6 +147,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
 
         mContext = this;
+    }
+
+    private void sendRegistrationToServer(String token) throws JSONException {
+        // TODO: Implement this method to send token to your app server.
+        final JSONObject jsonToken = new JSONObject(new Gson().toJson("{'token':'"+token+"'}"));
+        Log.e("Debug","jsonConvite "+jsonToken.toString());
+        Log.e("Debug","URL "+ Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.e("Debug", "notification token " + response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                Log.e("Debug", "Notification token  error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+
+
+            }
+
+        }
+
+        ) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return jsonToken.toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        NetworkSingleton.getInstance(getApplicationContext()).addStringRequestQueue(stringRequest);
+
+
     }
 
     @Override

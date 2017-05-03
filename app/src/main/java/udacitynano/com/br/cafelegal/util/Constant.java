@@ -19,5 +19,8 @@ public interface Constant {
     String ADVOGADO = "/pessoa/advogado";
     String ADVOGADOS = "/pessoa/advogados";
     String CLIENTE = "/pessoa/cliente";
+    String NOTIFICATION_TOKEN = "/token_notificacao";
+
+
 
 }
