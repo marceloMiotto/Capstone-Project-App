@@ -21,6 +21,12 @@ public interface Constant {
     String CLIENTE = "/pessoa/cliente";
     String NOTIFICATION_TOKEN = "/token_notificacao";
 
+    //Type volley called
+    int PERFIL = 0;
+    int CONVITE = 1;
+    int LOGIN = 2;
+    int ANDROID_SERVICE = 3;
+
 
 
 }

@@ -3,18 +3,30 @@ package udacitynano.com.br.cafelegal.service;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 
+import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
+import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 
 public class PerfilService {
 
+    private Context mContext;
+    private View mView;
 
-    public int updatePerfil(Context context, Pessoa pessoa) {
+    public PerfilService(Context context, View view){
+        mContext = context;
+        mView = view;
+    }
+
+    public int updatePerfil(Pessoa pessoa) {
 
         Advogado advogado = null;
         String[] selectionArgs = {""};
@@ -36,7 +48,7 @@ public class PerfilService {
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_PAIS, pessoa.getPais());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SEXO, pessoa.getSexo());
 
-        if (UserType.getInstance(context).isAdvogado()) {
+        if (UserType.getInstance(mContext).isAdvogado()) {
 
             advogado = (Advogado) pessoa;
 
@@ -63,7 +75,7 @@ public class PerfilService {
         Log.e("Debug","Perfil Service  selectionClause "+selectionClause);
         Log.e("Debug","Perfil Service  selectionArgs "+selectionArgs[0]);
 
-        int updateUri = context.getContentResolver().update(
+        int updateUri = mContext.getContentResolver().update(
                 DatabaseContract.PessoaEntry.CONTENT_URI,
                 pessoaValues,
                 selectionClause,
@@ -74,7 +86,7 @@ public class PerfilService {
 
     }
 
-    public long createPerfil(Context context, Pessoa pessoa) {
+    public long createPerfil(Pessoa pessoa) {
 
 
         long pessoaId = 0;
@@ -82,7 +94,7 @@ public class PerfilService {
 
 
         ContentValues pessoaValues = new ContentValues();
-        if (UserType.getInstance(context).isAdvogado()) {
+        if (UserType.getInstance(mContext).isAdvogado()) {
 
             advogado = (Advogado) pessoa;
         }
@@ -103,7 +115,7 @@ public class PerfilService {
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_PAIS, pessoa.getPais());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SEXO, pessoa.getSexo());
 
-        if (UserType.getInstance(context).isAdvogado()) {
+        if (UserType.getInstance(mContext).isAdvogado()) {
 
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NUMERO_INSC_OAB, advogado.getNumeroInscricaoOAB());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SECCIONAL, advogado.getSeccional());
@@ -120,7 +132,7 @@ public class PerfilService {
 
         }
 
-        Uri insertedUri = context.getContentResolver().insert(
+        Uri insertedUri = mContext.getContentResolver().insert(
                 DatabaseContract.PessoaEntry.CONTENT_URI,
                 pessoaValues
         );
@@ -131,6 +143,69 @@ public class PerfilService {
         Log.e("Debug","Insert service pessoaId "+pessoaId);
 
         return pessoaId;
+    }
+
+    public void createUserOnSQLite(Pessoa pessoa){
+        //TODO CREATE THE RECORD ON SQLITE
+        if (UserType.getInstance(mContext).isAdvogado()) {
+
+            pessoa.setId(UserType.getInstance(mContext).getUserId());
+
+            if (UserType.getInstance(mContext).getUserId() <= 0) {
+                //CREATE LOCAL PERFIL
+                long result = createPerfil((Advogado)pessoa);
+                if (result <= 0) {
+                    Snackbar.make(mView, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        } else { //cliente
+
+            pessoa.setId(UserType.getInstance(mContext).getUserId());
+
+            if (UserType.getInstance(mContext).getUserId() <= 0) {
+
+                //CREATE LOCAL PERFIL
+                long result = createPerfil((Cliente) pessoa);
+                if (result <= 0) {
+                    Snackbar.make(mView, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+
+    }
+
+    public void updateUserOnSQLite(Pessoa pessoa){
+        //TODO UPDATE THE RECORD ON SQLITE
+
+        if (UserType.getInstance(mContext).isAdvogado()) {
+            pessoa.setId(UserType.getInstance(mContext).getUserId());
+            if (UserType.getInstance(mContext).getUserId() > 0) {
+                int result = updatePerfil((Advogado)pessoa);
+                if (result <= 0) {
+                    Snackbar.make(mView, "Erro no update ", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        } else { //cliente
+            pessoa.setId(UserType.getInstance(mContext).getUserId());
+            if (UserType.getInstance(mContext).getUserId() > 0) {
+                int result = updatePerfil((Cliente) pessoa);
+                if (result <= 0) {
+                    Snackbar.make(mView, "Erro no update ", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+    }
+
+    public void setSharedId(long id){
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(mContext.getString(R.string.preference_user_type_id), id);
+        editor.commit();
+
+        Log.e("Debug","Shared User id: "+id);
     }
 
 }

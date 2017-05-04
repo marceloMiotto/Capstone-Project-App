@@ -26,6 +26,7 @@ import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.model.Pessoa;
+import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
@@ -51,42 +52,9 @@ public class ConviteService {
         final JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
         Log.e("Debug","jsonConvite "+jsonConvite.toString());
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL, new Response.Listener<String>() {
+        final NetworkRequests networkRequests = new NetworkRequests(mContext,mView);
 
-            @Override
-            public void onResponse(String response) {
-                Log.e("Debug", "Convite id " + response.toString());
-                Snackbar.make(mView, "Convite Criado", Snackbar.LENGTH_SHORT).show();
-                convite.setId(Long.valueOf(response.toString()));
-                createConvite(mContext,convite);
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.e("Debug", "Pessoa error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
-                Snackbar.make(mView, "Erro ao enviar para o servidor. " + error.getMessage(), Snackbar.LENGTH_SHORT).show();
-
-            }
-
-        }
-
-        ) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return jsonConvite.toString().getBytes();
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-        };
-
-        // Access the RequestQueue through your singleton class.
-        NetworkSingleton.getInstance(mContext).addStringRequestQueue(stringRequest);
-
+        networkRequests.stringRequest(Constant.CONVITE,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL,jsonConvite,true,convite);
 
         return 0;
 

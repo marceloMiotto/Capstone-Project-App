@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
@@ -61,41 +62,11 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // TODO: Implement this method to send token to your app server.
         final JSONObject jsonToken = new JSONObject(new Gson().toJson("{'token':'"+token+"'}"));
         Log.e("Debug","jsonConvite "+jsonToken.toString());
-        Log.e("Debug","URL "+ Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN, new Response.Listener<String>() {
+        Log.e("Debug79","URL "+ Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN);
 
-            @Override
-            public void onResponse(String response) {
-                Log.e("Debug", "notification token " + response.toString());
+        final NetworkRequests networkRequests = new NetworkRequests(this);
 
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.e("Debug", "Notification token  error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
-
-
-            }
-
-        }
-
-        ) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return jsonToken.toString().getBytes();
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-        };
-
-        // Access the RequestQueue through your singleton class.
-        NetworkSingleton.getInstance(getApplicationContext()).addStringRequestQueue(stringRequest);
-
+        networkRequests.stringRequest(Constant.ANDROID_SERVICE,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN,jsonToken,false,null);
 
     }
 }

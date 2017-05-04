@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
@@ -106,13 +107,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Log.e("Debug4","User token "+idToken);
                                             // Send token to your backend via HTTPS
                                             // ...
+                                            /* TODO remove after tests
                                             try {
                                                 sendRegistrationToServer(idToken);
                                             } catch (JSONException e) {
+                                                Log.e("Debug4","Notification server exception "+e.getMessage());
                                                 e.printStackTrace();
                                             }
 
                                             Log.e("Debug4","Notification server? ");
+                                           */
                                         } else {
                                             String error = task.getException().getMessage();
                                             Log.e("Debug",error);
@@ -151,43 +155,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void sendRegistrationToServer(String token) throws JSONException {
         // TODO: Implement this method to send token to your app server.
-        final JSONObject jsonToken = new JSONObject(new Gson().toJson("{'token':'"+token+"'}"));
+        final JSONObject jsonToken = new JSONObject("{'token':'"+token+"'}");
         Log.e("Debug","jsonConvite "+jsonToken.toString());
         Log.e("Debug","URL "+ Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN, new Response.Listener<String>() {
+        final NetworkRequests networkRequests = new NetworkRequests(this);
 
-            @Override
-            public void onResponse(String response) {
-                Log.e("Debug", "notification token " + response.toString());
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.e("Debug", "Notification token  error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
-
-
-            }
-
-        }
-
-        ) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return jsonToken.toString().getBytes();
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-        };
-
-        // Access the RequestQueue through your singleton class.
-        NetworkSingleton.getInstance(getApplicationContext()).addStringRequestQueue(stringRequest);
-
+       networkRequests.stringRequest(Constant.LOGIN,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN,jsonToken,false,null);
 
     }
 

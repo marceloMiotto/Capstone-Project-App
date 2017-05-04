@@ -41,6 +41,7 @@ import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Pessoa;
+import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.service.PerfilService;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
@@ -115,6 +116,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     private String mEspecialidadeDoisChoosen;
     Pessoa mCliente;
     Pessoa mAdvogado;
+    Pessoa mPessoa;
 
     private JSONObject jsonObject;
 
@@ -166,7 +168,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final PerfilService perfilServiceMain = new PerfilService();
+
 
         if(UserType.isAdvogado()){
             view = inflater.inflate(R.layout.fragment_perfil_advogado, container, false);
@@ -232,6 +234,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     Gson gson = new Gson();
                     stringJsonObject = gson.toJson(mAdvogado);
                     Log.e("Debug","Advogado json "+stringJsonObject);
+                    mPessoa = mAdvogado;
 
                 }else{
 
@@ -257,6 +260,8 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     stringJsonObject = gson.toJson(mCliente);
                     Log.e("Debug","Advogado json "+stringJsonObject);
 
+                    mPessoa = mCliente;
+
                 }
 
                 if(userType.getUserId() <= 0){
@@ -273,51 +278,9 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 Log.e("Debug","server api link "+Constant.SERVER_API_CAFE_LEGAL+apiResource);
 
-                StringRequest stringRequest = new StringRequest(requestMethod, Constant.SERVER_API_CAFE_LEGAL + apiResource, new Response.Listener<String>() {
+                final NetworkRequests networkRequests = new NetworkRequests(getActivity(),view);
 
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("Debug", "Pessoa id " + response.toString());
-                        Snackbar.make(view, "Perfil Salvo", Snackbar.LENGTH_SHORT).show();
-                        if (UserType.getInstance(getActivity()).getUserId() <= 0) {
-                            setSharedId(Long.valueOf(response.toString()));
-                        }
-
-                        createUserOnSQLite();
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        Log.e("Debug", "Pessoa error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
-                        Snackbar.make(view, "Erro ao enviar para o servidor. " + error.getMessage(), Snackbar.LENGTH_SHORT).show();
-
-                    }
-
-                }
-
-                ) {
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        return jsonObject.toString().getBytes();
-                    }
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-                };
-
-                // Access the RequestQueue through your singleton class.
-                NetworkSingleton.getInstance(getActivity()).addStringRequestQueue(stringRequest);
-
-                //create or update on sqlite
-                Log.e("Debug","uesr type get user: "+userType.getUserId());
-
-                updateUserOnSQLite();
-
+                networkRequests.stringRequest(Constant.PERFIL, requestMethod,Constant.SERVER_API_CAFE_LEGAL + apiResource,jsonObject,true,mPessoa);
 
             }
         });
@@ -522,69 +485,10 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
 
-    private void setSharedId(long id){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putLong(getString(R.string.preference_user_type_id), id);
-        editor.commit();
-
-        Log.e("Debug","Shared User id: "+id);
-    }
 
 
-    private void updateUserOnSQLite(){
-        //TODO UPDATE THE RECORD ON SQLITE
-        PerfilService perfilService = new PerfilService();
-        if (UserType.getInstance(getActivity()).isAdvogado()) {
-            mAdvogado.setId(UserType.getInstance(getActivity()).getUserId());
-            if (UserType.getInstance(getActivity()).getUserId() > 0) {
-                int result = perfilService.updatePerfil(getActivity(), mAdvogado);
-                if (result <= 0) {
-                    Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        } else { //cliente
-            mCliente.setId(UserType.getInstance(getActivity()).getUserId());
-            if (UserType.getInstance(getActivity()).getUserId() > 0) {
-                int result = perfilService.updatePerfil(getActivity(), mCliente);
-                if (result <= 0) {
-                    Snackbar.make(view, "Erro no update ", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        }
 
-    }
 
-    private void createUserOnSQLite(){
-        //TODO CREATE THE RECORD ON SQLITE
-        PerfilService perfilService = new PerfilService();
-        if (UserType.getInstance(getActivity()).isAdvogado()) {
 
-            mAdvogado.setId(UserType.getInstance(getActivity()).getUserId());
-
-            if (UserType.getInstance(getActivity()).getUserId() <= 0) {
-                //CREATE LOCAL PERFIL
-                long result = perfilService.createPerfil(getActivity(), mAdvogado);
-                if (result <= 0) {
-                    Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        } else { //cliente
-
-            mCliente.setId(UserType.getInstance(getActivity()).getUserId());
-
-            if (UserType.getInstance(getActivity()).getUserId() <= 0) {
-
-                //CREATE LOCAL PERFIL
-                long result = perfilService.createPerfil(getActivity(), mCliente);
-                if (result <= 0) {
-                    Snackbar.make(view, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
-                }
-
-            }
-        }
-
-    }
 
 }
