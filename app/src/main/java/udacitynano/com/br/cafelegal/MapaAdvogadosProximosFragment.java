@@ -1,107 +1,198 @@
 package udacitynano.com.br.cafelegal;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MapaAdvogadosProximosFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MapaAdvogadosProximosFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MapaAdvogadosProximosFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.Toast;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-    private OnFragmentInteractionListener mListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
-    public MapaAdvogadosProximosFragment() {
-        // Required empty public constructor
-    }
+import com.google.android.gms.common.api.GoogleApiClient;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MapaAdvogadosProximosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MapaAdvogadosProximosFragment newInstance(String param1, String param2) {
-        MapaAdvogadosProximosFragment fragment = new MapaAdvogadosProximosFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+import static com.google.android.gms.location.LocationServices.FusedLocationApi;
+
+
+public class MapaAdvogadosProximosFragment  extends FragmentActivity implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private GoogleMap mMap;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    LatLng myLocation;
+
+    private int REQUEST_LOCATION = 1;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        setContentView(R.layout.fragment_mapa_advogados_proximos);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
         }
+
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mapa_advogados_proximos, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-30.06329997, -51.1712265);
+        LatLng sydneyTest = new LatLng(-30.06285427, -51.16281509);
+
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Puc")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_work_black_24dp));
+        mMap.addMarker(new MarkerOptions().position(sydneyTest).title("test")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_work_black_24dp));
+
+
+        //todo remove test
+        Geocoder coder = new Geocoder(this);
+        try {
+            ArrayList<Address> adresses = (ArrayList<Address>) coder.getFromLocationName("Rua Marcílio Dias, 524 - Menino Deus, Porto Alegre - RS, Brasil", 50);
+            for(Address add : adresses){
+                //if (statement) {//Controls to ensure it is right address such as country etc.
+                double longitude = add.getLongitude();
+                double latitude = add.getLatitude();
+                LatLng casa = new LatLng(latitude, longitude);
+                Toast.makeText(getApplicationContext(),"Test: "+String.valueOf(longitude),Toast.LENGTH_LONG);
+                mMap.addMarker(new MarkerOptions().position(casa).title("CASA"));
+                mMap.addCircle(new CircleOptions().center(casa).radius(300).strokeColor(R.color.colorPrimary).strokeWidth(6));
+                //}
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //end remove test
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+
+                Intent intent = new Intent(getApplicationContext(), AdvogadoDetailsActivity.class);
+                intent.putExtra("testExtra", marker.getTitle());
+                Log.e("Debug1", marker.getTitle());
+                startActivity(intent);
+
+                return true;
+            }
+        });
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney,10.0f));
     }
+
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+
+        if (ActivityCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+                != PackageManager.PERMISSION_GRANTED) {
+            // Check Permissions Now
+            ActivityCompat.requestPermissions(this,
+                    new String[]{"android.permission.ACCESS_FINE_LOCATION"},
+                    REQUEST_LOCATION);
+        } else {
+            // permission has been granted, continue as usual
+            mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                Toast.makeText(getApplicationContext(),"Coordenadas Latitude: "+String.valueOf(mLastLocation.getLatitude()) + " Longitude: "+String.valueOf(mLastLocation.getLongitude()),Toast.LENGTH_SHORT).show();
+
+                myLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(myLocation).title("eu"));
+                //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+                //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+            }
+        }
+    }
+
+    //permission result
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if(grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //   mLastLocation =  FusedLocationApi.getLastLocation(mGoogleApiClient);
+                //   if (mLastLocation != null) {
+                //       Toast.makeText(getApplicationContext(),"Coordenadas Latitude: "+String.valueOf(mLastLocation.getLatitude()) + " Longitude: "+String.valueOf(mLastLocation.getLongitude()),Toast.LENGTH_SHORT).show();
+                //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+                //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+                //   }
+                Toast.makeText(this,"Permission Granted. ",Toast.LENGTH_SHORT).show();
+            } else {
+                // Permission was denied or request was cancelled
+                Toast.makeText(this,"Permission Denied. ",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
 }

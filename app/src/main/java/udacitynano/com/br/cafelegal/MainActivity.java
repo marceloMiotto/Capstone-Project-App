@@ -2,6 +2,7 @@ package udacitynano.com.br.cafelegal;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -25,7 +26,6 @@ public class MainActivity extends AppCompatActivity
                   ,ConviteFragment.OnFragmentInteractionListener
                   ,HistoricoConvitesFragment.OnFragmentInteractionListener
                   ,ListaAdvogadosFragment.OnFragmentInteractionListener
-                  ,MapaAdvogadosProximosFragment.OnFragmentInteractionListener
                   ,PerfilFragment.OnFragmentInteractionListener
                   ,ListaConvitesAbertosFragment.OnFragmentInteractionListener
 {
@@ -116,11 +116,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_map) {
 
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,MapaAdvogadosProximosFragment.newInstance("",""));
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            startActivity(new Intent(this, MapaAdvogadosProximosFragment.class));
 
         } else if (id == R.id.nav_perfil) {
 

@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'GOOGLE_MAPS_API_KEY', GoogleMapsAPIKey
+    }
 }
 
 dependencies {
@@ -35,6 +38,8 @@ dependencies {
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.google.android.gms:play-services-plus:10.0.1'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
