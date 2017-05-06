@@ -114,6 +114,10 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     private String mSeccionalChoosen;
     private String mEspecialidadeUmChoosen;
     private String mEspecialidadeDoisChoosen;
+    private String mNotificationRegistration;
+    private String mFirebaseEmail;
+    private String mFirebaseToken;
+
     Pessoa mCliente;
     Pessoa mAdvogado;
     Pessoa mPessoa;
@@ -184,6 +188,11 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         mPerfilEspecialistaUmSpinner.setOnItemSelectedListener(this);
         mPerfilEspecialistaDoisSpinner.setOnItemSelectedListener(this);
 
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(
+         getActivity().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        mFirebaseEmail =  sharedPref.getString(getActivity().getString(R.string.preference_user_firebase_email),"x");
+        mFirebaseToken =  sharedPref.getString(getActivity().getString(R.string.preference_user_firebase_token),"x");
+
         //TODO LOADER TEST
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
@@ -228,6 +237,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mPerfilLinkedInEditText.getText().toString()
                             , mEspecialidadeUmChoosen
                             , mEspecialidadeDoisChoosen
+                            , mFirebaseToken
                     );
 
                     apiResource = Constant.ADVOGADO;
@@ -252,6 +262,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mPerfilEstadoEditText.getText().toString()
                             , mPerfilPaisEditText.getText().toString()
                             , mSexoChoosen
+                            , mFirebaseToken
                     );
 
                     Log.e("Debug","Sexo escolhido: "+mSexoChoosen);
@@ -426,7 +437,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
             mPerfilNomeEditText.setText(cursor.getString(0));
             mPerfilNomeMeioEditText.setText(cursor.getString(1));
             mPerfilSobrenomeEditText.setText(cursor.getString(2));
-            mPerfilEmailEditText.setText(cursor.getString(3));
+            mPerfilEmailEditText.setText(mFirebaseEmail);
             mPerfilCEPEditText.setText(cursor.getString(4));
             mPerfilEnderecoEditText.setText(cursor.getString(5));
             mPerfilNumeroEditText.setText(cursor.getString(6));

@@ -13,7 +13,6 @@ public class Advogado extends Pessoa {
     private String linkedIn;
     private String especialistaUm;
     private String especialistaDois;
-    private String notificationRegistration;
     private double latitude;
     private double longitude;
 
@@ -21,8 +20,8 @@ public class Advogado extends Pessoa {
     public Advogado() { }
 
     public Advogado(long id, String nome, String nomeMeio, String sobrenome, String email, int cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String pais, String sexo, String numeroInscricaoOAB, String seccional, String tipoInscricao, String telefoneComercial, String twitter, String linkedIn
-            , String especialistaUm, String especialistaDois) {
-        super(id, nome, nomeMeio, sobrenome, email, cep, endereco, numero,complemento, bairro, cidade, estado, pais, sexo);
+            , String especialistaUm, String especialistaDois, String notificationRegistration) {
+        super(id, nome, nomeMeio, sobrenome, email, cep, endereco, numero,complemento, bairro, cidade, estado, pais, sexo,notificationRegistration);
         this.numeroInscricaoOAB = numeroInscricaoOAB;
         this.seccional = seccional;
         this.tipoInscricao = tipoInscricao;
@@ -31,7 +30,7 @@ public class Advogado extends Pessoa {
         this.linkedIn = linkedIn;
         this.especialistaUm = especialistaUm;
         this.especialistaDois = especialistaDois;
-        this.notificationRegistration = notificationRegistration;
+
     }
 
     public String getNumeroInscricaoOAB() {
@@ -104,14 +103,6 @@ public class Advogado extends Pessoa {
 
     public void setEspecialistaDois(String especialistaDois) {
         this.especialistaDois = especialistaDois;
-    }
-
-    public String getNotificationRegistration() {
-        return notificationRegistration;
-    }
-
-    public void setNotificationRegistration(String notificationRegistration) {
-        this.notificationRegistration = notificationRegistration;
     }
 
     public double getLatitude() {

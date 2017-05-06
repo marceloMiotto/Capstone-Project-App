@@ -80,7 +80,8 @@
 
     <string name="preference_user_type_id">PREFERENCE_USER_TYPE_ID</string>
 
-
+    <string name="preference_user_firebase_token">FIREBASE_TOKEN</string>
+    <string name="preference_user_firebase_email">FIREBASE_EMAIL</string>
 
 
     <!-- menu -->

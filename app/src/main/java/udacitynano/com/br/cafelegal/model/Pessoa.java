@@ -20,11 +20,12 @@ public abstract class Pessoa {
     private String estado;
     private String pais;
     private String sexo;
+    private String notificationRegistration;
 
     public Pessoa() {
     }
 
-    public Pessoa(long id, String nome, String nomeMeio, String sobrenome, String email, int cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String pais, String sexo) {
+    public Pessoa(long id, String nome, String nomeMeio, String sobrenome, String email, int cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String pais, String sexo, String notificationRegistration) {
         this.id = id;
         this.nome = nome;
         this.nomeMeio = nomeMeio;
@@ -39,6 +40,7 @@ public abstract class Pessoa {
         this.estado = estado;
         this.pais = pais;
         this.sexo = sexo;
+        this.notificationRegistration = notificationRegistration;
     }
 
 
@@ -152,6 +154,14 @@ public abstract class Pessoa {
 
     public void setNumero(String numbero) {
         this.numero = numbero;
+    }
+
+    public String getNotificationRegistration() {
+        return notificationRegistration;
+    }
+
+    public void setNotificationRegistration(String notificationRegistration) {
+        this.notificationRegistration = notificationRegistration;
     }
 }
 

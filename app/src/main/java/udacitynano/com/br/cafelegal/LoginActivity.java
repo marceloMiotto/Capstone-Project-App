@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -59,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean mSignIn = true;
     private Context mContext;
     private String mSignInResult = "X";
+    private String mFirebaseEmail;
 
 
     @Override
@@ -93,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (user != null) {
                         // Name, email address, and profile photo Url
                         String name = user.getDisplayName();
-                        String email = user.getEmail();
+                        mFirebaseEmail = user.getEmail();
                         Uri photoUrl = user.getPhotoUrl();
 
                         // The user's ID, unique to the Firebase project. Do NOT use this value to
@@ -105,18 +108,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         if (task.isSuccessful()) {
                                             String idToken = task.getResult().getToken();
                                             Log.e("Debug4","User token "+idToken);
-                                            // Send token to your backend via HTTPS
-                                            // ...
-                                            /* TODO remove after tests
-                                            try {
-                                                sendRegistrationToServer(idToken);
-                                            } catch (JSONException e) {
-                                                Log.e("Debug4","Notification server exception "+e.getMessage());
-                                                e.printStackTrace();
-                                            }
 
-                                            Log.e("Debug4","Notification server? ");
-                                           */
+                                            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                                            Log.e("Debug4","Token FCM "+refreshedToken);
+
+                                            SharedPreferences sharedPref = getSharedPreferences(
+                                                    getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPref.edit();
+                                            editor.putString(getString(R.string.preference_user_firebase_token), idToken);
+                                            editor.putString(getString(R.string.preference_user_firebase_email),mFirebaseEmail);
+
+                                            editor.commit();
+
                                         } else {
                                             String error = task.getException().getMessage();
                                             Log.e("Debug",error);
