@@ -41,7 +41,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lista_advogados_nome"
+                    android:id="@+id/convite_enviado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
@@ -65,14 +65,7 @@
                         android:onClick="onClick"
                         android:text="@string/convite_aberto_aceito" />
 
-                    <Button
-                        android:id="@+id/convite_aberto_nao_aceito"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:onClick="onClick"
-                        android:text="@string/convite_aberto_nao_aceito" />
+
                 </LinearLayout>
 
 

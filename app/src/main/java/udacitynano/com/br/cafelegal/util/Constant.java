@@ -28,5 +28,10 @@ public interface Constant {
     int ANDROID_SERVICE = 3;
 
 
+    static final String INSTANCE_ID_TOKEN_RETRIEVED = "iid_token_retrieved";
+    static final String FRIENDLY_MSG_LENGTH = "friendly_msg_length";
+
+
+
 
 }

@@ -22,6 +22,10 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+import java.util.List;
+
+import udacitynano.com.br.cafelegal.data.Database;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Convite;
@@ -118,5 +122,24 @@ public class ConviteService {
 
         return conviteId;
     }
+
+    //TODO TEST CHAT
+    private List<Convite> convites = Database.getConvites();
+
+    public ConviteService(String test,Context context, View view){
+
+        mContext = context;
+        mView = view;
+
+        convites.add(new Convite(82,104,"Y","Test",""  ,""));
+        convites.add(new Convite(82,104,"Y","Test2","" ,""));
+        convites.add(new Convite(82,104,"Y","Test3", "",""));
+    }
+
+    public List<Convite> getConvites(){
+        return convites;
+    }
+
+    public List<Convite> getConvitesAbertos() {return convites;}
 
 }

@@ -70,6 +70,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         sendNotification("Test "+ remoteMessage.getFrom());
 
+
+        //TODO CHAT TEST
+        // Handle data payload of FCM messages.
+        Log.d(TAG, "FCM Message Id: " + remoteMessage.getMessageId());
+        Log.d(TAG, "FCM Notification Message: " + remoteMessage.getNotification());
+        Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
+
     }
     // [END receive_message]
 
