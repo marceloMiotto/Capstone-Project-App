@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button mButtonChangeScreen;
     private boolean mSignIn = true;
     private Context mContext;
-    private String mSignInResult = "X";
     private String mFirebaseEmail;
 
 
@@ -119,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             editor.putString(getString(R.string.preference_user_firebase_email),mFirebaseEmail);
 
                                             editor.commit();
+                                            Log.e("Debug4","user email: "+mFirebaseEmail);
 
                                         } else {
                                             String error = task.getException().getMessage();
@@ -133,13 +133,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Intent intent;
                     UserType userType = UserType.getInstance(mContext);
                     Log.e("Debug","Login activity user type "+ userType.getAppUserType());
-                    //TODO create new user every time just for tests. REMOVE
-                    //if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
+
+                    if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
                         intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    //}else{
-                    //    intent = new Intent(getApplicationContext(), MainActivity.class);
-                    //    intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
-                   // }
+                    }else{
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
+                    }
 
                     startActivity(intent);
                     finish();
@@ -154,17 +154,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
 
         mContext = this;
-    }
-
-    private void sendRegistrationToServer(String token) throws JSONException {
-        // TODO: Implement this method to send token to your app server.
-        final JSONObject jsonToken = new JSONObject("{'token':'"+token+"'}");
-        Log.e("Debug","jsonConvite "+jsonToken.toString());
-        Log.e("Debug","URL "+ Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN);
-        final NetworkRequests networkRequests = new NetworkRequests(this);
-
-       networkRequests.stringRequest(Constant.LOGIN,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN,jsonToken,false,null);
-
     }
 
     @Override
@@ -231,13 +220,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
@@ -248,6 +230,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             focusView = mEmailView;
             cancel = true;
         }
+
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -316,7 +308,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d("Debug4", "signInWithEmail:onComplete:" + task.isSuccessful());
-                            mSignInResult = "OK";
+
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.

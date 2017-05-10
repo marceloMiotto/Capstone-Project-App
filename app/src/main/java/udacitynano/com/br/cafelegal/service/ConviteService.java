@@ -47,11 +47,11 @@ public class ConviteService {
 
     }
 
-    public int sendConvite(long userId) throws JSONException {
+    public int sendConvite(long userId, String areaLocation) throws JSONException {
 
         //TODO get area location
 
-        final Convite convite = new Convite(userId, 0, "", "", "", "");
+        final Convite convite = new Convite(userId, 0, "", "", "", areaLocation);
         Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
         final JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
         Log.e("Debug","jsonConvite "+jsonConvite.toString());

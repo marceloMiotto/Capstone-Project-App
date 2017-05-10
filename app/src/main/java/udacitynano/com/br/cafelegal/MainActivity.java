@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import udacitynano.com.br.cafelegal.androidService.MyFirebaseInstanceIDService;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        return false;
 
     }
 
@@ -149,6 +150,10 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_menu_switch,ListaConvitesAbertosFragment.newInstance("",""));
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+
+        } else if (id == R.id.nav_app_sair) {//only for lawyers
+
+            FirebaseAuth.getInstance().signOut();
 
         }
 

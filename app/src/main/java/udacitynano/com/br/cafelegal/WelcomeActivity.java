@@ -1,5 +1,6 @@
 package udacitynano.com.br.cafelegal;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +13,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import udacitynano.com.br.cafelegal.model.Advogado;
+import udacitynano.com.br.cafelegal.model.Cliente;
+import udacitynano.com.br.cafelegal.model.Convite;
+import udacitynano.com.br.cafelegal.model.Pessoa;
+import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
@@ -32,6 +44,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.welcome_aviso_textview)
     TextView mAviso;
 
+    NetworkRequests mNetworkRequests;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +60,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
 
         Intent intent;
-
         SharedPreferences sharedPref = getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPref.edit();
-        UserType userType = UserType.getInstance(this);
-        Log.e("Debug","welcome activity user type "+ userType.getAppUserType());
 
         switch (v.getId()){
 
@@ -60,8 +69,17 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
                 buttonsAvisoLinearLayout.setVisibility(View.VISIBLE);
                 mAviso.setVisibility(View.VISIBLE);
-                editor.putString(getString(R.string.preference_user_type_key), getString(R.string.preference_user_type_advogado));
-                editor.commit();
+                //Create user
+                mNetworkRequests = new NetworkRequests(this);
+                final Advogado advogado = new Advogado();
+                advogado.setEmail(sharedPref.getString(getString(R.string.preference_user_firebase_email),""));
+                JSONObject jsonAdvogado = null;
+                try {
+                    jsonAdvogado = new JSONObject(new Gson().toJson(advogado));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mNetworkRequests.jsonRequest(Constant.PERFIL, Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL+Constant.ADVOGADO,jsonAdvogado,false);
                 break;
 
             case R.id.welcome_button_sou_cliente:
@@ -69,8 +87,18 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 buttonsAvisoLinearLayout.setVisibility(View.VISIBLE);
                 mAviso.setVisibility(View.VISIBLE);
                 mAviso.setText(getString(R.string.welcome_cliente_aviso));
-                editor.putString(getString(R.string.preference_user_type_key), getString(R.string.preference_user_type_cliente));
-                editor.commit();
+
+                //Create user
+                final Cliente cliente = new Cliente();
+
+                JSONObject jsonCliente = null;
+                try {
+                    jsonAdvogado = new JSONObject(new Gson().toJson(cliente));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mNetworkRequests.jsonRequest(Constant.PERFIL, Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL+Constant.CLIENTE,jsonCliente,false);
+
                 break;
 
             case R.id.welcome_button_aviso_perfil:

@@ -9,11 +9,11 @@ public class NetworkAccess {
 
     Context mContext;
 
-    NetworkAccess(Context context){
+    public NetworkAccess(Context context){
         mContext = context;
     };
 
-    private boolean networkUp() {
+    public boolean networkUp() {
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();

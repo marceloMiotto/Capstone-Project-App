@@ -83,6 +83,8 @@
     <string name="preference_user_firebase_token">FIREBASE_TOKEN</string>
     <string name="preference_user_firebase_email">FIREBASE_EMAIL</string>
 
+    <string name="preference_user_last_location">LAST_LOCATION</string>
+
 
     <!-- menu -->
     <string name="menu_convites_abertos_item_title">Convites Abertos</string>
@@ -91,6 +93,8 @@
     <string name="menu_perfil_item_title">Perfil</string>
     <string name="menu_historico_convites_item_title">Histórico Convites</string>
     <string name="menu_lista_advogados_item_title">Advogados</string>
+    <string name="menu_app_sair_item_title">Sair</string>
+
     <string name="perfil_label_spinner_sexo">Sexo</string>
     <string name="perfil_label_spinner_seccional">Conselho Seccional</string>
     <string name="perfil_tipo_inscricao_advogado">Advogado</string>

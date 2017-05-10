@@ -2,6 +2,7 @@ package udacitynano.com.br.cafelegal.network;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
@@ -10,10 +11,16 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.service.ConviteService;
@@ -57,23 +64,12 @@ public class NetworkRequests {
             public void onResponse(String response) {
                 Log.e("Debug", "Convite id " + response.toString());
                 if (mShowSnack) {
+                    Snackbar.make(mView, "Salvo", Snackbar.LENGTH_SHORT).show();
                 }
-                Snackbar.make(mView, "Salvo", Snackbar.LENGTH_SHORT).show();
 
                 switch (mTypeCalled){
 
                     case Constant.PERFIL:
-                        PerfilService perfilService = new PerfilService(mContext, mView);
-                        if (UserType.getInstance(mContext).getUserId() <= 0) {
-                            perfilService.setSharedId(Long.valueOf(response.toString()));
-                        }
-
-                        if (mRequestMethod == Request.Method.POST) {
-                            perfilService.createUserOnSQLite((Pessoa) object);
-                        } else {
-                            perfilService.updateUserOnSQLite((Pessoa) object);
-                        }
-
                         break;
                     case Constant.CONVITE:
                         Convite convite = (Convite) object;
@@ -124,5 +120,89 @@ public class NetworkRequests {
     }
 
 
+    public void jsonRequest(int typeCalled, int requestMethod, String restApiURL, JSONObject jsonBody, boolean showSnack) {
 
+
+        mShowSnack = showSnack;
+        mTypeCalled = typeCalled;
+        mRequestMethod = requestMethod;
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (requestMethod, restApiURL, jsonBody, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Debug", "Pessoa return " + response.toString());
+                        if (mShowSnack) {
+
+                            Snackbar.make(mView, "Salvo", Snackbar.LENGTH_SHORT).show();
+                        }
+
+                        switch (mTypeCalled){
+
+                            case Constant.PERFIL:
+                                PerfilService perfilService = new PerfilService(mContext, mView);
+                                Pessoa pessoa = new Gson().fromJson(response.toString(),Pessoa.class);
+
+                                if (UserType.getInstance(mContext).getUserId() <= 0) {
+                                    perfilService.setSharedId(pessoa.getId());
+                                }
+
+                                if (pessoa.getId() > 0) {
+                                    perfilService.updateUserOnSQLite(pessoa);
+
+                                } else {
+                                    perfilService.createUserOnSQLite(pessoa);
+                                }
+
+                                SharedPreferences sharedPref = mContext.getSharedPreferences(
+                                        mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+
+                                try {
+                                    if(response.getString("type").equals("cliente")){
+                                        editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_advogado));
+                                    }else{
+                                        editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_cliente));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                editor.commit();
+
+
+                                UserType userType = UserType.getInstance(mContext);
+                                Log.e("Debug","welcome activity user type "+ userType.getAppUserType());
+                                break;
+                            case Constant.CONVITE:
+                                break;
+                            case Constant.LOGIN:
+                                Log.e("Debug","Token save "+response.toString());
+                                break;
+                            case Constant.ANDROID_SERVICE:
+                                Log.e("Debug","Token save "+response.toString());
+                                break;
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+                        if(mShowSnack){
+                            Snackbar.make(mView,"Erro ao enviar",Snackbar.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+
+        // Access the RequestQueue through your singleton class.
+        NetworkSingleton.getInstance(mContext).addJSONToRequestQueue(jsObjRequest);
+
+
+    }
 }
