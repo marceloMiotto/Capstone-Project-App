@@ -21,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import udacitynano.com.br.cafelegal.R;
+import udacitynano.com.br.cafelegal.model.Advogado;
+import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.service.ConviteService;
@@ -134,7 +136,6 @@ public class NetworkRequests {
                     public void onResponse(JSONObject response) {
                         Log.e("Debug", "Pessoa return " + response.toString());
                         if (mShowSnack) {
-
                             Snackbar.make(mView, "Salvo", Snackbar.LENGTH_SHORT).show();
                         }
 
@@ -142,18 +143,20 @@ public class NetworkRequests {
 
                             case Constant.PERFIL:
                                 PerfilService perfilService = new PerfilService(mContext, mView);
-                                Pessoa pessoa = new Gson().fromJson(response.toString(),Pessoa.class);
+                                UserType userType = UserType.getInstance(mContext);
+                                Log.e("Debug","Login activity user type "+ userType.getAppUserType());
+                                Pessoa pessoa;
+                                if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_advogado))) {
+                                    pessoa = new Gson().fromJson(response.toString(),Advogado.class);
+                                }else{
+                                    pessoa = new Gson().fromJson(response.toString(),Cliente.class);
+                                }
 
                                 if (UserType.getInstance(mContext).getUserId() <= 0) {
                                     perfilService.setSharedId(pessoa.getId());
                                 }
 
-                                if (pessoa.getId() > 0) {
-                                    perfilService.updateUserOnSQLite(pessoa);
-
-                                } else {
-                                    perfilService.createUserOnSQLite(pessoa);
-                                }
+                                 perfilService.updateCreateUserOnSQLite(pessoa);
 
                                 SharedPreferences sharedPref = mContext.getSharedPreferences(
                                         mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -161,9 +164,9 @@ public class NetworkRequests {
 
                                 try {
                                     if(response.getString("type").equals("cliente")){
-                                        editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_advogado));
-                                    }else{
                                         editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_cliente));
+                                    }else{
+                                        editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_advogado));
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -171,9 +174,7 @@ public class NetworkRequests {
 
                                 editor.commit();
 
-
-                                UserType userType = UserType.getInstance(mContext);
-                                Log.e("Debug","welcome activity user type "+ userType.getAppUserType());
+                                Log.e("Debug","networkRequests activity user type "+ userType.getAppUserType());
                                 break;
                             case Constant.CONVITE:
                                 break;

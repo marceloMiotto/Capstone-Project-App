@@ -134,12 +134,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     UserType userType = UserType.getInstance(mContext);
                     Log.e("Debug","Login activity user type "+ userType.getAppUserType());
 
-                    if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
+                    //if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
                         intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    }else{
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
-                    }
+                    //}else{
+                    //    intent = new Intent(getApplicationContext(), MainActivity.class);
+                    //    intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
+                    //}
 
                     startActivity(intent);
                     finish();
@@ -147,8 +147,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     // User is signed out
                     Log.d("Debug3", "onAuthStateChanged:signed_out");
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mPasswordView.requestFocus();
+                    //mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    //mPasswordView.requestFocus();
+                    mEmailView.setError(getString(R.string.login_informe_email));
+                    mEmailView.requestFocus();
                 }
             }
         };

@@ -9,7 +9,7 @@ import udacitynano.com.br.cafelegal.R;
 public class UserType {
 
     private static UserType ourInstance;
-    private static String mUserType = "";
+    private static String mUserType;
     private static Context mContext;
     private static long mUserId;
 
@@ -19,9 +19,11 @@ public class UserType {
 
         if(ourInstance == null){
             ourInstance = new UserType();
-            mUserType   = getAppUserType();
             mUserId     = getUserId();
         }
+
+        mUserType   = getAppUserType();
+
         return ourInstance;
     }
 
@@ -44,10 +46,7 @@ public class UserType {
 
     public static String getAppUserType(){
 
-        if (mUserType.equals(mContext.getString(R.string.preference_user_type_not_defined))) {
-            mUserType = getSharedUserType();
-        }
-
+        mUserType = getSharedUserType();
         return mUserType;
     }
 

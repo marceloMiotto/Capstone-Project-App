@@ -26,13 +26,26 @@ public class PerfilService {
         mView = view;
     }
 
-    public int updatePerfil(Pessoa pessoa) {
+
+    private long updateCreatePerfil(Pessoa pessoa){
+        long result = 0;
+        result = updatePerfil(pessoa);
+        if(result==0){
+            result = createPerfil(pessoa);
+        }
+
+        return result;
+    }
+
+    private int updatePerfil(Pessoa pessoa) {
 
         Advogado advogado = null;
         String[] selectionArgs = {""};
         String selectionClause = "";
 
         ContentValues pessoaValues = new ContentValues();
+
+        Log.e("Debug","Valores para o update - nome "+pessoa.getNome());
 
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOME, pessoa.getNome());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOME_MEIO, pessoa.getNomeMeio());
@@ -81,12 +94,12 @@ public class PerfilService {
                 selectionClause,
                 selectionArgs
         );
-
+        Log.e("Debug","Perfil Service update return "+updateUri);
         return updateUri;
 
     }
 
-    public long createPerfil(Pessoa pessoa) {
+    private long createPerfil(Pessoa pessoa) {
 
 
         long pessoaId = 0;
@@ -98,7 +111,6 @@ public class PerfilService {
 
             advogado = (Advogado) pessoa;
         }
-
 
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_ID_SERVER, pessoa.getId());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOME, pessoa.getNome());
@@ -145,58 +157,11 @@ public class PerfilService {
         return pessoaId;
     }
 
-    public void createUserOnSQLite(Pessoa pessoa){
-        //TODO CREATE THE RECORD ON SQLITE
-        if (UserType.getInstance(mContext).isAdvogado()) {
-
-            pessoa.setId(UserType.getInstance(mContext).getUserId());
-
-            if (UserType.getInstance(mContext).getUserId() <= 0) {
-                //CREATE LOCAL PERFIL
-                long result = createPerfil((Advogado)pessoa);
-                if (result <= 0) {
-                    Snackbar.make(mView, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        } else { //cliente
-
-            pessoa.setId(UserType.getInstance(mContext).getUserId());
-
-            if (UserType.getInstance(mContext).getUserId() <= 0) {
-
-                //CREATE LOCAL PERFIL
-                long result = createPerfil((Cliente) pessoa);
-                if (result <= 0) {
-                    Snackbar.make(mView, "Erro no insert ", Snackbar.LENGTH_SHORT).show();
-                }
-
-            }
-        }
-
+    public long updateCreateUserOnSQLite(Pessoa pessoa){
+        pessoa.setId(UserType.getInstance(mContext).getUserId());
+        return updateCreatePerfil(pessoa);
     }
 
-    public void updateUserOnSQLite(Pessoa pessoa){
-        //TODO UPDATE THE RECORD ON SQLITE
-
-        if (UserType.getInstance(mContext).isAdvogado()) {
-            pessoa.setId(UserType.getInstance(mContext).getUserId());
-            if (UserType.getInstance(mContext).getUserId() > 0) {
-                int result = updatePerfil((Advogado)pessoa);
-                if (result <= 0) {
-                    Snackbar.make(mView, "Erro no update ", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        } else { //cliente
-            pessoa.setId(UserType.getInstance(mContext).getUserId());
-            if (UserType.getInstance(mContext).getUserId() > 0) {
-                int result = updatePerfil((Cliente) pessoa);
-                if (result <= 0) {
-                    Snackbar.make(mView, "Erro no update ", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        }
-
-    }
 
     public void setSharedId(long id){
         SharedPreferences sharedPref = mContext.getSharedPreferences(

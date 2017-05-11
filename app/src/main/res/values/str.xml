@@ -125,6 +125,7 @@
 
     <string name="title_activity_historico">HistoricoActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="login_informe_email">Por favor, informe o email</string>
 
 
 </resources>

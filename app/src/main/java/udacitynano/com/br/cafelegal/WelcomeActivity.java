@@ -62,6 +62,8 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent;
         SharedPreferences sharedPref = getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        String email = sharedPref.getString(this.getString(R.string.preference_user_firebase_email),"");
 
         switch (v.getId()){
 
@@ -71,8 +73,12 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 mAviso.setVisibility(View.VISIBLE);
                 //Create user
                 mNetworkRequests = new NetworkRequests(this);
-                final Advogado advogado = new Advogado();
+                final Advogado advogado = new Advogado(0,"","","", email,0,"","","","","","","","","","","","",""
+                        ,"","","","");
                 advogado.setEmail(sharedPref.getString(getString(R.string.preference_user_firebase_email),""));
+                editor = sharedPref.edit();
+                editor.putString(this.getString(R.string.preference_user_type_key), this.getString(R.string.preference_user_type_advogado));
+                editor.commit();
                 JSONObject jsonAdvogado = null;
                 try {
                     jsonAdvogado = new JSONObject(new Gson().toJson(advogado));
@@ -87,13 +93,16 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 buttonsAvisoLinearLayout.setVisibility(View.VISIBLE);
                 mAviso.setVisibility(View.VISIBLE);
                 mAviso.setText(getString(R.string.welcome_cliente_aviso));
+                editor = sharedPref.edit();
+                editor.putString(this.getString(R.string.preference_user_type_key), this.getString(R.string.preference_user_type_cliente));
+                editor.commit();
 
                 //Create user
-                final Cliente cliente = new Cliente();
+                final Cliente cliente = new Cliente(0,"","","",email,0,"","","","","","","","","");
 
                 JSONObject jsonCliente = null;
                 try {
-                    jsonAdvogado = new JSONObject(new Gson().toJson(cliente));
+                    jsonCliente = new JSONObject(new Gson().toJson(cliente));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

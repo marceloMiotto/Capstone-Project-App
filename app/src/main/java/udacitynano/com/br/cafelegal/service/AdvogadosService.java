@@ -25,6 +25,7 @@ public class AdvogadosService {
     }
 
     public List<Advogado> getAdvogados(){
+
         return advogados;
     }
 

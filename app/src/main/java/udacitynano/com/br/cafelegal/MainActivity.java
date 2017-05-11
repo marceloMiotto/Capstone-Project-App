@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_app_sair) {//only for lawyers
 
             FirebaseAuth.getInstance().signOut();
+            finish();
 
         }
 
