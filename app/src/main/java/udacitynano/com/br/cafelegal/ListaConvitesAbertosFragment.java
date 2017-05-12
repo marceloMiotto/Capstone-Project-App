@@ -1,44 +1,53 @@
 package udacitynano.com.br.cafelegal;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import udacitynano.com.br.cafelegal.adapter.ConviteAdapter;
 import udacitynano.com.br.cafelegal.adapter.ConvitesAbertosAdapter;
+import udacitynano.com.br.cafelegal.model.Advogado;
+import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Convite;
+import udacitynano.com.br.cafelegal.model.Pessoa;
+import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.service.ConviteService;
+import udacitynano.com.br.cafelegal.service.PerfilService;
+import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
+import udacitynano.com.br.cafelegal.singleton.UserType;
+import udacitynano.com.br.cafelegal.util.Constant;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ListaConvitesAbertosFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ListaConvitesAbertosFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ListaConvitesAbertosFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Convite> myDataset;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,36 +55,14 @@ public class ListaConvitesAbertosFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListaConvitesAbertosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ListaConvitesAbertosFragment newInstance(String param1, String param2) {
         ListaConvitesAbertosFragment fragment = new ListaConvitesAbertosFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
-
-
-
     }
 
     @Override
@@ -83,20 +70,15 @@ public class ListaConvitesAbertosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_lista_convites_abertos, container, false);
+        getConvitesAbertos();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.convites_abertos_recyclerView);
-
-        ConviteService conviteService = new ConviteService(getActivity());
-        myDataset = conviteService.getConvitesAbertos();
-
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         // specify an adapter (see also next example)
+        myDataset = new ArrayList<>();
         mAdapter = new ConvitesAbertosAdapter(getActivity(),myDataset);
         mRecyclerView.setAdapter(mAdapter);
-
-
         return view;
 
     }
@@ -124,18 +106,63 @@ public class ListaConvitesAbertosFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    public void jsonRequest(String apiURL ) {
+
+
+        JsonArrayRequest jsonArrayObject = new JsonArrayRequest
+                (Request.Method.GET, apiURL, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+
+                            Log.e("Debug12",response.toString());
+                            for(int i=0;i<response.length();i++){
+                                JSONObject jsonConvite = response.getJSONObject(i);
+                                myDataset.add(new Gson().fromJson(jsonConvite.toString(),Convite.class));
+                                Log.e("Debug12",jsonConvite.toString());
+                            }
+
+                           // myDataset = conviteList;
+                           // mAdapter = new ConvitesAbertosAdapter(getActivity(),myDataset);
+                            mAdapter.notifyDataSetChanged();
+                            Log.e("Debug12","Ok");
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+
+                    }
+                });
+
+
+        // Access the RequestQueue through your singleton class.
+        NetworkSingleton.getInstance(getActivity()).addJSONArrayToRequestQueue(jsonArrayObject);
+
+
+    }
+
+    public void getConvitesAbertos(){
+        long advogadoId = UserType.getUserId();
+        String apiURL = Constant.SERVER_API_CAFE_LEGAL+Constant.CONVITE_CAFE_LEGAL+"/"+advogadoId+Constant.ABERTOS;
+        Log.e("Debug","server api link "+ apiURL);
+
+        jsonRequest(apiURL);
+
+    }
+
 }

@@ -27,20 +27,7 @@ public class DataFromServer {
 
     }
 
-    public void getConvitesAbertos(){
 
-        SharedPreferences sharedPref = mContext.getSharedPreferences(
-                mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor;
-        long advogadoId = sharedPref.getLong(mContext.getString(R.string.preference_user_firebase_email),-1);
-        String apiURL = Constant.SERVER_API_CAFE_LEGAL+Constant.CONVITE+"/"+advogadoId+Constant.ABERTOS;
-        Log.e("Debug","server api link "+ apiURL);
-
-        final NetworkRequests networkRequests = new NetworkRequests(mContext);
-
-        networkRequests.jsonRequest(Constant.CONVITES_ABERTOS, Request.Method.GET,apiURL,null,true);
-
-    }
 
 
 }

@@ -81,7 +81,7 @@ public class HistoricoConvitesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_historico_convites, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.convite_historico_recyclerView);
 
-        ConviteService conviteService = new ConviteService("test",getActivity(),view);
+        ConviteService conviteService = new ConviteService(getActivity(),view);
         myDataset = conviteService.getConvites();
 
         // use a linear layout manager

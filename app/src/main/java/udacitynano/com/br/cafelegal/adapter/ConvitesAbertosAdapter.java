@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,20 +52,23 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
 
     @Override
     public int getItemCount() {
-        return mConviteList.size();
+        if(mConviteList != null){
+            return mConviteList.size();
+        }
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mConviteTitle;
-        public TextView mConviteDate;
+        public Button mConviteAceito;
 
         public ViewHolder(View v) {
             super(v);
             mConviteTitle = (TextView) v.findViewById(R.id.convite_enviado);
+            mConviteAceito = (Button) v.findViewById(R.id.convite_aberto_aceito);
 
-
-            v.setOnClickListener(new View.OnClickListener() {
+            mConviteAceito.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext,"Test",Toast.LENGTH_SHORT).show();
@@ -73,6 +77,11 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
                     Intent intent = new Intent(mContext,ChatActivity.class);
                     intent.putExtra("convite","Convite "+position);
                     mContext.startActivity(intent);
+
+                    //TODO update convite aceitando
+
+                    //open chat com o convite id
+
                 }
             });
 

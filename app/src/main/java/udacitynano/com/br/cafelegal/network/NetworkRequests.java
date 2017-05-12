@@ -4,6 +4,7 @@ package udacitynano.com.br.cafelegal.network;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
@@ -187,6 +188,8 @@ public class NetworkRequests {
                                 break;
 
                             case Constant.CONVITES_ABERTOS:
+
+
                                 Log.e("Debug","Convites abertos");
                                 break;
 

@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
@@ -49,8 +50,6 @@ public class ConviteService {
     }
 
     public int sendConvite(long userId, String areaLocation) throws JSONException {
-
-        //TODO get area location
 
         final Convite convite = new Convite(userId, 0, "", "", "", areaLocation);
         Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
@@ -141,11 +140,6 @@ public class ConviteService {
         return convites;
     }
 
-    public void getConvitesAbertos() {
 
-        DataFromServer dataFromServer = new DataFromServer(mContext);
-        dataFromServer.getConvitesAbertos();
-
-    }
 
 }
