@@ -236,11 +236,9 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 }
 
-                if(userType.getUserId() <= 0){
-                    requestMethod = Request.Method.POST;
-                }else{
-                    requestMethod = Request.Method.PUT;
-                }
+
+                requestMethod = Request.Method.PUT;
+
 
                 try {
                     jsonObject = new JSONObject(stringJsonObject);
@@ -252,7 +250,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 final NetworkRequests networkRequests = new NetworkRequests(getActivity(),view);
 
-                networkRequests.stringRequest(Constant.PERFIL, requestMethod,Constant.SERVER_API_CAFE_LEGAL + apiResource,jsonObject,true,mPessoa);
+                networkRequests.jsonRequest(Constant.PERFIL,requestMethod,Constant.SERVER_API_CAFE_LEGAL + apiResource,jsonObject,true);
 
             }
         });

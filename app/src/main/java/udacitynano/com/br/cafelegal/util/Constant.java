@@ -20,12 +20,14 @@ public interface Constant {
     String ADVOGADOS = "/pessoa/advogados";
     String CLIENTE = "/pessoa/cliente";
     String NOTIFICATION_TOKEN = "/token_notificacao";
+    String ABERTOS = "/abertos";
 
     //Type volley called
     int PERFIL = 0;
     int CONVITE = 1;
     int LOGIN = 2;
     int ANDROID_SERVICE = 3;
+    int CONVITES_ABERTOS = 4;
 
 
     static final String INSTANCE_ID_TOKEN_RETRIEVED = "iid_token_retrieved";

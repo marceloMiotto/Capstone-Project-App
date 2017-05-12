@@ -85,7 +85,7 @@ public class ListaConvitesAbertosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_convites_abertos, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.convites_abertos_recyclerView);
 
-        ConviteService conviteService = new ConviteService("test",getActivity(),view);
+        ConviteService conviteService = new ConviteService(getActivity());
         myDataset = conviteService.getConvitesAbertos();
 
         // use a linear layout manager

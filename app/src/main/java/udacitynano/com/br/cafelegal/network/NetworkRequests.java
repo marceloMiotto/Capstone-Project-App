@@ -176,6 +176,7 @@ public class NetworkRequests {
 
                                 Log.e("Debug","networkRequests activity user type "+ userType.getAppUserType());
                                 break;
+
                             case Constant.CONVITE:
                                 break;
                             case Constant.LOGIN:
@@ -183,6 +184,10 @@ public class NetworkRequests {
                                 break;
                             case Constant.ANDROID_SERVICE:
                                 Log.e("Debug","Token save "+response.toString());
+                                break;
+
+                            case Constant.CONVITES_ABERTOS:
+                                Log.e("Debug","Convites abertos");
                                 break;
 
                         }

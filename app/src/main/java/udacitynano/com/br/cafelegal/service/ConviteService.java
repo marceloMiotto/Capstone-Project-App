@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.List;
 
+import udacitynano.com.br.cafelegal.data.DataFromServer;
 import udacitynano.com.br.cafelegal.data.Database;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
@@ -38,7 +39,7 @@ import udacitynano.com.br.cafelegal.util.Constant;
 public class ConviteService {
 
     final Context mContext;
-    final View mView;
+    View mView = null;
 
     public ConviteService(Context context, View view) {
 
@@ -124,12 +125,12 @@ public class ConviteService {
     }
 
     //TODO TEST CHAT
+
     private List<Convite> convites = Database.getConvites();
 
-    public ConviteService(String test,Context context, View view){
+    public ConviteService(Context context){
 
         mContext = context;
-        mView = view;
 
         convites.add(new Convite(82,104,"Y","Test",""  ,""));
         convites.add(new Convite(82,104,"Y","Test2","" ,""));
@@ -140,6 +141,11 @@ public class ConviteService {
         return convites;
     }
 
-    public List<Convite> getConvitesAbertos() {return convites;}
+    public void getConvitesAbertos() {
+
+        DataFromServer dataFromServer = new DataFromServer(mContext);
+        dataFromServer.getConvitesAbertos();
+
+    }
 
 }

@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             SharedPreferences sharedPref = getSharedPreferences(
                                                     getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPref.edit();
-                                            editor.putString(getString(R.string.preference_user_firebase_token), idToken);
+                                            editor.putString(getString(R.string.preference_user_firebase_token), refreshedToken);
                                             editor.putString(getString(R.string.preference_user_firebase_email),mFirebaseEmail);
 
                                             editor.commit();

@@ -64,6 +64,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor;
         String email = sharedPref.getString(this.getString(R.string.preference_user_firebase_email),"");
+        String fcmToken = sharedPref.getString(this.getString(R.string.preference_user_firebase_token),"");
 
         switch (v.getId()){
 
@@ -74,7 +75,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 //Create user
                 mNetworkRequests = new NetworkRequests(this);
                 final Advogado advogado = new Advogado(0,"","","", email,0,"","","","","","","","","","","","",""
-                        ,"","","","");
+                        ,"","","",fcmToken);
                 advogado.setEmail(sharedPref.getString(getString(R.string.preference_user_firebase_email),""));
                 editor = sharedPref.edit();
                 editor.putString(this.getString(R.string.preference_user_type_key), this.getString(R.string.preference_user_type_advogado));
@@ -98,7 +99,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 editor.commit();
 
                 //Create user
-                final Cliente cliente = new Cliente(0,"","","",email,0,"","","","","","","","","");
+                final Cliente cliente = new Cliente(0,"","","",email,0,"","","","","","","","",fcmToken);
 
                 JSONObject jsonCliente = null;
                 try {

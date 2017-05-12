@@ -73,6 +73,11 @@ public class ConviteFragment extends Fragment  {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_convite, container, false);
         ButterKnife.bind(this, mView);
+        //create instance google api client
+        mGoogleClient = new GoogleClient(getActivity());
+        mGoogleApiClient = mGoogleClient.createGoogleClientInstance();
+
+
         mConviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,10 +104,6 @@ public class ConviteFragment extends Fragment  {
             }
         });
 
-
-        //create instance google api client
-        mGoogleClient = new GoogleClient(getActivity());
-        mGoogleApiClient = mGoogleClient.createGoogleClientInstance();
 
         return mView;
     }
