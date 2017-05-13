@@ -68,7 +68,9 @@ public class DatabaseContract {
                 public static final String COLUMN_RESPONDE_ID         = "responde_id";
                 public static final String COLUMN_DATA_CONVITE        = "data_convite";
                 public static final String COLUMN_CONVITE_ACEITO      = "convite_transmitido";
-
+                public static final String COLUMN_CHAT_FIREBASE       = "chat_firebase";
+                public static final String COLUMN_ESPECIALIDADE       = "especialidade";
+                public static final String COLUMN_AREA_LOCATION       = "area_location";
 
 
                 public static final Uri CONTENT_URI =

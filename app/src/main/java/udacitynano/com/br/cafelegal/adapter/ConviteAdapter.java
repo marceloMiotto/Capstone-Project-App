@@ -50,7 +50,10 @@ public class ConviteAdapter  extends RecyclerView.Adapter<ConviteAdapter.ViewHol
 
     @Override
     public int getItemCount() {
-        return mConviteList.size();
+        if(mConviteList != null){
+            return mConviteList.size();
+        }
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

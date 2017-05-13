@@ -5,36 +5,25 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import udacitynano.com.br.cafelegal.data.DataFromServer;
 import udacitynano.com.br.cafelegal.data.Database;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
-import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Convite;
-import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.network.NetworkRequests;
-import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
-import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 public class ConviteService {
@@ -50,8 +39,10 @@ public class ConviteService {
     }
 
     public int sendConvite(long userId, String areaLocation) throws JSONException {
-
-        final Convite convite = new Convite(userId, 0,new Date(), "", "", "", areaLocation);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String reportDate = df.format(today);
+        final Convite convite = new Convite(-1,userId, 0,reportDate, "N", "", "", areaLocation);
         Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
         final JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
         Log.e("Debug","jsonConvite "+jsonConvite.toString());
@@ -122,24 +113,5 @@ public class ConviteService {
 
         return conviteId;
     }
-
-    //TODO TEST CHAT
-
-    private List<Convite> convites = Database.getConvites();
-
-    public ConviteService(Context context){
-
-        mContext = context;
-
-        convites.add(new Convite(82,104,new Date(),"Y","Test",""  ,""));
-        convites.add(new Convite(82,104,new Date(),"Y","Test2","" ,""));
-        convites.add(new Convite(82,104,new Date(),"Y","Test3", "",""));
-    }
-
-    public List<Convite> getConvites(){
-        return convites;
-    }
-
-
 
 }

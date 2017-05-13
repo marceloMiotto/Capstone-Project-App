@@ -9,7 +9,7 @@ public class Convite {
     private long id;
     private long convidaId;
     private long respondeId;
-    private Date dataCriacao;
+    private String dataCriacao;
     private String aceito;
     private String chatFirebase;
     private String especialidade;
@@ -18,7 +18,8 @@ public class Convite {
     public Convite() {
     }
 
-    public Convite(long convidaId, long respondeId, Date dataCriacao, String aceito, String chatFirebase, String especialidade, String areaLocation) {
+    public Convite(long conviteServerId, long convidaId, long respondeId, String dataCriacao, String aceito, String chatFirebase, String especialidade, String areaLocation) {
+        this.id = conviteServerId;
         this.convidaId = convidaId;
         this.respondeId = respondeId;
         this.dataCriacao = dataCriacao;
@@ -53,11 +54,11 @@ public class Convite {
         this.respondeId = respondeId;
     }
 
-    public Date getDataCriacao() {
+    public String getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(String dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 

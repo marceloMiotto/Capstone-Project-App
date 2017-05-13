@@ -1,20 +1,30 @@
 package udacitynano.com.br.cafelegal;
 
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import udacitynano.com.br.cafelegal.adapter.ConviteAdapter;
+import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.service.ConviteService;
+import udacitynano.com.br.cafelegal.singleton.UserType;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +34,7 @@ import udacitynano.com.br.cafelegal.service.ConviteService;
  * Use the {@link HistoricoConvitesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HistoricoConvitesFragment extends Fragment {
+public class HistoricoConvitesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -82,12 +92,11 @@ public class HistoricoConvitesFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.convite_historico_recyclerView);
 
         ConviteService conviteService = new ConviteService(getActivity(),view);
-        myDataset = conviteService.getConvites();
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        myDataset = new ArrayList<>();
         // specify an adapter (see also next example)
         mAdapter = new ConviteAdapter(getActivity(),myDataset);
         mRecyclerView.setAdapter(mAdapter);
@@ -120,18 +129,62 @@ public class HistoricoConvitesFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        String[] projection = {
+                DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER,
+                DatabaseContract.ConviteEntry.COLUMN_CONVIDA_ID,
+                DatabaseContract.ConviteEntry.COLUMN_RESPONDE_ID,
+                DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE,
+                DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO,
+                DatabaseContract.ConviteEntry.COLUMN_CHAT_FIREBASE,
+                DatabaseContract.ConviteEntry.COLUMN_ESPECIALIDADE,
+                DatabaseContract.ConviteEntry.COLUMN_AREA_LOCATION
+        };
+
+        Log.e("Debug","Convite loader projection "+projection);
+
+        CursorLoader loader = new CursorLoader(
+                this.getActivity(),
+                DatabaseContract.ConviteEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+        return loader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        if (cursor != null) {
+            Log.e("Debug", "Lodader count " + cursor.getCount());
+        }else{
+            Log.e("Debug","Loader Cursor null");
+        }
+
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                myDataset.add(new Convite(cursor.getLong(0), cursor.getLong(1), cursor.getLong(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString((7))));
+            }
+
+
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
+    }
+
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 }
