@@ -18,10 +18,10 @@ public class Convite {
     public Convite() {
     }
 
-    public Convite(long convidaId, long respondeId, String aceito, String chatFirebase, String especialidade, String areaLocation) {
+    public Convite(long convidaId, long respondeId, Date dataCriacao, String aceito, String chatFirebase, String especialidade, String areaLocation) {
         this.convidaId = convidaId;
         this.respondeId = respondeId;
-        this.dataCriacao = new Date();
+        this.dataCriacao = dataCriacao;
         this.aceito = aceito;
         this.chatFirebase = chatFirebase;
         this.especialidade = especialidade;

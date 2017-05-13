@@ -103,7 +103,7 @@
     <string name="perfil_label_spinner_especialista_dois">Especialidade Direito</string>
 
     <!-- convites abertos -->
-    <string name="convite_aberto_aceito">Aceito</string>
+    <string name="convite_aberto_aceito">Aceitar</string>
     <string name="convite_aberto_nao_aceito">Recuso</string>
 
 

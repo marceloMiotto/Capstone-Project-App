@@ -39,7 +39,6 @@ public class NetworkRequests {
     private View mView;
     private boolean mShowSnack;
     private int mTypeCalled;
-    private int mRequestMethod;
 
     public NetworkRequests(){
 
@@ -59,7 +58,6 @@ public class NetworkRequests {
         final JSONObject jsonObjectBody = jsonBody;
         mShowSnack = showSnack;
         mTypeCalled = typeCalled;
-        mRequestMethod = requestMethod;
 
         StringRequest stringRequest = new StringRequest(requestMethod, restApiURL, new Response.Listener<String>() {
 
@@ -88,7 +86,11 @@ public class NetworkRequests {
                         Log.e("Debug","Token save "+response.toString());
                         break;
 
+                    case Constant.CONVITE_ACEITO:
+                        Log.e("Debug","Convite Aceito "+response.toString());
+                        break;
                     }
+
 
             }
         }, new Response.ErrorListener() {
@@ -108,7 +110,7 @@ public class NetworkRequests {
         ) {
             @Override
             public byte[] getBody() throws AuthFailureError {
-                return jsonObjectBody.toString().getBytes();
+                    return jsonObjectBody.toString().getBytes();
             }
 
             @Override
@@ -128,7 +130,6 @@ public class NetworkRequests {
 
         mShowSnack = showSnack;
         mTypeCalled = typeCalled;
-        mRequestMethod = requestMethod;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (requestMethod, restApiURL, jsonBody, new Response.Listener<JSONObject>() {
@@ -178,19 +179,11 @@ public class NetworkRequests {
                                 Log.e("Debug","networkRequests activity user type "+ userType.getAppUserType());
                                 break;
 
-                            case Constant.CONVITE:
-                                break;
                             case Constant.LOGIN:
                                 Log.e("Debug","Token save "+response.toString());
                                 break;
                             case Constant.ANDROID_SERVICE:
                                 Log.e("Debug","Token save "+response.toString());
-                                break;
-
-                            case Constant.CONVITES_ABERTOS:
-
-
-                                Log.e("Debug","Convites abertos");
                                 break;
 
                         }

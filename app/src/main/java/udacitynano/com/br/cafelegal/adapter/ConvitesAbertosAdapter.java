@@ -2,6 +2,7 @@ package udacitynano.com.br.cafelegal.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,19 +12,36 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import udacitynano.com.br.cafelegal.ChatActivity;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Convite;
-
+import udacitynano.com.br.cafelegal.network.NetworkRequests;
+import udacitynano.com.br.cafelegal.service.ConviteService;
+import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
+import udacitynano.com.br.cafelegal.singleton.UserType;
+import udacitynano.com.br.cafelegal.util.Constant;
 
 
 public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertosAdapter.ViewHolder>{
 
-    List<Convite> mConviteList;
-    static Context mContext;
-    static  String mPosition;
+    private static  List<Convite> mConviteList;
+    private static Context mContext;
+    private static  String mPosition;
+    private int convitePosition;
 
 
     public ConvitesAbertosAdapter(Context context, List<Convite> conviteList) {
@@ -48,6 +66,7 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
 
         mPosition = String.valueOf(position);
         Log.e("Debug2","position "+position);
+
     }
 
     @Override
@@ -72,16 +91,51 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext,"Test",Toast.LENGTH_SHORT).show();
-                    int position = getAdapterPosition();
-                    Log.e("Debug1","click() "+position);
-                    Intent intent = new Intent(mContext,ChatActivity.class);
-                    intent.putExtra("convite","Convite "+position);
-                    mContext.startActivity(intent);
-
+                    Log.e("Debug2","view ");
+                    Log.e("Debug1","click() convite id "+ mConviteList.get(getAdapterPosition()).getId() );
                     //TODO update convite aceitando
+                    long advogadoId = UserType.getUserId();
+                    String apiURL = Constant.SERVER_API_CAFE_LEGAL+Constant.CONVITE_CAFE_LEGAL+"/"+mConviteList.get(getAdapterPosition()).getId() +"/"+advogadoId+Constant.ACEITO;
+                    StringRequest stringRequest = new StringRequest(Request.Method.PUT, apiURL, new Response.Listener<String>() {
+
+                        @Override
+                        public void onResponse(String response) {
+                            Log.e("Debug", "convite aceito " + response.toString());
+
+                        }
+
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // TODO Auto-generated method stub
+                            Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+
+                        }
+
+                    }
+
+                    ) {
+
+                        /**
+                         * Passing some request headers
+                         */
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap<String, String> headers = new HashMap<String, String>();
+                            headers.put("Content-Type", "application/json; charset=utf-8");
+                            return headers;
+                        }
+
+                    };
+
+                    // Access the RequestQueue through your singleton class.
+                    NetworkSingleton.getInstance(mContext).addStringRequestQueue(stringRequest);
 
                     //open chat com o convite id
-
+                    Intent intent = new Intent(mContext,ChatActivity.class);
+                    intent.putExtra("convite","Convite "+ mConviteList.get(getAdapterPosition()).getId());
+                    mContext.startActivity(intent);
                 }
             });
 

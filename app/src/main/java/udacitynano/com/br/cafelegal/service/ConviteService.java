@@ -51,7 +51,7 @@ public class ConviteService {
 
     public int sendConvite(long userId, String areaLocation) throws JSONException {
 
-        final Convite convite = new Convite(userId, 0, "", "", "", areaLocation);
+        final Convite convite = new Convite(userId, 0,new Date(), "", "", "", areaLocation);
         Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
         final JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
         Log.e("Debug","jsonConvite "+jsonConvite.toString());
@@ -131,9 +131,9 @@ public class ConviteService {
 
         mContext = context;
 
-        convites.add(new Convite(82,104,"Y","Test",""  ,""));
-        convites.add(new Convite(82,104,"Y","Test2","" ,""));
-        convites.add(new Convite(82,104,"Y","Test3", "",""));
+        convites.add(new Convite(82,104,new Date(),"Y","Test",""  ,""));
+        convites.add(new Convite(82,104,new Date(),"Y","Test2","" ,""));
+        convites.add(new Convite(82,104,new Date(),"Y","Test3", "",""));
     }
 
     public List<Convite> getConvites(){
