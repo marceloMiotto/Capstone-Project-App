@@ -17,22 +17,22 @@ import udacitynano.com.br.cafelegal.ChatActivity;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Convite;
 
-public class ConviteAdapter  extends RecyclerView.Adapter<ConviteAdapter.ViewHolder>{
+public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistoricoAdapter.ViewHolder>{
 
-    List<Convite> mConviteList;
-    static Context mContext;
-    static  String mPosition;
+    private static List<Convite> mConviteList;
+    private static Context mContext;
+    private static  String mPosition;
 
 
-    public ConviteAdapter(Context context, List<Convite> conviteList) {
+    public ConviteHistoricoAdapter(Context context, List<Convite> conviteList) {
         mConviteList = conviteList;
         mContext = context;
     }
 
 
     @Override
-    public ConviteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
+    public ConviteHistoricoAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_convite_historico, parent, false);
 
@@ -41,8 +41,8 @@ public class ConviteAdapter  extends RecyclerView.Adapter<ConviteAdapter.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(ConviteAdapter.ViewHolder holder, int position) {
-        holder.mConviteTitle.setText(mConviteList.get(position).getChatFirebase() +" - "+ String.valueOf(mConviteList.get(position).getId()));
+    public void onBindViewHolder(ConviteHistoricoAdapter.ViewHolder holder, int position) {
+        holder.mConviteTitle.setText(mConviteList.get(position).getDataCriacao());
 
         mPosition = String.valueOf(position);
         Log.e("Debug2","position "+position);
@@ -59,7 +59,6 @@ public class ConviteAdapter  extends RecyclerView.Adapter<ConviteAdapter.ViewHol
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mConviteTitle;
-        public TextView mConviteDate;
 
         public ViewHolder(View v) {
             super(v);
@@ -73,10 +72,20 @@ public class ConviteAdapter  extends RecyclerView.Adapter<ConviteAdapter.ViewHol
                     int position = getAdapterPosition();
                     Log.e("Debug1","click() "+position);
                     Intent intent = new Intent(mContext,ChatActivity.class);
-                    intent.putExtra("convite","Convite "+position);
+
+                    Log.e("Debug54","Convite Id: "+mConviteList.get(getAdapterPosition()).getId());
+                    Log.e("Debug54","Nome Convida: "+mConviteList.get(getAdapterPosition()).getNomeConvida());
+                    Log.e("Debug54","Nome Advogado: "+mConviteList.get(getAdapterPosition()).getNomeAdvogado());
+                    Log.e("Debug54","Advogado OAB: "+mConviteList.get(getAdapterPosition()).getAdvogadoOAB());
+
+                    intent.putExtra("convite","Convite "+ mConviteList.get(getAdapterPosition()).getId());
+                    intent.putExtra("nome_convida",mConviteList.get(getAdapterPosition()).getNomeConvida());
+                    intent.putExtra("nome_advogado",mConviteList.get(getAdapterPosition()).getNomeAdvogado());
+                    intent.putExtra("advogado_oab",mConviteList.get(getAdapterPosition()).getAdvogadoOAB());
                     mContext.startActivity(intent);
                 }
             });
+
 
         }
 

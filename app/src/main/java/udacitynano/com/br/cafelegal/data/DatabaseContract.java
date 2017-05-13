@@ -71,6 +71,9 @@ public class DatabaseContract {
                 public static final String COLUMN_CHAT_FIREBASE       = "chat_firebase";
                 public static final String COLUMN_ESPECIALIDADE       = "especialidade";
                 public static final String COLUMN_AREA_LOCATION       = "area_location";
+                public static final String COLUMN_NOME_CONVIDA        = "nome_convida";
+                public static final String COLUMN_NOME_ADVOGADO       = "nome_advogado";
+                public static final String COLUMN_ADVOGADO_OAB        = "advogado_oab";
 
 
                 public static final Uri CONTENT_URI =

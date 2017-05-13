@@ -104,7 +104,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     private String mSeccionalChoosen;
     private String mEspecialidadeUmChoosen;
     private String mEspecialidadeDoisChoosen;
-    private String mNotificationRegistration;
     private String mFirebaseEmail;
     private String mFirebaseToken;
 

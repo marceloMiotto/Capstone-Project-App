@@ -9,7 +9,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper{
 
     private Context mContext;
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
 
     static final String DATABASE_NAME = "cafelegal.db";
 
@@ -58,8 +58,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     DatabaseContract.ConviteEntry.COLUMN_CONVIDA_ID + " TEXT, " +
                     DatabaseContract.ConviteEntry.COLUMN_RESPONDE_ID + " TEXT, " +
                     DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE + " TEXT, " +
-                    DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO + " TEXT " +
-                    " );";
+                    DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_CHAT_FIREBASE  + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_ESPECIALIDADE  + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_AREA_LOCATION  + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_NOME_CONVIDA + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_NOME_ADVOGADO + " TEXT, " +
+                    DatabaseContract.ConviteEntry.COLUMN_ADVOGADO_OAB  + " TEXT " +
+            " );";
 
             sqLiteDatabase.execSQL(SQL_CREATE_PESSOA_TABLE);
             sqLiteDatabase.execSQL(SQL_CREATE_CONVITE_TABLE);

@@ -76,6 +76,7 @@ public class NetworkRequests {
                         Convite convite = (Convite) object;
                         ConviteService conviteService = new ConviteService(mContext,mView);
                         convite.setId(Long.valueOf(response.toString()));
+
                         conviteService.createConvite(mContext,convite);
 
                         break;

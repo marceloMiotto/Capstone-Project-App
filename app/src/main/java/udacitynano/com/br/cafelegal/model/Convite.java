@@ -14,11 +14,16 @@ public class Convite {
     private String chatFirebase;
     private String especialidade;
     private String areaLocation;
+    private String nomeConvida;
+    private String nomeAdvogado;
+    private String advogadoOAB;
+
 
     public Convite() {
     }
 
-    public Convite(long conviteServerId, long convidaId, long respondeId, String dataCriacao, String aceito, String chatFirebase, String especialidade, String areaLocation) {
+    public Convite(long conviteServerId, long convidaId, long respondeId, String dataCriacao, String aceito, String chatFirebase, String especialidade, String areaLocation
+           ,String nomeConvida, String nomeAdvogado, String advogadoOAB) {
         this.id = conviteServerId;
         this.convidaId = convidaId;
         this.respondeId = respondeId;
@@ -27,6 +32,9 @@ public class Convite {
         this.chatFirebase = chatFirebase;
         this.especialidade = especialidade;
         this.areaLocation = areaLocation;
+        this.nomeConvida = nomeConvida;
+        this.nomeAdvogado = nomeAdvogado;
+        this.advogadoOAB  = advogadoOAB;
     }
 
 
@@ -92,5 +100,29 @@ public class Convite {
 
     public void setAreaLocation(String areaLocation) {
         this.areaLocation = areaLocation;
+    }
+
+    public String getNomeConvida() {
+        return nomeConvida;
+    }
+
+    public void setNomeConvida(String nomeConvida) {
+        this.nomeConvida = nomeConvida;
+    }
+
+    public String getNomeAdvogado() {
+        return nomeAdvogado;
+    }
+
+    public void setNomeAdvogado(String nomeAdvogado) {
+        this.nomeAdvogado = nomeAdvogado;
+    }
+
+    public String getAdvogadoOAB() {
+        return advogadoOAB;
+    }
+
+    public void setAdvogadoOAB(String advogadoOAB) {
+        this.advogadoOAB = advogadoOAB;
     }
 }

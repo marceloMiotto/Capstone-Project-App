@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import udacitynano.com.br.cafelegal.model.CafeLegalMessage;
+import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -71,7 +72,10 @@ public class ChatFragment extends Fragment implements
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "ChatFragment";
-    public static  String MESSAGES_CHILD ;
+    public static  String MESSAGES_CHILD;
+    public static  String MESSAGE_NOME_ADVOGADO = "X";
+    public static  String MESSAGE_ADVOGADO_OAB;
+    public static  String MESSAGE_NOME_CONVIDA  = "X";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 10;
     public static final String ANONYMOUS = "anonymous";
     private static final String MESSAGE_SENT_EVENT = "message_sent";
@@ -128,16 +132,32 @@ public class ChatFragment extends Fragment implements
 
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mUsername = ANONYMOUS;
+
+        //miotto test begin
+        MESSAGES_CHILD = getActivity().getIntent().getStringExtra("convite");
+        MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra("nome_advogado");
+        MESSAGE_ADVOGADO_OAB = getActivity().getIntent().getStringExtra("advogado_oab");
+        MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra("nome_convida");
+        // miotto test end
+
+        if(UserType.isAdvogado()){
+            if(MESSAGE_NOME_ADVOGADO.equals("X")){
+                mUsername = ANONYMOUS;
+            }else{
+                mUsername = MESSAGE_NOME_ADVOGADO+" - "+MESSAGE_ADVOGADO_OAB;
+            }
+        }else{
+            if(MESSAGE_NOME_CONVIDA.equals("X")){
+                mUsername = ANONYMOUS;
+            }else{
+                mUsername = MESSAGE_NOME_CONVIDA;
+            }
+        }
+
 
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
-        //miotto test begin
-        MESSAGES_CHILD = getActivity().getIntent().getStringExtra("convite");
-
-        // miotto test end
 
 
 

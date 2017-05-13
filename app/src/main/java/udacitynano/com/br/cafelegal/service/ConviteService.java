@@ -39,10 +39,10 @@ public class ConviteService {
     }
 
     public int sendConvite(long userId, String areaLocation) throws JSONException {
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
         String reportDate = df.format(today);
-        final Convite convite = new Convite(-1,userId, 0,reportDate, "N", "", "", areaLocation);
+        final Convite convite = new Convite(-1,userId, 0,reportDate, "N", "", "", areaLocation,"","","");
         Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
         final JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
         Log.e("Debug","jsonConvite "+jsonConvite.toString());
@@ -68,6 +68,12 @@ public class ConviteService {
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_RESPONDE_ID, convite.getRespondeId());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE, String.valueOf(convite.getDataCriacao()));
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO, convite.getAceito());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CHAT_FIREBASE, convite.getChatFirebase());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ESPECIALIDADE , convite.getEspecialidade());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_AREA_LOCATION , convite.getAreaLocation());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_NOME_CONVIDA, convite.getNomeConvida());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_NOME_ADVOGADO , convite.getNomeAdvogado());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ADVOGADO_OAB, convite.getAdvogadoOAB());
 
 
         selectionArgs[0] = String.valueOf(convite.getId());
@@ -99,6 +105,14 @@ public class ConviteService {
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_RESPONDE_ID, convite.getRespondeId());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE, String.valueOf(convite.getDataCriacao()));
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO, convite.getAceito());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CHAT_FIREBASE, convite.getChatFirebase());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ESPECIALIDADE , convite.getEspecialidade());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_AREA_LOCATION , convite.getAreaLocation());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_NOME_CONVIDA, convite.getNomeConvida());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_NOME_ADVOGADO , convite.getNomeAdvogado());
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ADVOGADO_OAB, convite.getAdvogadoOAB());
+
+
 
 
         Uri insertedUri = context.getContentResolver().insert(

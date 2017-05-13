@@ -1,11 +1,9 @@
 package udacitynano.com.br.cafelegal;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,7 +15,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -27,15 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import udacitynano.com.br.cafelegal.adapter.ConviteAdapter;
 import udacitynano.com.br.cafelegal.adapter.ConvitesAbertosAdapter;
-import udacitynano.com.br.cafelegal.model.Advogado;
-import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Convite;
-import udacitynano.com.br.cafelegal.model.Pessoa;
-import udacitynano.com.br.cafelegal.network.NetworkRequests;
-import udacitynano.com.br.cafelegal.service.ConviteService;
-import udacitynano.com.br.cafelegal.service.PerfilService;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;

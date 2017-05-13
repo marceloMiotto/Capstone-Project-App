@@ -14,41 +14,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import udacitynano.com.br.cafelegal.adapter.ConviteAdapter;
+import udacitynano.com.br.cafelegal.adapter.ConviteHistoricoAdapter;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.service.ConviteService;
-import udacitynano.com.br.cafelegal.singleton.UserType;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HistoricoConvitesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HistoricoConvitesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HistoricoConvitesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final int CONVITE_HISTORICO_LOADER_ID = 12;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Convite> myDataset;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -56,31 +39,16 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HistoricoConvitesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HistoricoConvitesFragment newInstance(String param1, String param2) {
         HistoricoConvitesFragment fragment = new HistoricoConvitesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -91,21 +59,19 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         View view = inflater.inflate(R.layout.fragment_historico_convites, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.convite_historico_recyclerView);
 
-        ConviteService conviteService = new ConviteService(getActivity(),view);
-
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset = new ArrayList<>();
         // specify an adapter (see also next example)
-        mAdapter = new ConviteAdapter(getActivity(),myDataset);
+        mAdapter = new ConviteHistoricoAdapter(getActivity(),myDataset);
         mRecyclerView.setAdapter(mAdapter);
-
+        Log.e("Debug15","Convite historico entrou");
+        getLoaderManager().initLoader(CONVITE_HISTORICO_LOADER_ID, null, this);
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -141,7 +107,10 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
                 DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO,
                 DatabaseContract.ConviteEntry.COLUMN_CHAT_FIREBASE,
                 DatabaseContract.ConviteEntry.COLUMN_ESPECIALIDADE,
-                DatabaseContract.ConviteEntry.COLUMN_AREA_LOCATION
+                DatabaseContract.ConviteEntry.COLUMN_AREA_LOCATION,
+                DatabaseContract.ConviteEntry.COLUMN_NOME_CONVIDA,
+                DatabaseContract.ConviteEntry.COLUMN_NOME_ADVOGADO,
+                DatabaseContract.ConviteEntry.COLUMN_ADVOGADO_OAB
         };
 
         Log.e("Debug","Convite loader projection "+projection);
@@ -169,7 +138,20 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
-                myDataset.add(new Convite(cursor.getLong(0), cursor.getLong(1), cursor.getLong(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString((7))));
+                myDataset.add(new Convite( cursor.getLong(0)
+                                         , cursor.getLong(1)
+                                         , cursor.getLong(2)
+                                         , cursor.getString(3)
+                                         , cursor.getString(4)
+                                         , cursor.getString(5)
+                                         , cursor.getString(6)
+                                         , cursor.getString(7)
+                                         , cursor.getString(8)
+                                         , cursor.getString(9)
+                                         , cursor.getString(10)
+                                         ));
+                cursor.moveToNext();
+
             }
 
 
