@@ -136,7 +136,7 @@ public class ChatFragment extends Fragment implements
         //miotto test begin
         MESSAGES_CHILD = getActivity().getIntent().getStringExtra("convite");
         MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra("nome_advogado");
-        MESSAGE_ADVOGADO_OAB = getActivity().getIntent().getStringExtra("advogado_oab");
+        MESSAGE_ADVOGADO_OAB = "OAB: "+getActivity().getIntent().getStringExtra("advogado_oab");
         MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra("nome_convida");
         // miotto test end
 

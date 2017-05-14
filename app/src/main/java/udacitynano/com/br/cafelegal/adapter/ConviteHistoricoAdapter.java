@@ -16,6 +16,7 @@ import java.util.List;
 import udacitynano.com.br.cafelegal.ChatActivity;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Convite;
+import udacitynano.com.br.cafelegal.singleton.UserType;
 
 public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistoricoAdapter.ViewHolder>{
 
@@ -43,6 +44,11 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
     @Override
     public void onBindViewHolder(ConviteHistoricoAdapter.ViewHolder holder, int position) {
         holder.mConviteTitle.setText(mConviteList.get(position).getDataCriacao());
+        if(UserType.isAdvogado()){
+            holder.mConviteSolicita.setText(mConviteList.get(position).getNomeConvida());
+        }else{
+            holder.mConviteSolicita.setText(mConviteList.get(position).getNomeAdvogado()+ " - OAB: " + mConviteList.get(position).getAdvogadoOAB());
+        }
 
         mPosition = String.valueOf(position);
         Log.e("Debug2","position "+position);
@@ -59,10 +65,12 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mConviteTitle;
+        public TextView mConviteSolicita;
 
         public ViewHolder(View v) {
             super(v);
-            mConviteTitle = (TextView) v.findViewById(R.id.item_convite_historico_title);
+            mConviteTitle = (TextView) v.findViewById(R.id.item_convite_historico_data);
+            mConviteSolicita = (TextView) v.findViewById(R.id.item_convite_historico_nome);
 
 
             v.setOnClickListener(new View.OnClickListener() {

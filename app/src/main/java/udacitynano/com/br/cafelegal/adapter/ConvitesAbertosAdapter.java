@@ -16,9 +16,12 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,11 +39,11 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 
-public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertosAdapter.ViewHolder>{
+public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertosAdapter.ViewHolder> {
 
-    private static  List<Convite> mConviteList;
+    private static List<Convite> mConviteList;
     private static Context mContext;
-    private static  String mPosition;
+    private static String mPosition;
     private int convitePosition;
 
 
@@ -65,13 +68,13 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
         holder.mConviteTitle.setText(mConviteList.get(position).getDataCriacao());
 
         mPosition = String.valueOf(position);
-        Log.e("Debug2","position "+position);
+        Log.e("Debug2", "position " + position);
 
     }
 
     @Override
     public int getItemCount() {
-        if(mConviteList != null){
+        if (mConviteList != null) {
             return mConviteList.size();
         }
         return 0;
@@ -90,38 +93,46 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
             mConviteAceito.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,"Test",Toast.LENGTH_SHORT).show();
-                    Log.e("Debug2","view ");
-                    Log.e("Debug1","click() convite id "+ mConviteList.get(getAdapterPosition()).getId() );
+                    Toast.makeText(mContext, "Test", Toast.LENGTH_SHORT).show();
+                    Log.e("Debug2", "view ");
+                    Log.e("Debug1", "click() convite id " + mConviteList.get(getAdapterPosition()).getId());
                     //TODO update convite aceitando
                     long advogadoId = UserType.getUserId();
-                    String apiURL = Constant.SERVER_API_CAFE_LEGAL+Constant.CONVITE_CAFE_LEGAL+"/"+mConviteList.get(getAdapterPosition()).getId() +"/"+advogadoId+Constant.ACEITO;
-                    Log.e("Debug2"," aceito url: "+apiURL);
-                    StringRequest stringRequest = new StringRequest(Request.Method.PUT, apiURL, new Response.Listener<String>() {
+                    String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL + "/" + mConviteList.get(getAdapterPosition()).getId() + "/" + advogadoId + Constant.ACEITO;
+                    Log.e("Debug2", " aceito url: " + apiURL);
 
-                        @Override
-                        public void onResponse(String response) {
-                            Log.e("Debug", "convite aceito " + response.toString());
-                            //cria o convite
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                            (Request.Method.PUT, apiURL, null, new Response.Listener<JSONObject>() {
 
-                            ConviteService conviteService = new ConviteService(mContext,null);
-                            conviteService.createConvite(mContext,mConviteList.get(getAdapterPosition()));
-                            Log.e("Debug11","click2() convite id "+ mConviteList.get(getAdapterPosition()).getId() );
+                                @Override
+                                public void onResponse(JSONObject response) {
 
-                        }
+                                    Log.e("Debug", "convite aceito " + response.toString());
 
-                    }, new Response.ErrorListener() {
+                                    Log.e("Debug12", response.toString());
+                                    Convite convite = new Gson().fromJson(response.toString(), Convite.class);
+                                    ConviteService conviteService = new ConviteService(mContext, null);
+                                    conviteService.createConvite(mContext, convite);
+                                    Log.e("Debug11", "click2() convite id " + convite.getId());
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO Auto-generated method stub
-                            Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
-                            Toast.makeText(mContext,"Este convite foi aceito por outro Advogado(a). Faça um refresh para acessar os convites em aberto.",Toast.LENGTH_SHORT).show();
-                        }
+                                    //open chat com o convite id
+                                    Intent intent = new Intent(mContext, ChatActivity.class);
+                                    intent.putExtra("convite", "Convite " + convite.getId());
+                                    intent.putExtra("nome_convida", convite.getNomeConvida());
+                                    intent.putExtra("nome_advogado", convite.getNomeAdvogado());
+                                    intent.putExtra("advogado_oab", convite.getAdvogadoOAB());
+                                    mContext.startActivity(intent);
 
-                    }
+                                }
+                            }, new Response.ErrorListener() {
 
-                    ) {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+                                    Toast.makeText(mContext, "Este convite foi aceito por outro Advogado(a). Faça um refresh para acessar os convites em aberto.", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }) {
 
                         /**
                          * Passing some request headers
@@ -134,19 +145,12 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
                         }
 
                     };
-
                     // Access the RequestQueue through your singleton class.
-                    NetworkSingleton.getInstance(mContext).addStringRequestQueue(stringRequest);
+                    NetworkSingleton.getInstance(mContext).addJSONToRequestQueue(jsonObjectRequest);
 
-                    //open chat com o convite id
-                    Intent intent = new Intent(mContext,ChatActivity.class);
-                    intent.putExtra("convite","Convite "+ mConviteList.get(getAdapterPosition()).getId());
-                    intent.putExtra("nome_convida",mConviteList.get(getAdapterPosition()).getNomeConvida());
-                    intent.putExtra("nome_advogado",mConviteList.get(getAdapterPosition()).getNomeAdvogado());
-                    intent.putExtra("advogado_oab",mConviteList.get(getAdapterPosition()).getAdvogadoOAB());
-                    mContext.startActivity(intent);
                 }
             });
+
 
         }
 

@@ -10,19 +10,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import udacitynano.com.br.cafelegal.AdvogadoDetailsActivity;
 import udacitynano.com.br.cafelegal.ChatActivity;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Advogado;
-
+import udacitynano.com.br.cafelegal.model.Convite;
+import udacitynano.com.br.cafelegal.service.ConviteService;
 
 
 public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAdapter.ViewHolder>{
-
-        List<Advogado> mAdvogadoList;
-static Context mContext;
-static  String mPosition;
+    List<Advogado> mAdvogadoList;
+    static Context mContext;
+    static  String mPosition;
 
 
 public ListaAdvogadosAdapter(Context context, List<Advogado> advogadoList) {
@@ -74,14 +86,13 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
                 Toast.makeText(mContext,"Test",Toast.LENGTH_SHORT).show();
                 int position = getAdapterPosition();
                 Log.e("Debug1","click() "+position);
-                Intent intent = new Intent(mContext,ChatActivity.class);
-                intent.putExtra("convite","Convite "+position);
+                Intent intent = new Intent(mContext,AdvogadoDetailsActivity.class);
                 mContext.startActivity(intent);
             }
         });
 
-    }
 
+    }
 }
 
 }

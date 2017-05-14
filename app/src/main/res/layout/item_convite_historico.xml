@@ -13,9 +13,13 @@
         android:src="@drawable/icon_cafe"
         app:civ_border_width="2dp"
         app:civ_border_color="@color/colorAccent"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <TextView
-        android:id="@+id/item_convite_historico_title"
+        android:id="@+id/item_convite_historico_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -25,5 +29,19 @@
         tools:text="Test 10/03/2017 15:32"
 
         />
+
+        <TextView
+            android:id="@+id/item_convite_historico_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Test 10/03/2017 15:32"
+
+            />
+
+    </LinearLayout>
 
 </LinearLayout>
