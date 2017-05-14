@@ -22,6 +22,11 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -37,8 +42,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import udacitynano.com.br.cafelegal.model.Advogado;
+import udacitynano.com.br.cafelegal.service.PerfilService;
+import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
+import udacitynano.com.br.cafelegal.util.Constant;
 
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
@@ -50,6 +68,7 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     LatLng myLocation;
+    List<Advogado> mAdvogadosList;
 
     private int REQUEST_LOCATION = 1;
 
@@ -71,6 +90,65 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
                     .build();
         }
 
+        //TODO VERIFY INTERNET
+        String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADOS;
+        Log.e("Debug2", " aceito url: " + apiURL);
+        //TODO INFORMAR A LATITUDE E LONGITUDE CORRETAS
+        mAdvogadosList = new ArrayList<>();
+        JsonArrayRequest jsonArrayObject = new JsonArrayRequest
+                (Request.Method.GET, apiURL,null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+
+                            Log.e("Debug13",response.toString());
+                            for(int i=0;i<response.length();i++){
+                                JSONObject jsonAdvogados = response.getJSONObject(i);
+                                mAdvogadosList.add(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
+                                Log.e("Debug13",jsonAdvogados.toString());
+                            }
+
+                            //mAdapter.notifyDataSetChanged();
+                            //TODO REFRESH MAP
+                           // if(mMap != null){ //prevent crashing if the map doesn't exist yet (eg. on starting activity)
+                           //     mMap.clear();
+
+                                // add markers from database to the map
+                            //}
+                            Log.e("Debug12","Ok");
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+
+                    }
+                }) {
+
+
+            /**
+             * Passing some request headers
+             */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        // Access the RequestQueue through your singleton class.
+        NetworkSingleton.getInstance(this).addJSONArrayToRequestQueue(jsonArrayObject);
+
+
     }
 
 
@@ -88,37 +166,42 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-30.06329997, -51.1712265);
-        LatLng sydneyTest = new LatLng(-30.06285427, -51.16281509);
+        //LatLng sydney = new LatLng(-30.06329997, -51.1712265);
+       // LatLng sydneyTest = new LatLng(-30.06285427, -51.16281509);
 
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Puc")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_work_black_24dp));
-        mMap.addMarker(new MarkerOptions().position(sydneyTest).title("test")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_work_black_24dp));
-
+       // mMap.addMarker(new MarkerOptions().position(sydney).title("Puc")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_work_black_24dp));
+       // mMap.addMarker(new MarkerOptions().position(sydneyTest).title("test")).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_work_black_24dp));
+        Log.e("Debug23","map is ready");
 
         //todo remove test
-        Geocoder coder = new Geocoder(this);
-        try {
-            ArrayList<Address> adresses = (ArrayList<Address>) coder.getFromLocationName("Rua Marcílio Dias, 524 - Menino Deus, Porto Alegre - RS, Brasil", 50);
-            for(Address add : adresses){
-                //if (statement) {//Controls to ensure it is right address such as country etc.
-                double longitude = add.getLongitude();
-                double latitude = add.getLatitude();
-                LatLng casa = new LatLng(latitude, longitude);
-                Toast.makeText(getApplicationContext(),"Test: "+String.valueOf(longitude),Toast.LENGTH_LONG);
-                mMap.addMarker(new MarkerOptions().position(casa).title("CASA"));
-                mMap.addCircle(new CircleOptions().center(casa).radius(300).strokeColor(R.color.colorPrimary).strokeWidth(6));
-                //}
+        //TODO TEST
+        //while (mAdvogadosList.isEmpty()) {
+            Geocoder coder = new Geocoder(this);
+            for (Advogado advogado : mAdvogadosList) {
+                String endereco = advogado.getEndereco() + "," + advogado.getNumero() + " - " + advogado.getBairro() + "," + advogado.getCidade();
+                Log.e("Debug23", "endereco " + endereco);
+                try {
+                    ArrayList<Address> adresses = (ArrayList<Address>) coder.getFromLocationName(endereco, 2);
+                    for (Address add : adresses) {
+                        //if (statement) {//Controls to ensure it is right address such as country etc.
+                        double longitude = add.getLongitude();
+                        double latitude = add.getLatitude();
+                        LatLng escritorio = new LatLng(latitude, longitude);
+                        mMap.addMarker(new MarkerOptions().position(escritorio).title(advogado.getNome() + " - " + "OAB: " + advogado.getNumeroInscricaoOAB())).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_work_black_24dp));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //}
+
         //end remove test
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-
+                //TODO SEARCH FOR LAWYER BY NAME
                 Intent intent = new Intent(getApplicationContext(), AdvogadoDetailsActivity.class);
                 intent.putExtra("testExtra", marker.getTitle());
                 Log.e("Debug1", marker.getTitle());
@@ -127,7 +210,7 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
                 return true;
             }
         });
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney,10.0f));
+
     }
 
     protected void onStart() {
@@ -153,33 +236,11 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
             // permission has been granted, continue as usual
             mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
-                Toast.makeText(getApplicationContext(),"Coordenadas Latitude: "+String.valueOf(mLastLocation.getLatitude()) + " Longitude: "+String.valueOf(mLastLocation.getLongitude()),Toast.LENGTH_SHORT).show();
-
                 myLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(myLocation).title("eu"));
-                //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-                //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-            }
-        }
-    }
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,13.0f));
+                mMap.addCircle(new CircleOptions().center(myLocation).radius(500).strokeColor(R.color.colorPrimary).strokeWidth(6));
 
-    //permission result
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions,
-                                           int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION) {
-            if(grantResults.length == 1
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //   mLastLocation =  FusedLocationApi.getLastLocation(mGoogleApiClient);
-                //   if (mLastLocation != null) {
-                //       Toast.makeText(getApplicationContext(),"Coordenadas Latitude: "+String.valueOf(mLastLocation.getLatitude()) + " Longitude: "+String.valueOf(mLastLocation.getLongitude()),Toast.LENGTH_SHORT).show();
-                //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-                //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-                //   }
-                Toast.makeText(this,"Permission Granted. ",Toast.LENGTH_SHORT).show();
-            } else {
-                // Permission was denied or request was cancelled
-                Toast.makeText(this,"Permission Denied. ",Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -191,6 +252,32 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    //permission result
+    @SuppressWarnings({"MissingPermission"})
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if (mLastLocation != null) {
+                    myLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(myLocation).title("eu"));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,13.0f));
+                    mMap.addCircle(new CircleOptions().center(myLocation).radius(500).strokeColor(R.color.colorPrimary).strokeWidth(6));
+
+                    Toast.makeText(this, "Permission Granted. ", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Permission was denied or request was cancelled
+                    Toast.makeText(this, "Permission Denied. ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
 
     }
 

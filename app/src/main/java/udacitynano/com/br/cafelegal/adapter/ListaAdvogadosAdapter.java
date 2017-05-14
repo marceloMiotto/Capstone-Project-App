@@ -32,9 +32,9 @@ import udacitynano.com.br.cafelegal.service.ConviteService;
 
 
 public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAdapter.ViewHolder>{
-    List<Advogado> mAdvogadoList;
-    static Context mContext;
-    static  String mPosition;
+    private static List<Advogado> mAdvogadoList;
+    private static Context mContext;
+    private static  String mPosition;
 
 
 public ListaAdvogadosAdapter(Context context, List<Advogado> advogadoList) {
@@ -50,6 +50,8 @@ public ListaAdvogadosAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int
         .inflate(R.layout.item_lista_advogados, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
+
+
         return vh;
         }
 
@@ -59,6 +61,8 @@ public void onBindViewHolder(ListaAdvogadosAdapter.ViewHolder holder, int positi
 
         mPosition = String.valueOf(position);
         Log.e("Debug2","position "+position);
+
+
         }
 
 @Override
@@ -79,7 +83,6 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
         mAdvogadoEspecialidade =(TextView) v.findViewById(R.id.lista_advogados_especialidade);
         mAdvogadoEndereco =(TextView) v.findViewById(R.id.lista_advogados_endereco);
 
-
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,9 +90,12 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
                 int position = getAdapterPosition();
                 Log.e("Debug1","click() "+position);
                 Intent intent = new Intent(mContext,AdvogadoDetailsActivity.class);
+                intent.putExtra("ADVOGADO_SELECIOANDO",mAdvogadoList.get(position) );
+                Log.e("Debug1","ADVOGADO_SELECIOANDO id "+ mAdvogadoList.get(position).getId());
                 mContext.startActivity(intent);
             }
         });
+
 
 
     }

@@ -1,7 +1,10 @@
 package udacitynano.com.br.cafelegal.model;
 
 
-public abstract class Pessoa {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public abstract class Pessoa implements Parcelable {
 
     //@SerializedName("id") usar caso algum seja diferente
 
@@ -163,5 +166,50 @@ public abstract class Pessoa {
     public void setNotificationRegistration(String notificationRegistration) {
         this.notificationRegistration = notificationRegistration;
     }
+
+    //Parcelable
+
+    public void writeToParcel(Parcel out, int flags) {
+
+        out.writeLong(id);
+        out.writeString(nome);
+        out.writeString(nomeMeio);
+        out.writeString(sobrenome);
+        out.writeString(email);
+        out.writeInt(cep);
+        out.writeString(endereco);
+        out.writeString(numero);
+        out.writeString(complemento);
+        out.writeString(bairro);
+        out.writeString(cidade);
+        out.writeString(estado);
+        out.writeString(pais);
+        out.writeString(sexo);
+        out.writeString(notificationRegistration);
+    }
+
+    protected Pessoa(Parcel in) {
+
+        this.id = in.readLong();
+        this.nome = in.readString();
+        this.nomeMeio = in.readString();
+        this.sobrenome = in.readString();
+        this.email = in.readString();
+        this.cep = in.readInt();
+        this.endereco = in.readString();
+        this.numero = in.readString();
+        this.complemento = in.readString();
+        this.bairro = in.readString();
+        this.cidade = in.readString();
+        this.estado = in.readString();
+        this.pais =in.readString();
+        this.sexo = in.readString();
+        this.notificationRegistration =in.readString();
+
+
+    }
+
+
+
 }
 

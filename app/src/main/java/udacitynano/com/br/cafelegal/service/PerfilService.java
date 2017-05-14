@@ -162,6 +162,10 @@ public class PerfilService {
         return updateCreatePerfil(pessoa);
     }
 
+    public long updateCreateAdvogadoOnSQLite(Pessoa pessoa){
+        return updateCreatePerfil(pessoa);
+    }
+
 
     public void setSharedId(long id){
         SharedPreferences sharedPref = mContext.getSharedPreferences(

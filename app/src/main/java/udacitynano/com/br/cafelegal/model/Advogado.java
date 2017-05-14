@@ -1,6 +1,8 @@
 package udacitynano.com.br.cafelegal.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
 public class Advogado extends Pessoa {
 
@@ -120,4 +122,49 @@ public class Advogado extends Pessoa {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    //Parcelable
+
+    //Parcelable
+    public static final Parcelable.Creator<Advogado> CREATOR = new Parcelable.Creator<Advogado>() {
+        public Advogado createFromParcel(Parcel in) {
+            return new Advogado(in);
+        }
+
+        public Advogado[] newArray(int size) {
+            return new Advogado[size];
+        }
+    };
+
+
+    public void writeToParcel(Parcel out, int flags) {
+        super.writeToParcel(out, flags);
+        out.writeString(numeroInscricaoOAB);
+        out.writeString(seccional);
+        out.writeString(tipoInscricao);
+        out.writeString(telefoneComercial);
+        out.writeString(twitter);
+        out.writeString(linkedIn);
+        out.writeString(especialistaUm);
+        out.writeString(especialistaDois);
+    }
+
+    private Advogado(Parcel in) {
+        super(in);
+
+        this.numeroInscricaoOAB = in.readString();
+        this.seccional = in.readString();
+        this.tipoInscricao = in.readString();
+        this.telefoneComercial = in.readString();
+        this.twitter = in.readString();
+        this.linkedIn = in.readString();
+        this.especialistaUm = in.readString();
+        this.especialistaDois = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
 }

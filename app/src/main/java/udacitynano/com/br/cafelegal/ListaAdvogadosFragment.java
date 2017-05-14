@@ -103,7 +103,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
                             for(int i=0;i<response.length();i++){
                                 JSONObject jsonAdvogados = response.getJSONObject(i);
                                 PerfilService perfilService = new PerfilService(getActivity(),null);
-                                perfilService.updateCreateUserOnSQLite(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
+                                perfilService.updateCreateAdvogadoOnSQLite(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
                                 //myDataset.add(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
                                 Log.e("Debug13",jsonAdvogados.toString());
                             }
@@ -201,7 +201,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
         };
 
-        Log.e("Debug","Convite loader projection "+projection);
+        Log.e("Debug","Advogados loader projection "+projection);
 
         CursorLoader loader = new CursorLoader(
                 this.getActivity(),
@@ -217,15 +217,15 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         if (cursor != null) {
-            Log.e("Debug", "Lodader count " + cursor.getCount());
+            Log.e("Debug", "Loader count " + cursor.getCount());
         }else{
             Log.e("Debug","Loader Cursor null");
         }
 
         if (cursor != null && cursor.getCount() > 0) {
+            myDataset.clear();
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
-
                 myDataset.add(new Advogado(
                         cursor.getLong(0)      //id,
                         , cursor.getString(1)  //nome,
@@ -256,6 +256,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
         }
         mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
