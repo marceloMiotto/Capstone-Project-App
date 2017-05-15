@@ -63,9 +63,8 @@ public class NetworkRequests {
 
             @Override
             public void onResponse(String response) {
-                Log.e("Debug", "Convite id " + response.toString());
                 if (mShowSnack) {
-                    Snackbar.make(mView, "Salvo", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mView, mContext.getString(R.string.request_salvo), Snackbar.LENGTH_SHORT).show();
                 }
 
                 switch (mTypeCalled){
@@ -81,14 +80,10 @@ public class NetworkRequests {
 
                         break;
                     case Constant.LOGIN:
-                        Log.e("Debug","Token save "+response.toString());
                         break;
                     case Constant.ANDROID_SERVICE:
-                        Log.e("Debug","Token save "+response.toString());
                         break;
-
                     case Constant.CONVITE_ACEITO:
-                        Log.e("Debug","Convite Aceito "+response.toString());
                         break;
                     }
 
@@ -98,10 +93,8 @@ public class NetworkRequests {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
                 if(mShowSnack){
-                    Snackbar.make(mView,"Erro ao enviar",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mView,mContext.getString(R.string.request_erro_ao_enviar),Snackbar.LENGTH_SHORT).show();
                 }
 
             }
@@ -116,7 +109,7 @@ public class NetworkRequests {
 
             @Override
             public String getBodyContentType() {
-                return "application/json; charset=utf-8";
+                return Constant.content_application_json;
             }
         };
 
@@ -137,9 +130,8 @@ public class NetworkRequests {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("Debug", "Pessoa return " + response.toString());
                         if (mShowSnack) {
-                            Snackbar.make(mView, "Salvo", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(mView, mContext.getString(R.string.request_salvo), Snackbar.LENGTH_SHORT).show();
                         }
 
                         switch (mTypeCalled){
@@ -147,7 +139,6 @@ public class NetworkRequests {
                             case Constant.PERFIL:
                                 PerfilService perfilService = new PerfilService(mContext, mView);
                                 UserType userType = UserType.getInstance(mContext);
-                                Log.e("Debug","Login activity user type "+ userType.getAppUserType());
                                 Pessoa pessoa;
                                 if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_advogado))) {
                                     pessoa = new Gson().fromJson(response.toString(),Advogado.class);
@@ -166,7 +157,7 @@ public class NetworkRequests {
                                 SharedPreferences.Editor editor = sharedPref.edit();
 
                                 try {
-                                    if(response.getString("type").equals("cliente")){
+                                    if(response.getString(Constant.word_type).equals(Constant.word_ciente)){
                                         editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_cliente));
                                     }else{
                                         editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_advogado));
@@ -177,14 +168,11 @@ public class NetworkRequests {
 
                                 editor.commit();
 
-                                Log.e("Debug","networkRequests activity user type "+ userType.getAppUserType());
                                 break;
 
                             case Constant.LOGIN:
-                                Log.e("Debug","Token save "+response.toString());
                                 break;
                             case Constant.ANDROID_SERVICE:
-                                Log.e("Debug","Token save "+response.toString());
                                 break;
 
                         }
@@ -194,9 +182,8 @@ public class NetworkRequests {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
                         if(mShowSnack){
-                            Snackbar.make(mView,"Erro ao enviar",Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(mView,mContext.getString(R.string.request_erro_ao_enviar),Snackbar.LENGTH_SHORT).show();
                         }
 
                     }

@@ -123,7 +123,6 @@ public class Advogado extends Pessoa {
         this.longitude = longitude;
     }
 
-    //Parcelable
 
     //Parcelable
     public static final Parcelable.Creator<Advogado> CREATOR = new Parcelable.Creator<Advogado>() {

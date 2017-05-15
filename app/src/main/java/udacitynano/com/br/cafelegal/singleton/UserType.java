@@ -71,7 +71,6 @@ public class UserType {
 
         SharedPreferences sharedPref = mContext.getSharedPreferences(
                 mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        Log.e("Debug12","preference user type id "+mContext.getString(R.string.preference_user_type_id));
         return sharedPref.getLong(mContext.getString(R.string.preference_user_type_id),-1);
 
     }

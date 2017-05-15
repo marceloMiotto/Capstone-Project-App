@@ -10,20 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import udacitynano.com.br.cafelegal.adapter.ConvitesAbertosAdapter;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
@@ -62,10 +58,8 @@ public class ListaConvitesAbertosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_convites_abertos, container, false);
         getConvitesAbertos();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.convites_abertos_recyclerView);
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        // specify an adapter (see also next example)
         myDataset = new ArrayList<>();
         mAdapter = new ConvitesAbertosAdapter(getActivity(),myDataset);
         mRecyclerView.setAdapter(mAdapter);
@@ -112,18 +106,11 @@ public class ListaConvitesAbertosFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         try {
 
-                            Log.e("Debug12",response.toString());
                             for(int i=0;i<response.length();i++){
                                 JSONObject jsonConvite = response.getJSONObject(i);
                                 myDataset.add(new Gson().fromJson(jsonConvite.toString(),Convite.class));
-                                Log.e("Debug12",jsonConvite.toString());
                             }
-
-                           // myDataset = conviteList;
-                           // mAdapter = new ConvitesAbertosAdapter(getActivity(),myDataset);
                             mAdapter.notifyDataSetChanged();
-                            Log.e("Debug12","Ok");
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -134,7 +121,7 @@ public class ListaConvitesAbertosFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+                        error.printStackTrace();
 
                     }
                 });
@@ -149,8 +136,6 @@ public class ListaConvitesAbertosFragment extends Fragment {
     public void getConvitesAbertos(){
         long advogadoId = UserType.getUserId();
         String apiURL = Constant.SERVER_API_CAFE_LEGAL+Constant.CONVITE_CAFE_LEGAL+"/"+advogadoId+Constant.ABERTOS;
-        Log.e("Debug","server api link "+ apiURL);
-
         jsonRequest(apiURL);
 
     }

@@ -1,4 +1,4 @@
-package udacitynano.com.br.cafelegal.androidService;
+package udacitynano.com.br.cafelegal.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;

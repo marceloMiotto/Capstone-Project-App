@@ -127,5 +127,18 @@
     <string name="title_activity_chat">ChatActivity</string>
     <string name="login_informe_email">Por favor, informe o email</string>
 
+    <string name="adapter_extra_convite">convite</string>
+    <string name="adapter_extra_nome_convida">nome_convida</string>
+    <string name="adapter_extra_nome_advoagdo">nome_advogado</string>
+    <string name="adapter_extra_advogado_oab">advogado_oab</string>
+    <string name="convite_aviso_aceito">\"Este convite foi aceito por outro Advogado(a). Faça um refresh para acessar os convites em aberto.\"</string>
+    <string name="permission_access_fine_location">android.permission.ACCESS_FINE_LOCATION</string>
+    <string name="request_salvo">Salvo</string>
+    <string name="request_erro_ao_enviar">Erro ao enviar</string>
+    <string name="date_format">dd-MM-yyyy HH:mm:ss</string>
+    <string name="convite_result_enviado_sucesso">\"Convite enviado com sucesso\"</string>
+    <string name="convite_result_erro_enviar">Erro ao enviar o convite. Tente mais tarde!</string>
+    <string name="permission_denied">Permissao Negada</string>
+
 
 </resources>

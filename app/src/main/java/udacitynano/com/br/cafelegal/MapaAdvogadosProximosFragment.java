@@ -1,27 +1,16 @@
 package udacitynano.com.br.cafelegal;
 
-import android.content.Context;
-import android.location.Location;
-import android.net.Uri;
-import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
+import android.location.Location;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -39,25 +28,18 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import udacitynano.com.br.cafelegal.model.Advogado;
-import udacitynano.com.br.cafelegal.service.PerfilService;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.util.Constant;
-
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
 
@@ -67,9 +49,9 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    LatLng myLocation;
-    List<Advogado> mAdvogadosList;
-    Geocoder mCoder;
+    private LatLng myLocation;
+    private List<Advogado> mAdvogadosList;
+    private Geocoder mCoder;
 
     private int REQUEST_LOCATION = 1;
 
@@ -91,10 +73,8 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
                     .build();
         }
 
-        //TODO VERIFY INTERNET
+
         String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADOS;
-        Log.e("Debug2", " aceito url: " + apiURL);
-        //TODO INFORMAR A LATITUDE E LONGITUDE CORRETAS
         mAdvogadosList = new ArrayList<>();
         JsonArrayRequest jsonArrayObject = new JsonArrayRequest
                 (Request.Method.GET, apiURL,null, new Response.Listener<JSONArray>() {
@@ -102,12 +82,9 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-
-                            Log.e("Debug13",response.toString());
                             for(int i=0;i<response.length();i++){
                                 JSONObject jsonAdvogados = response.getJSONObject(i);
                                 mAdvogadosList.add(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
-                                Log.e("Debug13",jsonAdvogados.toString());
                             }
 
 
@@ -116,13 +93,10 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
                                 for (Advogado advogado : mAdvogadosList) {
                                     String endereco = advogado.getEndereco() + "," + advogado.getNumero() + " - " + advogado.getBairro() + "," + advogado.getCidade();
                                     String title = String.valueOf(listPosition);
-                                    Log.e("Debug23", "endereco " + endereco);
-                                    Log.e("Debug23", "title " + title);
 
                                     try {
                                         ArrayList<Address> adresses = (ArrayList<Address>) mCoder.getFromLocationName(endereco, 2);
                                         for (Address add : adresses) {
-                                            //if (statement) {//Controls to ensure it is right address such as country etc.
                                             double longitude = add.getLongitude();
                                             double latitude = add.getLatitude();
                                             LatLng escritorio = new LatLng(latitude, longitude);
@@ -131,14 +105,9 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    Log.e("Debug23", "listPosition " + listPosition);
                                     listPosition ++;
-                                    Log.e("Debug23", "listPosition " + listPosition);
-
                                 }
                             }
-                            Log.e("Debug12","Ok");
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -149,7 +118,7 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+                        error.printStackTrace();
 
                     }
                 }) {
@@ -157,7 +126,7 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         HashMap<String, String> headers = new HashMap<String, String>();
-                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put(Constant.content_header, Constant.content_application_json);
                         return headers;
                     }
         };
@@ -172,22 +141,16 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.e("Debug23","map is ready");
-
         mCoder = new Geocoder(this);
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                //-1 REPRESENTA O MEU MARCADOR
                 if(Integer.valueOf(marker.getTitle()) >= 0) {
                     Intent intent = new Intent(getApplicationContext(), AdvogadoDetailsActivity.class);
-                    intent.putExtra("ADVOGADO_SELECIOANDO", mAdvogadosList.get(Integer.valueOf(marker.getTitle())));
-                    Log.e("Debug1", marker.getTitle());
+                    intent.putExtra(Constant.ADVOGADO_ESCOLHIDO, mAdvogadosList.get(Integer.valueOf(marker.getTitle())));
                     startActivity(intent);
-
                 }
-
                 return true;
             }
         });
@@ -207,15 +170,13 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
     @Override
     public void onConnected(Bundle connectionHint) {
 
-        if (ActivityCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION")
+        if (ActivityCompat.checkSelfPermission(this, this.getString(R.string.permission_access_fine_location))
                 != PackageManager.PERMISSION_GRANTED) {
             // Check Permissions Now
             ActivityCompat.requestPermissions(this,
-                    new String[]{"android.permission.ACCESS_FINE_LOCATION"},
+                    new String[]{this.getString(R.string.permission_access_fine_location)},
                     REQUEST_LOCATION);
         } else {
-            // permission has been granted, continue as usual
-
             getMyPosition();
         }
     }
@@ -239,11 +200,9 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
             if (grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getMyPosition();
-
-                    Toast.makeText(this, "Permission Granted. ", Toast.LENGTH_SHORT).show();
                 } else {
                     // Permission was denied or request was cancelled
-                    Toast.makeText(this, "Permission Denied. ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, this.getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
                 }
             }
         }

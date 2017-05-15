@@ -6,9 +6,6 @@ import android.os.Parcelable;
 
 public abstract class Pessoa implements Parcelable {
 
-    //@SerializedName("id") usar caso algum seja diferente
-
-
     private long   id; //this is the server Id
     private String nome;
     private String nomeMeio;

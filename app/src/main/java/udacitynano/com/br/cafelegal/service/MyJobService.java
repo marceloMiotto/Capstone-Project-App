@@ -1,4 +1,4 @@
-package udacitynano.com.br.cafelegal.androidService;
+package udacitynano.com.br.cafelegal.service;
 
 import android.util.Log;
 
@@ -11,7 +11,6 @@ public class MyJobService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
-        Log.d("Debug", "Performing long running task in scheduled job");
         // TODO(developer): add long running task here.
         return false;
     }

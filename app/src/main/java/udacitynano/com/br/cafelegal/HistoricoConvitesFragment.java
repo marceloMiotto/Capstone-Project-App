@@ -14,14 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import udacitynano.com.br.cafelegal.adapter.ConviteHistoricoAdapter;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Convite;
-import udacitynano.com.br.cafelegal.service.ConviteService;
+
 
 public class HistoricoConvitesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -66,7 +64,6 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         // specify an adapter (see also next example)
         mAdapter = new ConviteHistoricoAdapter(getActivity(),myDataset);
         mRecyclerView.setAdapter(mAdapter);
-        Log.e("Debug15","Convite historico entrou");
         getLoaderManager().initLoader(CONVITE_HISTORICO_LOADER_ID, null, this);
 
         return view;
@@ -97,8 +94,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
+
         String[] projection = {
                 DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER,
                 DatabaseContract.ConviteEntry.COLUMN_CONVIDA_ID,
@@ -113,8 +109,6 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
                 DatabaseContract.ConviteEntry.COLUMN_ADVOGADO_OAB
         };
 
-        Log.e("Debug","Convite loader projection "+projection);
-
         CursorLoader loader = new CursorLoader(
                 this.getActivity(),
                 DatabaseContract.ConviteEntry.CONTENT_URI,
@@ -127,13 +121,6 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
-        if (cursor != null) {
-            Log.e("Debug", "Lodader count " + cursor.getCount());
-        }else{
-            Log.e("Debug","Loader Cursor null");
-        }
-
 
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();

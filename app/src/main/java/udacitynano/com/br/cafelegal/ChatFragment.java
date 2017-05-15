@@ -54,8 +54,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 public class ChatFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
-    //TODO CHAT TEST
-
     private String mUsername;
     private SharedPreferences mSharedPreferences;
 
@@ -80,16 +78,7 @@ public class ChatFragment extends Fragment implements
     public static final String ANONYMOUS = "anonymous";
     private static final String MESSAGE_SENT_EVENT = "message_sent";
     private static final String MESSAGE_URL = "http://cafelegal.firebase.google.com/message/";
-    //END
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -97,31 +86,15 @@ public class ChatFragment extends Fragment implements
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ChatFragment newInstance(String param1, String param2) {
         ChatFragment fragment = new ChatFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -133,12 +106,11 @@ public class ChatFragment extends Fragment implements
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        //miotto test begin
-        MESSAGES_CHILD = getActivity().getIntent().getStringExtra("convite");
-        MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra("nome_advogado");
-        MESSAGE_ADVOGADO_OAB = "OAB: "+getActivity().getIntent().getStringExtra("advogado_oab");
-        MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra("nome_convida");
-        // miotto test end
+        MESSAGES_CHILD = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_convite));
+        MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_advoagdo));
+        MESSAGE_ADVOGADO_OAB = "OAB: "+getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_advogado_oab));
+        MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_convida));
+
 
         if(UserType.isAdvogado()){
             if(MESSAGE_NOME_ADVOGADO.equals("X")){

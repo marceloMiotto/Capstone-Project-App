@@ -85,12 +85,8 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
         // specify an adapter (see also next example)
         mAdapter = new ListaAdvogadosAdapter(getActivity(),myDataset);
         mRecyclerView.setAdapter(mAdapter);
-        Log.e("Debug15","Convite historico entrou");
         getLoaderManager().initLoader(LISTA_ADVOGADOS_LOADER_ID, null, this);
-
         String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADOS;
-        Log.e("Debug2", " aceito url: " + apiURL);
-        //TODO INFORMAR A LATITUDE E LONGITUDE CORRETAS
 
         JsonArrayRequest jsonArrayObject = new JsonArrayRequest
                 (Request.Method.GET, apiURL,null, new Response.Listener<JSONArray>() {
@@ -98,19 +94,12 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-
-                            Log.e("Debug13",response.toString());
                             for(int i=0;i<response.length();i++){
                                 JSONObject jsonAdvogados = response.getJSONObject(i);
                                 PerfilService perfilService = new PerfilService(getActivity(),null);
                                 perfilService.updateCreateAdvogadoOnSQLite(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
-                                //myDataset.add(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
-                                Log.e("Debug13",jsonAdvogados.toString());
+
                             }
-
-                            //mAdapter.notifyDataSetChanged();
-                            Log.e("Debug12","Ok");
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -121,7 +110,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Debug", "Network error: " + error.getMessage() + String.valueOf(error.networkResponse.statusCode));
+                        error.printStackTrace();
 
                     }
                 }) {
@@ -133,7 +122,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put(Constant.content_header,Constant.content_application_json);
                 return headers;
             }
         };
@@ -171,14 +160,12 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
+
         String[] projection = {
                 DatabaseContract.PessoaEntry.COLUMN_ID_SERVER,
                 DatabaseContract.PessoaEntry.COLUMN_NOME,
@@ -201,8 +188,6 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
         };
 
-        Log.e("Debug","Advogados loader projection "+projection);
-
         CursorLoader loader = new CursorLoader(
                 this.getActivity(),
                 DatabaseContract.PessoaEntry.CONTENT_URI,
@@ -215,12 +200,6 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
-        if (cursor != null) {
-            Log.e("Debug", "Loader count " + cursor.getCount());
-        }else{
-            Log.e("Debug","Loader Cursor null");
-        }
 
         if (cursor != null && cursor.getCount() > 0) {
             myDataset.clear();

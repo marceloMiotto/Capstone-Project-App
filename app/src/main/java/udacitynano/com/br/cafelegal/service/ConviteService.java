@@ -5,22 +5,17 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
-
 import com.android.volley.Request;
 import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
-import udacitynano.com.br.cafelegal.data.Database;
+import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.network.NetworkRequests;
@@ -39,13 +34,11 @@ public class ConviteService {
     }
 
     public int sendConvite(long userId, String areaLocation) throws JSONException {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        DateFormat df = new SimpleDateFormat(mContext.getString(R.string.date_format));
         Date today = Calendar.getInstance().getTime();
         String reportDate = df.format(today);
         final Convite convite = new Convite(-1,userId, 0,reportDate, "N", "", "", areaLocation,"","","");
-        Log.e("Debug", "server api link " + Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL);
         final JSONObject jsonConvite = new JSONObject(new Gson().toJson(convite));
-        Log.e("Debug","jsonConvite "+jsonConvite.toString());
 
         final NetworkRequests networkRequests = new NetworkRequests(mContext,mView);
 
@@ -79,10 +72,6 @@ public class ConviteService {
         selectionArgs[0] = String.valueOf(convite.getId());
         selectionClause = DatabaseContract.ConviteEntry.TABLE_NAME+"."+DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER + " = ?";
 
-        Log.e("Debug","Perfil Service pessoaValues "+conviteValues);
-        Log.e("Debug","Perfil Service  selectionClause "+selectionClause);
-        Log.e("Debug","Perfil Service  selectionArgs "+selectionArgs[0]);
-
         int updateUri = context.getContentResolver().update(
                 DatabaseContract.ConviteEntry.CONTENT_URI,
                 conviteValues,
@@ -113,17 +102,12 @@ public class ConviteService {
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ADVOGADO_OAB, convite.getAdvogadoOAB());
 
 
-
-
         Uri insertedUri = context.getContentResolver().insert(
                 DatabaseContract.ConviteEntry.CONTENT_URI,
                 conviteValues
         );
 
-
         conviteId = ContentUris.parseId(insertedUri);
-
-        Log.e("Debug","Insert service conviteId "+conviteId);
 
         return conviteId;
     }

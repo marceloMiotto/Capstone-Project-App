@@ -1,18 +1,15 @@
 package udacitynano.com.br.cafelegal;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.google.gson.Gson;
 
@@ -23,10 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Cliente;
-import udacitynano.com.br.cafelegal.model.Convite;
-import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.network.NetworkRequests;
-import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener{

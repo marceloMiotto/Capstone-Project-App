@@ -8,14 +8,13 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-    private Context mContext;
+
     private static final int DATABASE_VERSION = 9;
 
     static final String DATABASE_NAME = "cafelegal.db";
 
     public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
-            mContext = context;
     }
 
         @Override
@@ -69,13 +68,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
             sqLiteDatabase.execSQL(SQL_CREATE_PESSOA_TABLE);
             sqLiteDatabase.execSQL(SQL_CREATE_CONVITE_TABLE);
-            Log.e("Debug","Debug02 "+SQL_CREATE_PESSOA_TABLE);
 
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-            //TODO only for tests
+
             String SQL_DROP_TABLE_PESSOA =
                     "DROP TABLE IF EXISTS " + DatabaseContract.PessoaEntry.TABLE_NAME;
 

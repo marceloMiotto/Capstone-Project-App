@@ -1,8 +1,5 @@
 package udacitynano.com.br.cafelegal.model;
 
-
-import java.util.Date;
-
 public class Convite {
 
 

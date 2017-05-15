@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,11 +34,8 @@ import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.network.NetworkRequests;
-import udacitynano.com.br.cafelegal.service.PerfilService;
-import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
-
 import static udacitynano.com.br.cafelegal.R.array.seccional;
 import static udacitynano.com.br.cafelegal.R.id.perfil_especialista_um_spinner;
 
@@ -203,7 +192,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     apiResource = Constant.ADVOGADO;
                     Gson gson = new Gson();
                     stringJsonObject = gson.toJson(mAdvogado);
-                    Log.e("Debug","Advogado json "+stringJsonObject);
                     mPessoa = mAdvogado;
 
                 }else{
@@ -225,17 +213,12 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mFirebaseToken
                     );
 
-                    Log.e("Debug","Sexo escolhido: "+mSexoChoosen);
                     apiResource = Constant.CLIENTE;
                     Gson gson = new Gson();
                     stringJsonObject = gson.toJson(mCliente);
-                    Log.e("Debug","Advogado json "+stringJsonObject);
-
                     mPessoa = mCliente;
 
                 }
-
-
                 requestMethod = Request.Method.PUT;
 
 
@@ -245,9 +228,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     e.printStackTrace();
                 }
 
-                Log.e("Debug","server api link "+Constant.SERVER_API_CAFE_LEGAL+apiResource);
-
-                final NetworkRequests networkRequests = new NetworkRequests(getActivity(),view);
+               final NetworkRequests networkRequests = new NetworkRequests(getActivity(),view);
 
                 networkRequests.jsonRequest(Constant.PERFIL,requestMethod,Constant.SERVER_API_CAFE_LEGAL + apiResource,jsonObject,true);
 
@@ -302,26 +283,21 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         switch (spinner.getId()){
             case R.id.perfil_sexo_spinner:
                 mSexoChoosen = parent.getItemAtPosition(position).toString();
-                Log.e("Debug","Case mSexoChoosen: "+mSexoChoosen + " - spinner id"+spinner.getId());
                 break;
 
             case R.id.perfil_seccional_spinner:
                 mSeccionalChoosen = parent.getItemAtPosition(position).toString();
-                Log.e("Debug","Case mSeccionalChoosen: "+mSeccionalChoosen+ " - spinner id"+spinner.getId());
                 break;
 
             case perfil_especialista_um_spinner:
                 mEspecialidadeUmChoosen = parent.getItemAtPosition(position).toString();
-                Log.e("Debug","Case mEspecialidadeUmChoosen: "+mEspecialidadeUmChoosen+ " - spinner id"+spinner.getId());
                 break;
 
             case R.id.perfil_especialista_dois_spinner:
                 mEspecialidadeDoisChoosen = parent.getItemAtPosition(position).toString();
-                Log.e("Debug","Case mEspecialidadeDoisChoosen: "+mEspecialidadeDoisChoosen+ " - spinner id"+spinner.getId());
                 break;
 
             default:
-
                 break;
         }
     }
@@ -334,8 +310,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
+
         String[] projection = {
                  DatabaseContract.PessoaEntry.COLUMN_NOME
                , DatabaseContract.PessoaEntry.COLUMN_NOME_MEIO
@@ -364,10 +339,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         String selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+"."+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
         String[] selectionArgs = {String.valueOf(UserType.getInstance(getActivity()).getUserId())};
 
-        Log.e("Debug","Perfil Service pessoaValues "+projection);
-        Log.e("Debug","Perfil Service  selectionClause "+selectionClause);
-        Log.e("Debug","Perfil Service  selectionArgs "+selectionArgs[0]);
-
         CursorLoader loader = new CursorLoader(
                 this.getActivity(),
                 DatabaseContract.PessoaEntry.CONTENT_URI,
@@ -380,13 +351,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
-        if (cursor != null) {
-            Log.e("Debug", "Lodader count " + cursor.getCount());
-        }else{
-            Log.e("Debug","Loader Cursor null");
-        }
-
 
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -413,7 +377,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 List<String> strSeccional = Arrays.asList(getResources().getStringArray(R.array.seccional));
                 mSeccionalSpinner.setSelection(strSeccional.indexOf(cursor.getString(14)));
-                Log.e("Debug","Spinner mSeccionalSpinner: "+cursor.getString(14) + " - INDEX NO ARRAY "+ strSeccional.indexOf(cursor.getString(14)));
 
                 mPerfilTipoInscricaoTextView.setText(cursor.getString(15));
                 mPerfilFoneComercialEditText.setText(cursor.getString(16));
@@ -436,10 +399,8 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
     }
 
-
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
-
 
 }

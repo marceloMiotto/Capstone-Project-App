@@ -48,8 +48,6 @@ public class DatabaseProvider extends ContentProvider {
                 sortOrder
         );
 
-        Log.e("Debug","Debug10 first result "+ pessoaCursor.getCount());
-
         return pessoaCursor;
     }
 
@@ -67,8 +65,6 @@ public class DatabaseProvider extends ContentProvider {
                 null,
                 sortOrder
         );
-
-        Log.e("Debug","Debug10 first result "+ conviteCursor.getCount());
 
         return conviteCursor;
     }
@@ -182,18 +178,12 @@ public class DatabaseProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             case PESSOA: {
-                Log.e("Debug","Debug07 "+projection.toString());
-
                 retCursor = getPessoas(projection, selection, selectionArgs, sortOrder);
-                Log.e("Debug","Debug08 "+retCursor.getCount());
                 break;
             }
 
             case CONVITE: {
-                Log.e("Debug","Debug07 "+projection.toString());
-
                 retCursor = getConvites(projection, selection, selectionArgs, sortOrder);
-                Log.e("Debug","Debug08 "+retCursor.getCount());
                 break;
             }
 
@@ -209,7 +199,6 @@ public class DatabaseProvider extends ContentProvider {
                       String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
-        Log.e("Debug","match "+match);
         int rowsUpdated;
 
         switch (match) {
@@ -250,7 +239,6 @@ public class DatabaseProvider extends ContentProvider {
 
                 try {
                     for (ContentValues value : values) {
-                        //normalizeDate(value);
                         long _id = sqLiteDatabase.insert(DatabaseContract.PessoaEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
@@ -269,7 +257,6 @@ public class DatabaseProvider extends ContentProvider {
 
                 try {
                     for (ContentValues value : values) {
-                        //normalizeDate(value);
                         long _id = sqLiteDatabase.insert(DatabaseContract.ConviteEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
@@ -288,13 +275,4 @@ public class DatabaseProvider extends ContentProvider {
         }
     }
 
-    /*
-    private void normalizeDate(ContentValues values) {
-        // normalize the date value
-        if (values.containsKey(MeasureContract.MeasureEntry.COLUMN_DATE)) {
-            long dateValue = values.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
-            values.put(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.normalizeDate(dateValue));
-        }
-    }
-    */
 }

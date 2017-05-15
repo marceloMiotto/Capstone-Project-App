@@ -5,14 +5,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
-import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.model.Pessoa;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 
@@ -45,8 +42,6 @@ public class PerfilService {
 
         ContentValues pessoaValues = new ContentValues();
 
-        Log.e("Debug","Valores para o update - nome "+pessoa.getNome());
-
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOME, pessoa.getNome());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOME_MEIO, pessoa.getNomeMeio());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SOBRENOME, pessoa.getSobrenome());
@@ -67,7 +62,6 @@ public class PerfilService {
 
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NUMERO_INSC_OAB, advogado.getNumeroInscricaoOAB());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SECCIONAL, advogado.getSeccional());
-            Log.e("Debug","Perfil Service seccional: "+advogado.getSeccional());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_TIPO_INSCRICAO, advogado.getTipoInscricao());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_FONE_COMERCIAL, advogado.getTelefoneComercial());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_CONFIRMADO_CNA, advogado.getConfirmadoCNA());
@@ -84,17 +78,13 @@ public class PerfilService {
         selectionArgs[0] = String.valueOf(pessoa.getId());
         selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+"."+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
 
-        Log.e("Debug","Perfil Service pessoaValues "+pessoaValues);
-        Log.e("Debug","Perfil Service  selectionClause "+selectionClause);
-        Log.e("Debug","Perfil Service  selectionArgs "+selectionArgs[0]);
-
         int updateUri = mContext.getContentResolver().update(
                 DatabaseContract.PessoaEntry.CONTENT_URI,
                 pessoaValues,
                 selectionClause,
                 selectionArgs
         );
-        Log.e("Debug","Perfil Service update return "+updateUri);
+
         return updateUri;
 
     }
@@ -151,9 +141,6 @@ public class PerfilService {
 
 
         pessoaId = ContentUris.parseId(insertedUri);
-
-        Log.e("Debug","Insert service pessoaId "+pessoaId);
-
         return pessoaId;
     }
 
@@ -174,7 +161,7 @@ public class PerfilService {
         editor.putLong(mContext.getString(R.string.preference_user_type_id), id);
         editor.commit();
 
-        Log.e("Debug","Shared User id: "+id);
+
     }
 
 }

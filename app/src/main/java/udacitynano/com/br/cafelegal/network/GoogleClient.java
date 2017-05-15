@@ -10,14 +10,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
 import udacitynano.com.br.cafelegal.R;
-
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
 public class GoogleClient implements
@@ -35,7 +31,6 @@ public class GoogleClient implements
     }
 
     public GoogleApiClient createGoogleClientInstance(){
-    // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
@@ -64,14 +59,13 @@ public class GoogleClient implements
 
     public void getLastLocation(){
 
-        if (ActivityCompat.checkSelfPermission(mContext, "android.permission.ACCESS_FINE_LOCATION")
+        if (ActivityCompat.checkSelfPermission(mContext, mContext.getString(R.string.permission_access_fine_location))
                 != PackageManager.PERMISSION_GRANTED) {
             // Check Permissions Now
             ActivityCompat.requestPermissions((Activity) mContext,
-                    new String[]{"android.permission.ACCESS_FINE_LOCATION"},
+                    new String[]{mContext.getString(R.string.permission_access_fine_location)},
                     REQUEST_LOCATION);
         } else {
-            // permission has been granted, continue as usual
             setLocationSharedPref();
         }
     }
@@ -85,7 +79,6 @@ public class GoogleClient implements
                     mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
-                Toast.makeText(mContext, "Coordenadas atuais Latitude: " + String.valueOf(mLastLocation.getLatitude()) + " Longitude: " + String.valueOf(mLastLocation.getLongitude()), Toast.LENGTH_LONG).show();
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(mContext.getString(R.string.preference_user_last_location), "");
                 editor.commit();

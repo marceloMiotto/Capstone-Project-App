@@ -4,35 +4,22 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import org.json.JSONException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import udacitynano.com.br.cafelegal.network.GoogleClient;
-import udacitynano.com.br.cafelegal.network.NetworkAccess;
 import udacitynano.com.br.cafelegal.service.ConviteService;
 import udacitynano.com.br.cafelegal.singleton.UserType;
-
-import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
 public class ConviteFragment extends Fragment  {
 
@@ -41,21 +28,16 @@ public class ConviteFragment extends Fragment  {
 
     @BindView(R.id.convite_button)
     ImageButton mConviteButton;
-
     private View mView;
     private GoogleApiClient mGoogleApiClient;
-
     private String mAreaLocation;
     private int REQUEST_LOCATION = 1;
-    private Location mLastLocation;
     private  GoogleClient mGoogleClient;
 
     public ConviteFragment() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static ConviteFragment newInstance(String param1, String param2) {
         ConviteFragment fragment = new ConviteFragment();
         return fragment;
@@ -92,9 +74,9 @@ public class ConviteFragment extends Fragment  {
                     mAreaLocation =  sharedPref.getString(getString(R.string.preference_user_last_location),"");
 
                     if (conviteService.sendConvite(userType.getUserId(),mAreaLocation) == 0) {
-                        resultMsg = "Convite enviado com sucesso";
+                        resultMsg = getActivity().getString(R.string.convite_result_enviado_sucesso);
                     } else {
-                        resultMsg = "Erro ao enviar o convite. Tente mais tarde!";
+                        resultMsg = getActivity().getString(R.string.convite_result_erro_enviar);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -146,14 +128,12 @@ public class ConviteFragment extends Fragment  {
          if (requestCode == REQUEST_LOCATION) {
             if(grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                Toast.makeText(getActivity(),"Permission Granted. ",Toast.LENGTH_SHORT).show();
                 mGoogleClient.setLocationSharedPref();
 
 
             } else {
                 // Permission was denied or request was cancelled
-                Toast.makeText(getActivity(),"Permission Denied. ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),getActivity().getString(R.string.permission_denied),Toast.LENGTH_SHORT).show();
             }
         }
     }
