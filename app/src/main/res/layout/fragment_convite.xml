@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
+    android:background="@android:color/white"
     tools:context="udacitynano.com.br.cafelegal.ConviteFragment">
 
 
     <ImageButton
         android:id="@+id/convite_button"
-        android:layout_width="182dp"
-        android:layout_height="158dp"
-        app:srcCompat="@drawable/icon_cafe_convite"
+        android:layout_width="208dp"
+        android:layout_height="215dp"
         android:layout_gravity="center"
-        android:onClick="onClick"/>
+        android:onClick="onClick"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/cafe_convite" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,7 +3,7 @@
         <item>
             <shape>
                 <stroke
-                    android:color="@android:color/white"
+                    android:color="@color/colorAccent"
                     android:width="2dp" />
                 <solid android:color="@android:color/transparent" />
             </shape>
