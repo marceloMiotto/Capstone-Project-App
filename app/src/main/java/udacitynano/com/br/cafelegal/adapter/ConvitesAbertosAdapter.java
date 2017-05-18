@@ -3,6 +3,7 @@ package udacitynano.com.br.cafelegal.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
     @Override
     public void onBindViewHolder(ConvitesAbertosAdapter.ViewHolder holder, int position) {
         holder.mConviteTitle.setText(mConviteList.get(position).getDataCriacao());
+        Log.e("Debug","onBindViewHolder "+mConviteList.get(position).getId());
     }
 
     @Override
@@ -85,6 +87,8 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
 
                                 @Override
                                 public void onResponse(JSONObject response) {
+
+                                    Log.e("Debug","Entrou response adapter");
 
                                     Convite convite = new Gson().fromJson(response.toString(), Convite.class);
                                     ConviteService conviteService = new ConviteService(mContext, null);

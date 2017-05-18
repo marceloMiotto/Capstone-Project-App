@@ -104,6 +104,7 @@ public class ListaConvitesAbertosFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONArray response) {
+                        Log.e("Debug","Response length "+response.length());
                         try {
 
                             for(int i=0;i<response.length();i++){
@@ -111,8 +112,10 @@ public class ListaConvitesAbertosFragment extends Fragment {
                                 myDataset.add(new Gson().fromJson(jsonConvite.toString(),Convite.class));
                             }
                             mAdapter.notifyDataSetChanged();
+                            Log.e("Debug","Entrou response fragment");
 
                         } catch (JSONException e) {
+                            Log.e("Debug","Error response "+ e.getMessage());
                             e.printStackTrace();
                         }
 

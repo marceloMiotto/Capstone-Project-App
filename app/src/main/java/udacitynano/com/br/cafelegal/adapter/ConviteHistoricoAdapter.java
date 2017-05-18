@@ -4,6 +4,7 @@ package udacitynano.com.br.cafelegal.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
         }else{
             holder.mConviteSolicita.setText(mConviteList.get(position).getNomeAdvogado()+ " - OAB: " + mConviteList.get(position).getAdvogadoOAB());
         }
+        Log.e("Debug","onBindViewHolder "+mConviteList.get(position).getId());
 
     }
 
