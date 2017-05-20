@@ -121,7 +121,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
              */
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put(Constant.content_header,Constant.content_application_json);
                 return headers;
             }

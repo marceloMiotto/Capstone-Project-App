@@ -74,7 +74,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.preference_user_firebase_token), token);
 
-        editor.commit();
+        editor.apply();
 
         // TODO: Implement this method to send token to your app server.
         final JSONObject jsonToken = new JSONObject(new Gson().toJson("{\"token\":\""+token+"\"}"));

@@ -159,7 +159,7 @@ public class PerfilService {
                 mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(mContext.getString(R.string.preference_user_type_id), id);
-        editor.commit();
+        editor.apply();
 
 
     }

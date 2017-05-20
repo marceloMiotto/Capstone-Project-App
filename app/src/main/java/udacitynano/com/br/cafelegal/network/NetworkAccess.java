@@ -11,7 +11,7 @@ public class NetworkAccess {
 
     public NetworkAccess(Context context){
         mContext = context;
-    };
+    }
 
     public boolean networkUp() {
         ConnectivityManager cm =

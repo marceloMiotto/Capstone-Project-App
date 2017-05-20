@@ -111,7 +111,7 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
                             }) {
                                 @Override
                                  public Map<String, String> getHeaders() throws AuthFailureError {
-                                     HashMap<String, String> headers = new HashMap<String, String>();
+                                     HashMap<String, String> headers = new HashMap<>();
                                     headers.put("Content-Type", "application/json; charset=utf-8");
                                     return headers;
                                 }

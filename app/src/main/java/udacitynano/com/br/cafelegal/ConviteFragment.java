@@ -80,7 +80,7 @@ public class ConviteFragment extends Fragment  {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                };
+                }
 
                 Snackbar.make(mView, resultMsg, Snackbar.LENGTH_SHORT).show();
             }

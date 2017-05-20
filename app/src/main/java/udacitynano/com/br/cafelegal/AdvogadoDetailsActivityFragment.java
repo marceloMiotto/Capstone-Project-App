@@ -34,7 +34,7 @@ public class AdvogadoDetailsActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_advogado_details, container, false);
         ButterKnife.bind(this,view);
         Bundle data = getActivity().getIntent().getExtras();
-        Advogado advogado = (Advogado) data.getParcelable("ADVOGADO_SELECIOANDO");
+        Advogado advogado = data.getParcelable("ADVOGADO_SELECIOANDO");
 
 
         detailsAdvogadoNome.setText(advogado.getNome() + " " + advogado.getSobrenome());

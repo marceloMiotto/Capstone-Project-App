@@ -81,7 +81,7 @@ public class GoogleClient implements
             if (mLastLocation != null) {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(mContext.getString(R.string.preference_user_last_location), "");
-                editor.commit();
+                editor.apply();
             }
         }
     }

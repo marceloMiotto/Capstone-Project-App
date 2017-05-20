@@ -74,7 +74,7 @@ public class NetworkRequests {
                     case Constant.CONVITE:
                         Convite convite = (Convite) object;
                         ConviteService conviteService = new ConviteService(mContext,mView);
-                        convite.setId(Long.valueOf(response.toString()));
+                        convite.setId(Long.valueOf(response));
 
                         conviteService.createConvite(mContext,convite);
 
@@ -166,7 +166,7 @@ public class NetworkRequests {
                                     e.printStackTrace();
                                 }
 
-                                editor.commit();
+                                editor.apply();
 
                                 break;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="sexo_array">
         <item>Feminino</item>
         <item>Masculino</item>
@@ -66,7 +66,7 @@
         <item>de Negócios</item>
         <item>Penal</item>
         <item>Previdenciário</item>
-        <item>de Propriedade Intelectual</item>
+        <item tools:ignore="Typos">de Propriedade Intelectual</item>
         <item>Público</item>
         <item>Rural</item>
         <item>Sanitário</item>

@@ -73,7 +73,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 advogado.setEmail(sharedPref.getString(getString(R.string.preference_user_firebase_email),""));
                 editor = sharedPref.edit();
                 editor.putString(this.getString(R.string.preference_user_type_key), this.getString(R.string.preference_user_type_advogado));
-                editor.commit();
+                editor.apply();
                 JSONObject jsonAdvogado = null;
                 try {
                     jsonAdvogado = new JSONObject(new Gson().toJson(advogado));

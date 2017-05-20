@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             editor.putString(getString(R.string.preference_user_firebase_token), refreshedToken);
                                             editor.putString(getString(R.string.preference_user_firebase_email),mFirebaseEmail);
 
-                                            editor.commit();
+                                            editor.apply();
                                             Log.e("Debug4","user email: "+mFirebaseEmail);
 
                                         } else {
