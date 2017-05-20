@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        UserType userType = UserType.getInstance(this);
-        if(userType.isAdvogado()){
+
+        if(UserType.isAdvogado(this)){
             navigationView.inflateMenu(R.menu.activity_main_advogado_drawer);
         }
         else{
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         if(getIntent().getStringExtra(Constant.INTENT_FRAGMENT_TYPE).equals(Constant.PERFIL_FRAGMENT)){
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance("",""));
+            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_convite) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,ConviteFragment.newInstance("",""));
+            fragmentTransaction.replace(R.id.fragment_menu_switch,ConviteFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance("",""));
+            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,HistoricoConvitesFragment.newInstance("",""));
+            fragmentTransaction.replace(R.id.fragment_menu_switch,HistoricoConvitesFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaAdvogadosFragment.newInstance("",""));
+            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaAdvogadosFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaConvitesAbertosFragment.newInstance("",""));
+            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaConvitesAbertosFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 

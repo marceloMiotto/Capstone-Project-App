@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.view.View;
 
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
@@ -16,16 +15,14 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 public class PerfilService {
 
     private Context mContext;
-    private View mView;
 
-    public PerfilService(Context context, View view){
+    public PerfilService(Context context){
         mContext = context;
-        mView = view;
     }
 
 
     private long updateCreatePerfil(Pessoa pessoa){
-        long result = 0;
+        long result;
         result = updatePerfil(pessoa);
         if(result==0){
             result = createPerfil(pessoa);
@@ -36,9 +33,9 @@ public class PerfilService {
 
     private int updatePerfil(Pessoa pessoa) {
 
-        Advogado advogado = null;
+        Advogado advogado;
         String[] selectionArgs = {""};
-        String selectionClause = "";
+        String selectionClause;
 
         ContentValues pessoaValues = new ContentValues();
 
@@ -56,7 +53,7 @@ public class PerfilService {
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_PAIS, pessoa.getPais());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SEXO, pessoa.getSexo());
 
-        if (UserType.getInstance(mContext).isAdvogado()) {
+        if (UserType.isAdvogado(mContext)) {
 
             advogado = (Advogado) pessoa;
 
@@ -78,26 +75,24 @@ public class PerfilService {
         selectionArgs[0] = String.valueOf(pessoa.getId());
         selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+"."+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
 
-        int updateUri = mContext.getContentResolver().update(
+        return mContext.getContentResolver().update(
                 DatabaseContract.PessoaEntry.CONTENT_URI,
                 pessoaValues,
                 selectionClause,
                 selectionArgs
         );
 
-        return updateUri;
-
     }
 
     private long createPerfil(Pessoa pessoa) {
 
 
-        long pessoaId = 0;
+        long pessoaId;
         Advogado advogado = null;
 
 
         ContentValues pessoaValues = new ContentValues();
-        if (UserType.getInstance(mContext).isAdvogado()) {
+        if (UserType.isAdvogado(mContext)) {
 
             advogado = (Advogado) pessoa;
         }
@@ -117,7 +112,7 @@ public class PerfilService {
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_PAIS, pessoa.getPais());
         pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SEXO, pessoa.getSexo());
 
-        if (UserType.getInstance(mContext).isAdvogado()) {
+        if (UserType.isAdvogado(mContext)) {
 
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NUMERO_INSC_OAB, advogado.getNumeroInscricaoOAB());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_SECCIONAL, advogado.getSeccional());
@@ -145,7 +140,7 @@ public class PerfilService {
     }
 
     public long updateCreateUserOnSQLite(Pessoa pessoa){
-        pessoa.setId(UserType.getInstance(mContext).getUserId());
+        pessoa.setId(UserType.getUserId(mContext));
         return updateCreatePerfil(pessoa);
     }
 

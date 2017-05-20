@@ -43,13 +43,12 @@ import udacitynano.com.br.cafelegal.util.Constant;
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
 
+@SuppressWarnings("AccessStaticViaInstance")
 public class MapaAdvogadosProximosFragment  extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-    private LatLng myLocation;
     private List<Advogado> mAdvogadosList;
     private Geocoder mCoder;
 
@@ -194,8 +193,8 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
 
 
     public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions,
-                                           int[] grantResults) {
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == REQUEST_LOCATION) {
             if (grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -212,13 +211,13 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
     @SuppressWarnings({"MissingPermission"})
     private void getMyPosition() {
 
-        mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Location mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            myLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            LatLng myLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
             mMap.addMarker(new MarkerOptions().position(myLocation).title(String.valueOf(-1)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16.0f));
             mMap.addCircle(new CircleOptions().center(myLocation).radius(500).strokeColor(R.color.colorPrimary).strokeWidth(6));
-            mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
+
 
         }
     }

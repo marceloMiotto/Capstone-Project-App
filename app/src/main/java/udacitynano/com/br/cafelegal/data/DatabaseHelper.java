@@ -4,14 +4,13 @@ package udacitynano.com.br.cafelegal.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-public class DatabaseHelper extends SQLiteOpenHelper{
+class DatabaseHelper extends SQLiteOpenHelper{
 
 
     private static final int DATABASE_VERSION = 9;
 
-    static final String DATABASE_NAME = "cafelegal.db";
+    private static final String DATABASE_NAME = "cafelegal.db";
 
     public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);

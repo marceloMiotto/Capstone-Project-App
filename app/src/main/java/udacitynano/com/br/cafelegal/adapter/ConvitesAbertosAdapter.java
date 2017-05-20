@@ -1,6 +1,5 @@
 package udacitynano.com.br.cafelegal.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,11 +32,9 @@ import udacitynano.com.br.cafelegal.util.Constant;
 public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertosAdapter.ViewHolder> {
 
     private static List<Convite> mConviteList;
-    private static Context mContext;
 
-    public ConvitesAbertosAdapter(Context context, List<Convite> conviteList) {
+    public ConvitesAbertosAdapter(List<Convite> conviteList) {
         mConviteList = conviteList;
-        mContext = context;
     }
 
 
@@ -47,8 +44,7 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_convites_abertos, parent, false);
 
-        ConvitesAbertosAdapter.ViewHolder vh = new ConvitesAbertosAdapter.ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
@@ -65,6 +61,7 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
         return 0;
     }
 
+    @SuppressWarnings("AccessStaticViaInstance")
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mConviteTitle;
@@ -77,9 +74,9 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
 
             mConviteAceito.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
 
-                    long advogadoId = UserType.getUserId();
+                    long advogadoId = UserType.getUserId(v.getContext());
                     String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL + "/" + mConviteList.get(getAdapterPosition()).getId() + "/" + advogadoId + Constant.ACEITO;
 
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -91,21 +88,21 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
                                     Log.e("Debug","Entrou response adapter");
 
                                     Convite convite = new Gson().fromJson(response.toString(), Convite.class);
-                                    ConviteService conviteService = new ConviteService(mContext, null);
-                                    conviteService.createConvite(mContext, convite);
+                                    ConviteService conviteService = new ConviteService(v.getContext(), null);
+                                    conviteService.createConvite(v.getContext(), convite);
 
-                                    Intent intent = new Intent(mContext, ChatActivity.class);
-                                    intent.putExtra(mContext.getString(R.string.adapter_extra_convite), "Convite " + convite.getId());
-                                    intent.putExtra(mContext.getString(R.string.adapter_extra_nome_convida), convite.getNomeConvida());
-                                    intent.putExtra(mContext.getString(R.string.adapter_extra_nome_advoagdo), convite.getNomeAdvogado());
-                                    intent.putExtra(mContext.getString(R.string.adapter_extra_advogado_oab), convite.getAdvogadoOAB());
-                                    mContext.startActivity(intent);
+                                    Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_convite), "Convite " + convite.getId());
+                                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_nome_convida), convite.getNomeConvida());
+                                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_nome_advoagdo), convite.getNomeAdvogado());
+                                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_advogado_oab), convite.getAdvogadoOAB());
+                                    v.getContext().startActivity(intent);
                                 }
                             }, new Response.ErrorListener() {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(mContext,mContext.getString(R.string.convite_aviso_aceito), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(),v.getContext().getString(R.string.convite_aviso_aceito), Toast.LENGTH_SHORT).show();
 
                                 }
                             }) {
@@ -118,7 +115,7 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
 
                     };
                     // Access the RequestQueue through your singleton class.
-                    NetworkSingleton.getInstance(mContext).addJSONToRequestQueue(jsonObjectRequest);
+                    NetworkSingleton.getInstance(v.getContext()).addJSONToRequestQueue(jsonObjectRequest);
 
                 }
             });

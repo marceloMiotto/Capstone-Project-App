@@ -10,12 +10,13 @@ public class DatabaseContract {
 
 
         public static final String CONTENT_AUTHORITY = "udacitynano.com.br.cafelegal.app";
-        public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+        private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
         public static final String PATH_PESSOA = "pessoa";
         public static final String PATH_CONVITE = "convite";
 
 
+        @SuppressWarnings("unused")
         public static final class PessoaEntry implements BaseColumns {
             public static final String TABLE_NAME = "pessoas";
 
@@ -60,6 +61,7 @@ public class DatabaseContract {
             }
 
         }
+            @SuppressWarnings("unused")
             public static final class ConviteEntry implements BaseColumns {
                 public static final String TABLE_NAME = "convites";
 

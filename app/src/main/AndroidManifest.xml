@@ -43,7 +43,7 @@
             android:name=".data.DatabaseProvider"
             android:authorities="udacitynano.com.br.cafelegal.app"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
         <activity
             android:name=".AdvogadoDetailsActivity"

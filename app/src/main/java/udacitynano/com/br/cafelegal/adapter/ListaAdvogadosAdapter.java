@@ -1,6 +1,5 @@
 package udacitynano.com.br.cafelegal.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +15,9 @@ import udacitynano.com.br.cafelegal.util.Constant;
 
 public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAdapter.ViewHolder> {
     private static List<Advogado> mAdvogadoList;
-    private static Context mContext;
 
-    public ListaAdvogadosAdapter(Context context, List<Advogado> advogadoList) {
+    public ListaAdvogadosAdapter(List<Advogado> advogadoList) {
         mAdvogadoList = advogadoList;
-        mContext = context;
     }
 
 
@@ -29,8 +26,7 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_lista_advogados, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
@@ -44,6 +40,7 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
         return mAdvogadoList.size();
     }
 
+    @SuppressWarnings("unused")
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mAdvogadoNome;
@@ -62,9 +59,9 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
                 public void onClick(View v) {
 
                     int position = getAdapterPosition();
-                    Intent intent = new Intent(mContext, AdvogadoDetailsActivity.class);
+                    Intent intent = new Intent(v.getContext(), AdvogadoDetailsActivity.class);
                     intent.putExtra(Constant.ADVOGADO_ESCOLHIDO, mAdvogadoList.get(position));
-                    mContext.startActivity(intent);
+                    v.getContext().startActivity(intent);
                 }
             });
         }

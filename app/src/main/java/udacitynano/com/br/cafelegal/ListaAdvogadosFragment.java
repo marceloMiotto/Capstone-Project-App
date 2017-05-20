@@ -3,7 +3,6 @@ package udacitynano.com.br.cafelegal;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,47 +10,39 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import udacitynano.com.br.cafelegal.adapter.ConviteHistoricoAdapter;
 import udacitynano.com.br.cafelegal.adapter.ListaAdvogadosAdapter;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
-import udacitynano.com.br.cafelegal.model.Convite;
-import udacitynano.com.br.cafelegal.service.ConviteService;
 import udacitynano.com.br.cafelegal.service.PerfilService;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 
+@SuppressWarnings({"unused", "AccessStaticViaInstance"})
 public class ListaAdvogadosFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LISTA_ADVOGADOS_LOADER_ID = 13;
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private List<Advogado> myDataset;
     private OnFragmentInteractionListener mListener;
 
@@ -60,9 +51,8 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
         // Required empty public constructor
     }
 
-    public static ListaAdvogadosFragment newInstance(String param1, String param2) {
-        ListaAdvogadosFragment fragment = new ListaAdvogadosFragment();
-        return fragment;
+    public static ListaAdvogadosFragment newInstance() {
+        return new ListaAdvogadosFragment();
     }
 
     @Override
@@ -76,14 +66,14 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_lista_advogados, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.lista_advogados_recyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.lista_advogados_recyclerView);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset = new ArrayList<>();
         // specify an adapter (see also next example)
-        mAdapter = new ListaAdvogadosAdapter(getActivity(),myDataset);
+        mAdapter = new ListaAdvogadosAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
         getLoaderManager().initLoader(LISTA_ADVOGADOS_LOADER_ID, null, this);
         String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADOS;
@@ -96,7 +86,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
                         try {
                             for(int i=0;i<response.length();i++){
                                 JSONObject jsonAdvogados = response.getJSONObject(i);
-                                PerfilService perfilService = new PerfilService(getActivity(),null);
+                                PerfilService perfilService = new PerfilService(getActivity());
                                 perfilService.updateCreateAdvogadoOnSQLite(new Gson().fromJson(jsonAdvogados.toString(),Advogado.class));
 
                             }
@@ -164,7 +154,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
+    public Loader<android.database.Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] projection = {
                 DatabaseContract.PessoaEntry.COLUMN_ID_SERVER,
@@ -188,14 +178,13 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
         };
 
-        CursorLoader loader = new CursorLoader(
+        return new CursorLoader(
                 this.getActivity(),
                 DatabaseContract.PessoaEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
                 null);
-        return loader;
     }
 
     @Override

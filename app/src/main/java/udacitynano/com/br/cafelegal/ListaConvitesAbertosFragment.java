@@ -27,11 +27,10 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 
+@SuppressWarnings({"unused", "AccessStaticViaInstance"})
 public class ListaConvitesAbertosFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private List<Convite> myDataset;
 
 
@@ -41,9 +40,8 @@ public class ListaConvitesAbertosFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ListaConvitesAbertosFragment newInstance(String param1, String param2) {
-        ListaConvitesAbertosFragment fragment = new ListaConvitesAbertosFragment();
-        return fragment;
+    public static ListaConvitesAbertosFragment newInstance() {
+        return new ListaConvitesAbertosFragment();
     }
 
     @Override
@@ -57,11 +55,11 @@ public class ListaConvitesAbertosFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_lista_convites_abertos, container, false);
         getConvitesAbertos();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.convites_abertos_recyclerView);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.convites_abertos_recyclerView);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset = new ArrayList<>();
-        mAdapter = new ConvitesAbertosAdapter(getActivity(),myDataset);
+        mAdapter = new ConvitesAbertosAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
         return view;
 
@@ -96,7 +94,7 @@ public class ListaConvitesAbertosFragment extends Fragment {
     }
 
 
-    public void jsonRequest(String apiURL ) {
+    private void jsonRequest(String apiURL) {
 
 
         JsonArrayRequest jsonArrayObject = new JsonArrayRequest
@@ -136,8 +134,8 @@ public class ListaConvitesAbertosFragment extends Fragment {
 
     }
 
-    public void getConvitesAbertos(){
-        long advogadoId = UserType.getUserId();
+    private void getConvitesAbertos(){
+        long advogadoId = UserType.getUserId(getActivity());
         String apiURL = Constant.SERVER_API_CAFE_LEGAL+Constant.CONVITE_CAFE_LEGAL+"/"+advogadoId+Constant.ABERTOS;
         jsonRequest(apiURL);
 

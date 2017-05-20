@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 
 public class NetworkAccess {
 
-    Context mContext;
+    private Context mContext;
 
     public NetworkAccess(Context context){
         mContext = context;

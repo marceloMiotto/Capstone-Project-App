@@ -4,19 +4,14 @@ package udacitynano.com.br.cafelegal.network;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +28,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 
+@SuppressWarnings({"unused", "AccessStaticViaInstance"})
 public class NetworkRequests {
 
     private Context mContext;
@@ -137,16 +133,15 @@ public class NetworkRequests {
                         switch (mTypeCalled){
 
                             case Constant.PERFIL:
-                                PerfilService perfilService = new PerfilService(mContext, mView);
-                                UserType userType = UserType.getInstance(mContext);
+                                PerfilService perfilService = new PerfilService(mContext);
                                 Pessoa pessoa;
-                                if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_advogado))) {
+                                if(UserType.getAppUserType(mContext).equals(mContext.getString(R.string.preference_user_type_advogado))) {
                                     pessoa = new Gson().fromJson(response.toString(),Advogado.class);
                                 }else{
                                     pessoa = new Gson().fromJson(response.toString(),Cliente.class);
                                 }
 
-                                if (UserType.getInstance(mContext).getUserId() <= 0) {
+                                if (UserType.getInstance(mContext).getUserId(mContext) <= 0) {
                                     perfilService.setSharedId(pessoa.getId());
                                 }
 
@@ -157,7 +152,7 @@ public class NetworkRequests {
                                 SharedPreferences.Editor editor = sharedPref.edit();
 
                                 try {
-                                    if(response.getString(Constant.word_type).equals(Constant.word_ciente)){
+                                    if(response.getString(Constant.word_type).equals(Constant.word_cliente)){
                                         editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_cliente));
                                     }else{
                                         editor.putString(mContext.getString(R.string.preference_user_type_key), mContext.getString(R.string.preference_user_type_advogado));

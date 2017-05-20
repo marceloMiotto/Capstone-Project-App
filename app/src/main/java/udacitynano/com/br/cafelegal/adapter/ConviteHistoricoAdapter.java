@@ -18,7 +18,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistoricoAdapter.ViewHolder>{
 
     private static List<Convite> mConviteList;
-    private static Context mContext;
+    private Context mContext;
 
     public ConviteHistoricoAdapter(Context context, List<Convite> conviteList) {
         mConviteList = conviteList;
@@ -32,14 +32,13 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_convite_historico, parent, false);
 
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ConviteHistoricoAdapter.ViewHolder holder, int position) {
         holder.mConviteTitle.setText(mConviteList.get(position).getDataCriacao());
-        if(UserType.isAdvogado()){
+        if(UserType.isAdvogado(mContext)){
             holder.mConviteSolicita.setText(mConviteList.get(position).getNomeConvida());
         }else{
             holder.mConviteSolicita.setText(mConviteList.get(position).getNomeAdvogado()+ " - OAB: " + mConviteList.get(position).getAdvogadoOAB());
@@ -70,12 +69,12 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(mContext,ChatActivity.class);
-                    intent.putExtra(mContext.getString(R.string.adapter_extra_convite),"Convite "+ mConviteList.get(getAdapterPosition()).getId());
-                    intent.putExtra(mContext.getString(R.string.adapter_extra_nome_convida),mConviteList.get(getAdapterPosition()).getNomeConvida());
-                    intent.putExtra(mContext.getString(R.string.adapter_extra_nome_advoagdo),mConviteList.get(getAdapterPosition()).getNomeAdvogado());
-                    intent.putExtra(mContext.getString(R.string.adapter_extra_advogado_oab),mConviteList.get(getAdapterPosition()).getAdvogadoOAB());
-                    mContext.startActivity(intent);
+                    Intent intent = new Intent(v.getContext(),ChatActivity.class);
+                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_convite),"Convite "+ mConviteList.get(getAdapterPosition()).getId());
+                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_nome_convida),mConviteList.get(getAdapterPosition()).getNomeConvida());
+                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_nome_advoagdo),mConviteList.get(getAdapterPosition()).getNomeAdvogado());
+                    intent.putExtra(v.getContext().getString(R.string.adapter_extra_advogado_oab),mConviteList.get(getAdapterPosition()).getAdvogadoOAB());
+                    v.getContext().startActivity(intent);
                 }
             });
         }

@@ -19,6 +19,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import udacitynano.com.br.cafelegal.MainActivity;
 import udacitynano.com.br.cafelegal.R;
 
+@SuppressWarnings("unused")
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
@@ -49,13 +50,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d("Debug", "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
-            }
+            // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
+            scheduleJob();
 
         }
 

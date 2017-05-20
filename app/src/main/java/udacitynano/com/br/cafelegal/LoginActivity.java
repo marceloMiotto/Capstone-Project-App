@@ -83,47 +83,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 showProgress(false);
                 if (user != null) {
-                    if (user != null) {
-                        // Name, email address, and profile photo Url
-                        String name = user.getDisplayName();
-                        mFirebaseEmail = user.getEmail();
-                        Uri photoUrl = user.getPhotoUrl();
+                    // Name, email address, and profile photo Url
+                    String name = user.getDisplayName();
+                    mFirebaseEmail = user.getEmail();
+                    Uri photoUrl = user.getPhotoUrl();
 
-                        // The user's ID, unique to the Firebase project. Do NOT use this value to
-                        // authenticate with your backend server, if you have one. Use
-                        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-                        mUser.getToken(true)
-                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                        if (task.isSuccessful()) {
-                                            String idToken = task.getResult().getToken();
-                                            Log.e("Debug4","User token "+idToken);
+                    // The user's ID, unique to the Firebase project. Do NOT use this value to
+                    // authenticate with your backend server, if you have one. Use
+                    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                    mUser.getToken(true)
+                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                    if (task.isSuccessful()) {
+                                        String idToken = task.getResult().getToken();
+                                        Log.e("Debug4","User token "+idToken);
 
-                                            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                                            Log.e("Debug4","Token FCM "+refreshedToken);
+                                        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                                        Log.e("Debug4","Token FCM "+refreshedToken);
 
-                                            SharedPreferences sharedPref = getSharedPreferences(
-                                                    getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                                            SharedPreferences.Editor editor = sharedPref.edit();
-                                            editor.putString(getString(R.string.preference_user_firebase_token), refreshedToken);
-                                            editor.putString(getString(R.string.preference_user_firebase_email),mFirebaseEmail);
+                                        SharedPreferences sharedPref = getSharedPreferences(
+                                                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString(getString(R.string.preference_user_firebase_token), refreshedToken);
+                                        editor.putString(getString(R.string.preference_user_firebase_email),mFirebaseEmail);
 
-                                            editor.apply();
-                                            Log.e("Debug4","user email: "+mFirebaseEmail);
+                                        editor.apply();
+                                        Log.e("Debug4","user email: "+mFirebaseEmail);
 
-                                        } else {
-                                            String error = task.getException().getMessage();
-                                            Log.e("Debug",error);
-                                        }
+                                    } else {
+
+                                        Log.e("Debug","Erro");
                                     }
-                                });
-                        String uid = user.getUid();
-                        Log.e("Debug4","User id "+uid);
-                    }
+                                }
+                            });
+                    String uid = user.getUid();
+                    Log.e("Debug4","User id "+uid);
 
                     Intent intent;
                     UserType userType = UserType.getInstance(mContext);
-                    Log.e("Debug","Login activity user type "+ userType.getAppUserType());
+                    Log.e("Debug","Login activity user type "+ UserType.getAppUserType(mContext));
 
                     //if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
                         intent = new Intent(getApplicationContext(), WelcomeActivity.class);
@@ -264,35 +262,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
-    public void authenticationFirebase(String email, String password) {
+    private void authenticationFirebase(String email, String password) {
 
         if (mSignIn) {
             //TODO verify the account

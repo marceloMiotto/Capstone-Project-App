@@ -25,11 +25,11 @@ public interface Constant {
     int CONVITE_ACEITO = 4;
 
     String FRIENDLY_MSG_LENGTH = "friendly_msg_length";
-    String ADVOGADO_ESCOLHIDO = "ADVOGAGO_ESCOLHIDO";
+    String ADVOGADO_ESCOLHIDO = "ADVOGADO_ESCOLHIDO";
 
 
     String word_type = "type";
-    String word_ciente = "cliente";
+    String word_cliente = "cliente";
     String content_application_json = "application/json; charset=utf-8";
     String content_header = "Content-Type";
 }

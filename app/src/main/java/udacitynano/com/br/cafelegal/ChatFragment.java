@@ -44,6 +44,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import udacitynano.com.br.cafelegal.model.CafeLegalMessage;
 import udacitynano.com.br.cafelegal.singleton.UserType;
@@ -51,11 +52,11 @@ import udacitynano.com.br.cafelegal.util.Constant;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+@SuppressWarnings("unused")
 public class ChatFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private String mUsername;
-    private SharedPreferences mSharedPreferences;
 
     private Button mSendButton;
     private RecyclerView mMessageRecyclerView;
@@ -63,19 +64,14 @@ public class ChatFragment extends Fragment implements
     private FirebaseRecyclerAdapter<CafeLegalMessage, MessageViewHolder> mFirebaseAdapter;
     private ProgressBar mProgressBar;
     private DatabaseReference mFirebaseDatabaseReference;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
     private FirebaseAnalytics mFirebaseAnalytics;
     private EditText mMessageEditText;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = "ChatFragment";
-    public static  String MESSAGES_CHILD;
-    public static  String MESSAGE_NOME_ADVOGADO = "X";
-    public static  String MESSAGE_ADVOGADO_OAB;
-    public static  String MESSAGE_NOME_CONVIDA  = "X";
-    public static final int DEFAULT_MSG_LENGTH_LIMIT = 10;
-    public static final String ANONYMOUS = "anonymous";
+    private static  String MESSAGES_CHILD;
+    private static final int DEFAULT_MSG_LENGTH_LIMIT = 10;
+    private static final String ANONYMOUS = "anonymous";
     private static final String MESSAGE_SENT_EVENT = "message_sent";
     private static final String MESSAGE_URL = "http://cafelegal.firebase.google.com/message/";
 
@@ -88,8 +84,7 @@ public class ChatFragment extends Fragment implements
 
 
     public static ChatFragment newInstance(String param1, String param2) {
-        ChatFragment fragment = new ChatFragment();
-        return fragment;
+        return new ChatFragment();
     }
 
     @Override
@@ -104,19 +99,19 @@ public class ChatFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         MESSAGES_CHILD = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_convite));
-        MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_advoagdo));
-        MESSAGE_ADVOGADO_OAB = "OAB: "+getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_advogado_oab));
-        MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_convida));
+        String MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_advoagdo));
+        String MESSAGE_ADVOGADO_OAB = "OAB: " + getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_advogado_oab));
+        String MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_convida));
 
 
-        if(UserType.isAdvogado()){
+        if(UserType.isAdvogado(getActivity())){
             if(MESSAGE_NOME_ADVOGADO.equals("X")){
                 mUsername = ANONYMOUS;
             }else{
-                mUsername = MESSAGE_NOME_ADVOGADO+" - "+MESSAGE_ADVOGADO_OAB;
+                mUsername = MESSAGE_NOME_ADVOGADO +" - "+ MESSAGE_ADVOGADO_OAB;
             }
         }else{
             if(MESSAGE_NOME_CONVIDA.equals("X")){
@@ -128,8 +123,8 @@ public class ChatFragment extends Fragment implements
 
 
         // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
 
 
@@ -330,7 +325,7 @@ public class ChatFragment extends Fragment implements
 
     private Indexable getMessageIndexable(CafeLegalMessage cafeLegalMessage) {
         PersonBuilder sender = Indexables.personBuilder()
-                .setIsSelf(mUsername == cafeLegalMessage.getName())
+                .setIsSelf(Objects.equals(mUsername, cafeLegalMessage.getName()))
                 .setName(cafeLegalMessage.getName())
                 .setUrl(MESSAGE_URL.concat(cafeLegalMessage.getId() + "/sender"));
 
@@ -338,14 +333,12 @@ public class ChatFragment extends Fragment implements
                 .setName(mUsername)
                 .setUrl(MESSAGE_URL.concat(cafeLegalMessage.getId() + "/recipient"));
 
-        Indexable messageToIndex = Indexables.messageBuilder()
+        return Indexables.messageBuilder()
                 .setName(cafeLegalMessage.getText())
                 .setUrl(MESSAGE_URL.concat(cafeLegalMessage.getId()))
                 .setSender(sender)
                 .setRecipient(recipient)
                 .build();
-
-        return messageToIndex;
     }
 
 
@@ -353,7 +346,7 @@ public class ChatFragment extends Fragment implements
 
 
     // Fetch the config to determine the allowed length of messages.
-    public void fetchConfig() {
+    private void fetchConfig() {
         long cacheExpiration = 3600; // 1 hour in seconds
         // If developer mode is enabled reduce cacheExpiration to 0 so that each fetch goes to the
         // server. This should not be used in release builds.
@@ -391,7 +384,7 @@ public class ChatFragment extends Fragment implements
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 

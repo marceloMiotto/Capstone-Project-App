@@ -23,6 +23,7 @@ import udacitynano.com.br.cafelegal.model.Cliente;
 import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.util.Constant;
 
+@SuppressWarnings("unused")
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener{
 
     @BindView(R.id.buttons_aviso_linearLayout)
@@ -38,7 +39,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.welcome_aviso_textview)
     TextView mAviso;
 
-    NetworkRequests mNetworkRequests;
+    private NetworkRequests mNetworkRequests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

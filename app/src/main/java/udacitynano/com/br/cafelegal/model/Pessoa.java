@@ -4,6 +4,7 @@ package udacitynano.com.br.cafelegal.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+@SuppressWarnings("unused")
 public abstract class Pessoa implements Parcelable {
 
     private long   id; //this is the server Id
@@ -152,8 +153,8 @@ public abstract class Pessoa implements Parcelable {
         return numero;
     }
 
-    public void setNumero(String numbero) {
-        this.numero = numbero;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public String getNotificationRegistration() {

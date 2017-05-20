@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class UserTypeTest   {
 
-    UserType userType;
+    private UserType userType;
     @Mock
     Context mockContext;
     @Mock
@@ -40,7 +40,7 @@ public class UserTypeTest   {
     public void isAdvogadoTest() throws Exception {
         when(sharedPreferences.getString(anyString(),anyString())).thenReturn("ADVOGADO");
         userType = UserType.getInstance(mockContext);
-        assertTrue(UserType.isAdvogado());
+        assertTrue(UserType.isAdvogado(mockContext));
 
     }
 
@@ -48,14 +48,14 @@ public class UserTypeTest   {
     public void getAppUserTypeTest() throws Exception {
         when(sharedPreferences.getString(anyString(),anyString())).thenReturn("ADVOGADO");
         userType = UserType.getInstance(mockContext);
-        assertEquals(UserType.getAppUserType(),"ADVOGADO");
+        assertEquals(UserType.getAppUserType(mockContext),"ADVOGADO");
     }
 
     @Test
     public void getUserIdTest() throws Exception {
         when(sharedPreferences.getLong(anyString(),anyLong())).thenReturn((long)1);
         userType = UserType.getInstance(mockContext);
-        assertEquals(UserType.getUserId(),1);
+        assertEquals(UserType.getUserId(mockContext),1);
 
     }
 

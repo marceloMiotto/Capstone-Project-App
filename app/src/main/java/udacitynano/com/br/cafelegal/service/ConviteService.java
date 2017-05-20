@@ -21,10 +21,11 @@ import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.network.NetworkRequests;
 import udacitynano.com.br.cafelegal.util.Constant;
 
+@SuppressWarnings("unused")
 public class ConviteService {
 
-    final Context mContext;
-    View mView = null;
+    private final Context mContext;
+    private View mView = null;
 
     public ConviteService(Context context, View view) {
 
@@ -33,7 +34,7 @@ public class ConviteService {
 
     }
 
-    public int sendConvite(long userId, String areaLocation) throws JSONException {
+    public void sendConvite(long userId, String areaLocation) throws JSONException {
         DateFormat df = new SimpleDateFormat(mContext.getString(R.string.date_format));
         Date today = Calendar.getInstance().getTime();
         String reportDate = df.format(today);
@@ -44,15 +45,13 @@ public class ConviteService {
 
         networkRequests.stringRequest(Constant.CONVITE,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL,jsonConvite,true,convite);
 
-        return 0;
-
     }
 
     //Convite provider access
     public int updateConvite(Context context, Convite convite) {
 
         String[] selectionArgs = {""};
-        String selectionClause = "";
+        String selectionClause;
 
         ContentValues conviteValues = new ContentValues();
 
@@ -72,21 +71,19 @@ public class ConviteService {
         selectionArgs[0] = String.valueOf(convite.getId());
         selectionClause = DatabaseContract.ConviteEntry.TABLE_NAME+"."+DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER + " = ?";
 
-        int updateUri = context.getContentResolver().update(
+        return context.getContentResolver().update(
                 DatabaseContract.ConviteEntry.CONTENT_URI,
                 conviteValues,
                 selectionClause,
                 selectionArgs
         );
 
-        return updateUri;
-
     }
 
-    public long createConvite(Context context, Convite convite) {
+    public void createConvite(Context context, Convite convite) {
 
 
-        long conviteId = 0;
+
         ContentValues conviteValues = new ContentValues();
 
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER, convite.getId());
@@ -107,9 +104,8 @@ public class ConviteService {
                 conviteValues
         );
 
-        conviteId = ContentUris.parseId(insertedUri);
+        ContentUris.parseId(insertedUri);
 
-        return conviteId;
     }
 
 }

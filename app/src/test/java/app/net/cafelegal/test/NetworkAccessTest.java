@@ -13,9 +13,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import udacitynano.com.br.cafelegal.network.NetworkAccess;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,7 +27,7 @@ public class NetworkAccessTest {
     @Mock
     NetworkInfo networkInfo;
 
-    NetworkAccess mNetworkAccess;
+    private NetworkAccess mNetworkAccess;
 
     @Before
     public void initialize() {

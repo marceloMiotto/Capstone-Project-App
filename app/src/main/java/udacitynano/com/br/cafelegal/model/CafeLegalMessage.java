@@ -1,5 +1,6 @@
 package udacitynano.com.br.cafelegal.model;
 
+@SuppressWarnings("unused")
 public class CafeLegalMessage {
 
     private String id;
@@ -26,6 +27,7 @@ public class CafeLegalMessage {
         return text;
     }
 
+    @SuppressWarnings("unused")
     public void setText(String text) {
         this.text = text;
     }
@@ -34,6 +36,7 @@ public class CafeLegalMessage {
         return name;
     }
 
+    @SuppressWarnings("unused")
     public void setName(String name) {
         this.name = name;
     }

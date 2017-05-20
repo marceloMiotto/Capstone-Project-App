@@ -19,10 +19,8 @@ import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 public class GoogleClient implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-    private int REQUEST_LOCATION = 1;
     private Context mContext;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
 
     public GoogleClient(Context context){
 
@@ -57,11 +55,12 @@ public class GoogleClient implements
     }
 
 
-    public void getLastLocation(){
+    private void getLastLocation(){
 
         if (ActivityCompat.checkSelfPermission(mContext, mContext.getString(R.string.permission_access_fine_location))
                 != PackageManager.PERMISSION_GRANTED) {
             // Check Permissions Now
+            int REQUEST_LOCATION = 1;
             ActivityCompat.requestPermissions((Activity) mContext,
                     new String[]{mContext.getString(R.string.permission_access_fine_location)},
                     REQUEST_LOCATION);
@@ -77,7 +76,7 @@ public class GoogleClient implements
 
             SharedPreferences sharedPref = mContext.getSharedPreferences(
                     mContext.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
+            Location mLastLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(mContext.getString(R.string.preference_user_last_location), "");

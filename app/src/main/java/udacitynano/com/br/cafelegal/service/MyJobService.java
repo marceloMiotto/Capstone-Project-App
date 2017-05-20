@@ -1,10 +1,9 @@
 package udacitynano.com.br.cafelegal.service;
 
-import android.util.Log;
-
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
+@SuppressWarnings("unused")
 public class MyJobService extends JobService {
 
     private static final String TAG = "MyJobService";

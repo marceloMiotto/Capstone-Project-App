@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import udacitynano.com.br.cafelegal.network.GoogleClient;
 import udacitynano.com.br.cafelegal.service.ConviteService;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 
+@SuppressWarnings("unused")
 public class ConviteFragment extends Fragment  {
 
 
@@ -31,16 +33,14 @@ public class ConviteFragment extends Fragment  {
     private View mView;
     private GoogleApiClient mGoogleApiClient;
     private String mAreaLocation;
-    private int REQUEST_LOCATION = 1;
     private  GoogleClient mGoogleClient;
 
     public ConviteFragment() {
         // Required empty public constructor
     }
 
-    public static ConviteFragment newInstance(String param1, String param2) {
-        ConviteFragment fragment = new ConviteFragment();
-        return fragment;
+    public static ConviteFragment newInstance() {
+        return new ConviteFragment();
     }
 
     @Override
@@ -64,21 +64,20 @@ public class ConviteFragment extends Fragment  {
             @Override
             public void onClick(View v) {
 
-                String resultMsg = "";
+                String resultMsg;
                 ConviteService conviteService = new ConviteService(getActivity(), mView);
-                UserType userType = UserType.getInstance(getActivity());
+
 
                 try {
                     SharedPreferences sharedPref = getActivity().getSharedPreferences(
                             getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                     mAreaLocation =  sharedPref.getString(getString(R.string.preference_user_last_location),"");
 
-                    if (conviteService.sendConvite(userType.getUserId(),mAreaLocation) == 0) {
-                        resultMsg = getActivity().getString(R.string.convite_result_enviado_sucesso);
-                    } else {
-                        resultMsg = getActivity().getString(R.string.convite_result_erro_enviar);
-                    }
+                    conviteService.sendConvite(UserType.getUserId(getActivity()),mAreaLocation);
+                    resultMsg = getActivity().getString(R.string.convite_result_enviado_sucesso);
+
                 } catch (JSONException e) {
+                    resultMsg = getActivity().getString(R.string.convite_result_erro_enviar);
                     e.printStackTrace();
                 }
 
@@ -122,10 +121,11 @@ public class ConviteFragment extends Fragment  {
     //permission result
     @SuppressWarnings({"MissingPermission"})
     public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions,
-                                           int[] grantResults) {
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
 
-         if (requestCode == REQUEST_LOCATION) {
+        int REQUEST_LOCATION = 1;
+        if (requestCode == REQUEST_LOCATION) {
             if(grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mGoogleClient.setLocationSharedPref();

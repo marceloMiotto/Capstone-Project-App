@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +23,7 @@ import udacitynano.com.br.cafelegal.model.Convite;
 public class HistoricoConvitesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int CONVITE_HISTORICO_LOADER_ID = 12;
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private List<Convite> myDataset;
 
 
@@ -37,10 +34,9 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         // Required empty public constructor
     }
 
-    public static HistoricoConvitesFragment newInstance(String param1, String param2) {
-        HistoricoConvitesFragment fragment = new HistoricoConvitesFragment();
+    public static HistoricoConvitesFragment newInstance() {
 
-        return fragment;
+        return new HistoricoConvitesFragment();
     }
 
     @Override
@@ -55,10 +51,10 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_historico_convites, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.convite_historico_recyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.convite_historico_recyclerView);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset = new ArrayList<>();
         // specify an adapter (see also next example)
@@ -69,6 +65,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         return view;
     }
 
+    @SuppressWarnings("unused")
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -93,7 +90,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
     }
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
+    public Loader<android.database.Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] projection = {
                 DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER,
@@ -109,14 +106,13 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
                 DatabaseContract.ConviteEntry.COLUMN_ADVOGADO_OAB
         };
 
-        CursorLoader loader = new CursorLoader(
+        return new CursorLoader(
                 this.getActivity(),
                 DatabaseContract.ConviteEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
                 null);
-        return loader;
     }
 
     @Override

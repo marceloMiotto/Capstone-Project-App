@@ -8,16 +8,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 public class DatabaseProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private   DatabaseHelper mOpenHelper;
     private static SQLiteDatabase sqLiteDatabase;
 
-    static final int PESSOA  = 100;
-    static final int CONVITE = 101;
+    private static final int PESSOA  = 100;
+    private static final int CONVITE = 101;
 
     private static final SQLiteQueryBuilder sPessoasQueryBuilder;
     private static final SQLiteQueryBuilder sConvitesQueryBuilder;
@@ -38,8 +37,7 @@ public class DatabaseProvider extends ContentProvider {
                               String[] selectionArgs,String sortOrder) {
 
 
-
-        Cursor pessoaCursor = sPessoasQueryBuilder.query(sqLiteDatabase,
+        return sPessoasQueryBuilder.query(sqLiteDatabase,
                 projection,
                 selection,
                 selectionArgs,
@@ -47,8 +45,6 @@ public class DatabaseProvider extends ContentProvider {
                 null,
                 sortOrder
         );
-
-        return pessoaCursor;
     }
 
 
@@ -56,8 +52,7 @@ public class DatabaseProvider extends ContentProvider {
                               String[] selectionArgs,String sortOrder) {
 
 
-
-        Cursor conviteCursor = sConvitesQueryBuilder.query(sqLiteDatabase,
+        return sConvitesQueryBuilder.query(sqLiteDatabase,
                 projection,
                 selection,
                 selectionArgs,
@@ -65,11 +60,9 @@ public class DatabaseProvider extends ContentProvider {
                 null,
                 sortOrder
         );
-
-        return conviteCursor;
     }
 
-    static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = DatabaseContract.CONTENT_AUTHORITY;
@@ -84,7 +77,7 @@ public class DatabaseProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
         int rowsDeleted;
@@ -109,7 +102,7 @@ public class DatabaseProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
 
         final int match = sUriMatcher.match(uri);
 
@@ -127,7 +120,7 @@ public class DatabaseProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
 
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
@@ -163,7 +156,7 @@ public class DatabaseProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mOpenHelper = new DatabaseHelper(getContext());
+        DatabaseHelper mOpenHelper = new DatabaseHelper(getContext());
         if(sqLiteDatabase == null) {
             sqLiteDatabase = mOpenHelper.getWritableDatabase();
         }
@@ -171,7 +164,7 @@ public class DatabaseProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
         Cursor retCursor;
@@ -195,7 +188,7 @@ public class DatabaseProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection,
+    public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
 
         final int match = sUriMatcher.match(uri);
@@ -227,7 +220,7 @@ public class DatabaseProvider extends ContentProvider {
     }
 
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] values) {
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
 
         final int match = sUriMatcher.match(uri);
         int returnCount = 0;

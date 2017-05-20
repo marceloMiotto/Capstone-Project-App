@@ -4,6 +4,7 @@ package udacitynano.com.br.cafelegal.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+@SuppressWarnings("unused")
 public class Advogado extends Pessoa {
 
     private String numeroInscricaoOAB;

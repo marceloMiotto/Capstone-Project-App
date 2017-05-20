@@ -140,6 +140,8 @@
     <string name="convite_result_erro_enviar">Erro ao enviar o convite. Tente mais tarde!</string>
     <string name="permission_denied">Permissao Negada</string>
     <string name="login_activity_title">Acessar Café Legal</string>
+    <string name="fragment_chat_message_edit_text_hint">Digite sua mensagem</string>
+    <string name="chat_fragment_button_send">Enviar</string>
 
 
 </resources>

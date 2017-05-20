@@ -2,14 +2,9 @@ package udacitynano.com.br.cafelegal.service;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -20,10 +15,10 @@ import org.json.JSONObject;
 
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.network.NetworkRequests;
-import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
 import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
+@SuppressWarnings("unused")
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private Context mContext;
     private static final String TAG = "MyFirebaseIIDService";
@@ -79,11 +74,11 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // TODO: Implement this method to send token to your app server.
         final JSONObject jsonToken = new JSONObject(new Gson().toJson("{\"token\":\""+token+"\"}"));
         Log.e("Debug","jsonConvite "+jsonToken.toString());
-        Log.e("Debug79","URL "+ Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN);
+        Log.e("Debug79","URL "+ Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId(mContext)+Constant.NOTIFICATION_TOKEN);
 
         final NetworkRequests networkRequests = new NetworkRequests(this);
 
-        networkRequests.stringRequest(Constant.ANDROID_SERVICE,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId()+Constant.NOTIFICATION_TOKEN,jsonToken,false,null);
+        networkRequests.stringRequest(Constant.ANDROID_SERVICE,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADO+"/"+ UserType.getUserId(mContext)+Constant.NOTIFICATION_TOKEN,jsonToken,false,null);
 
     }
 }

@@ -1,5 +1,6 @@
 package udacitynano.com.br.cafelegal.model;
 
+@SuppressWarnings("unused")
 public class Convite {
 
 

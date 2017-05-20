@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,55 +38,77 @@ import udacitynano.com.br.cafelegal.util.Constant;
 import static udacitynano.com.br.cafelegal.R.array.seccional;
 import static udacitynano.com.br.cafelegal.R.id.perfil_especialista_um_spinner;
 
+@SuppressWarnings("unused")
 public class PerfilFragment extends Fragment implements AdapterView.OnItemSelectedListener
                                                       , LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int PERFIL_LOADER_ID = 11;
     @BindView(R.id.perfilNomeEditText)
+
     EditText mPerfilNomeEditText;
     @BindView(R.id.perfilNomeMeioEditText)
+
     EditText mPerfilNomeMeioEditText;
     @BindView(R.id.perfilSobrenomeEditText)
+
     EditText mPerfilSobrenomeEditText;
     @BindView(R.id.perfilCEPEditText)
+
     EditText mPerfilCEPEditText;
     @BindView(R.id.perfilEnderecoEditText)
+
     EditText mPerfilEnderecoEditText;
     @BindView(R.id.perfilNumeroEditText)
+
     EditText mPerfilNumeroEditText;
     @BindView(R.id.perfilComplementoEditText)
+
     EditText mPerfilComplementoEditText;
     @BindView(R.id.perfilBairroEditText)
+
     EditText mPerfilBairroEditText;
     @BindView(R.id.perfilCidadeEditText)
+
     EditText mPerfilCidadeEditText;
     @BindView(R.id.perfilEstadoEditText)
+
     EditText mPerfilEstadoEditText;
     @BindView(R.id.perfilPaisEditText)
+
     EditText mPerfilPaisEditText;
     @BindView(R.id.perfil_sexo_spinner)
+
     Spinner sexoSpinner;
 
     @Nullable @BindView(R.id.perfilNumeroOABEditText)
+
     EditText mPerfilNumeroOABEditText;
     @Nullable @BindView(R.id.perfil_seccional_spinner)
+
     Spinner mSeccionalSpinner;
     @Nullable @BindView(R.id.perfilTipoInscricaoTextView)
+
     TextView mPerfilTipoInscricaoTextView;
     @Nullable @BindView(R.id.perfilFoneComercialEditText)
+
     EditText mPerfilFoneComercialEditText;
     @Nullable @BindView(R.id.perfilTwitterEditText)
+
     EditText mPerfilTwitterEditText;
     @Nullable @BindView(R.id.perfilLinkedInEditText)
+
     EditText mPerfilLinkedInEditText;
     @BindView(perfil_especialista_um_spinner)
+
     Spinner mPerfilEspecialistaUmSpinner;
     @BindView(R.id.perfil_especialista_dois_spinner)
+
     Spinner mPerfilEspecialistaDoisSpinner;
     @BindView(R.id.perfil_fab)
+
     FloatingActionButton mPerfilFab;
 
-    View view;
+    private View view;
 
     private String mSexoChoosen;
     private String mSeccionalChoosen;
@@ -96,9 +117,9 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     private String mFirebaseEmail;
     private String mFirebaseToken;
 
-    Pessoa mCliente;
-    Pessoa mAdvogado;
-    Pessoa mPessoa;
+    private Pessoa mCliente;
+    private Pessoa mAdvogado;
+    private Pessoa mPessoa;
 
     private JSONObject jsonObject;
 
@@ -108,10 +129,9 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         // Required empty public constructor
     }
 
-    public static PerfilFragment newInstance(String param1, String param2) {
-        PerfilFragment fragment = new PerfilFragment();
+    public static PerfilFragment newInstance() {
 
-        return fragment;
+        return new PerfilFragment();
     }
 
     @Override
@@ -126,7 +146,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
 
 
-        if(UserType.isAdvogado()){
+        if(UserType.isAdvogado(getActivity())){
             view = inflater.inflate(R.layout.fragment_perfil_advogado, container, false);
         }
         else{
@@ -153,10 +173,9 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 int requestMethod;
                 String apiResource;
-                String stringJsonObject = "";
+                String stringJsonObject;
 
-                final UserType userType = UserType.getInstance(getActivity());
-                if(userType.isAdvogado()){
+                if(UserType.isAdvogado(getActivity())){
 
                     int cep;
                     if(mPerfilCEPEditText.getText().toString().equals("")){
@@ -164,7 +183,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                     }else{
                         cep = Integer.valueOf(mPerfilCEPEditText.getText().toString());
                     }
-                    mAdvogado = new Advogado(userType.getUserId()
+                    mAdvogado = new Advogado(UserType.getUserId(getActivity())
                             , mPerfilNomeEditText.getText().toString()
                             , mPerfilNomeMeioEditText.getText().toString()
                             , mPerfilSobrenomeEditText.getText().toString()
@@ -196,7 +215,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 }else{
 
-                    mCliente = new Cliente(userType.getUserId()
+                    mCliente = new Cliente(UserType.getUserId(getActivity())
                             , mPerfilNomeEditText.getText().toString()
                             , mPerfilNomeMeioEditText.getText().toString()
                             , mPerfilSobrenomeEditText.getText().toString()
@@ -309,7 +328,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
+    public Loader<android.database.Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] projection = {
                  DatabaseContract.PessoaEntry.COLUMN_NOME
@@ -337,16 +356,15 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
         };
         String selectionClause = DatabaseContract.PessoaEntry.TABLE_NAME+"."+DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " = ?";
-        String[] selectionArgs = {String.valueOf(UserType.getInstance(getActivity()).getUserId())};
+        String[] selectionArgs = {String.valueOf(UserType.getUserId(getActivity()))};
 
-        CursorLoader loader = new CursorLoader(
+        return new CursorLoader(
                 this.getActivity(),
                 DatabaseContract.PessoaEntry.CONTENT_URI,
                 projection,
                 selectionClause,
                 selectionArgs,
                 null);
-        return loader;
     }
 
     @Override
@@ -371,8 +389,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
             sexoSpinner.setSelection(strSexo.indexOf(cursor.getString(12)));
 
-            UserType userType = UserType.getInstance(getActivity());
-            if (userType.isAdvogado()) {
+            if (UserType.isAdvogado(getActivity())) {
                 mPerfilNumeroOABEditText.setText(cursor.getString(13));
 
                 List<String> strSeccional = Arrays.asList(getResources().getStringArray(R.array.seccional));
