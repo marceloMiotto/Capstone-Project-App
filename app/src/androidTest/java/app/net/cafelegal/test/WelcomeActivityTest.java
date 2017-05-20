@@ -36,29 +36,15 @@ public class WelcomeActivityTest {
 
 
     @Test
-    public void advogadoWelcomeFlowPerfil(){
+    public void loginPositive(){
         onView(withId(R.id.welcome_button_sou_advogado)).perform(click());
         onView(withId(R.id.welcome_button_aviso_perfil)).perform(click());
     }
 
 
     @Test
-    public void advogadoWelcomeFlowConvite(){
+    public void loginNegative(){
         onView(withId(R.id.welcome_button_sou_advogado)).perform(click());
-        onView(withId(R.id.welcome_button_aviso_perfil_depois)).perform(click());
-    }
-
-
-    @Test
-    public void clienteWelcomeFlowPerfil(){
-        onView(withId(R.id.welcome_button_sou_cliente)).perform(click());
-        onView(withId(R.id.welcome_button_aviso_perfil)).perform(click());
-    }
-
-
-    @Test
-    public void clienteWelcomeFlowConvite(){
-        onView(withId(R.id.welcome_button_sou_cliente)).perform(click());
         onView(withId(R.id.welcome_button_aviso_perfil_depois)).perform(click());
     }
 
