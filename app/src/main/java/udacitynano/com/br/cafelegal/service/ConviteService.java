@@ -58,7 +58,7 @@ public class ConviteService {
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER, convite.getId());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CONVIDA_ID, convite.getConvidaId());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_RESPONDE_ID, convite.getRespondeId());
-        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE, String.valueOf(convite.getDataCriacao()));
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE, convite.getDataCriacao());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO, convite.getAceito());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CHAT_FIREBASE, convite.getChatFirebase());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ESPECIALIDADE , convite.getEspecialidade());
@@ -89,7 +89,7 @@ public class ConviteService {
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ID_CONVITE_SERVER, convite.getId());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CONVIDA_ID, convite.getConvidaId());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_RESPONDE_ID, convite.getRespondeId());
-        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE, String.valueOf(convite.getDataCriacao()));
+        conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE, convite.getDataCriacao());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CONVITE_ACEITO, convite.getAceito());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_CHAT_FIREBASE, convite.getChatFirebase());
         conviteValues.put(DatabaseContract.ConviteEntry.COLUMN_ESPECIALIDADE , convite.getEspecialidade());

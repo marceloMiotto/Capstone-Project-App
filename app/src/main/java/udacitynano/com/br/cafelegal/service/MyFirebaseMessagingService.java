@@ -15,9 +15,12 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
+import udacitynano.com.br.cafelegal.LoginActivity;
 import udacitynano.com.br.cafelegal.MainActivity;
 import udacitynano.com.br.cafelegal.R;
+import udacitynano.com.br.cafelegal.model.Convite;
 
 @SuppressWarnings("unused")
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -63,14 +66,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
 
-        sendNotification("Test "+ remoteMessage.getFrom());
-
-
         //TODO CHAT TEST
         // Handle data payload of FCM messages.
-        Log.d(TAG, "FCM Message Id: " + remoteMessage.getMessageId());
-        Log.d(TAG, "FCM Notification Message: " + remoteMessage.getNotification());
-        Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
+        Log.e("Debug", "FCM Message Id: " + remoteMessage.getMessageId());
+        Log.e("Debug", "FCM Notification Message: " + remoteMessage.getNotification());
+        Log.e("Debug", "FCM Data Message: " + remoteMessage.getData().toString());
+
+        //TODO update convite here
+
+        if(remoteMessage.getData().get("tipoConvite").toString().equals("convite_cliente")){
+            Log.e("Debug", "FCM : entrou cliente");
+            Convite convite = new Gson().fromJson(remoteMessage.getData().toString(), Convite.class);
+            ConviteService conviteService = new ConviteService(getApplicationContext(),null);
+            conviteService.updateConvite(getApplicationContext(),convite);
+        }
+
+        sendNotification(getString(R.string.notification_body));
 
     }
     // [END receive_message]
@@ -102,15 +113,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
+
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.icon_cafe)
-                .setContentTitle("FCM Message")
+                .setSmallIcon(R.drawable.coffee)
+                .setContentTitle(getString(R.string.app_name))
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

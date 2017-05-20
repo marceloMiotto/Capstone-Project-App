@@ -142,6 +142,7 @@
     <string name="login_activity_title">Acessar Café Legal</string>
     <string name="fragment_chat_message_edit_text_hint">Digite sua mensagem</string>
     <string name="chat_fragment_button_send">Enviar</string>
+    <string name="notification_body">Vamos tomar um cafézinho</string>
 
 
 </resources>
