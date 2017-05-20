@@ -36,14 +36,14 @@ public class WelcomeActivityTest {
 
 
     @Test
-    public void loginPositive(){
+    public void advogadoPerfilFlow(){
         onView(withId(R.id.welcome_button_sou_advogado)).perform(click());
         onView(withId(R.id.welcome_button_aviso_perfil)).perform(click());
     }
 
 
     @Test
-    public void loginNegative(){
+    public void advogadoConviteFlow(){
         onView(withId(R.id.welcome_button_sou_advogado)).perform(click());
         onView(withId(R.id.welcome_button_aviso_perfil_depois)).perform(click());
     }

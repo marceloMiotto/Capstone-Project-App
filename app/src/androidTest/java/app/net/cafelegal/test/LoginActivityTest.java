@@ -31,7 +31,7 @@ public class LoginActivityTest {
 
     @Before
     public void setup(){
-        mTest = "negative";
+        mTest = "positive";
     }
 
     private static int getResourceId(String s) {
