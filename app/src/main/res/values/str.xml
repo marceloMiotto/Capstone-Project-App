@@ -143,6 +143,10 @@
     <string name="fragment_chat_message_edit_text_hint">Digite sua mensagem</string>
     <string name="chat_fragment_button_send">Enviar</string>
     <string name="notification_body">Vamos tomar um cafézinho</string>
+    <string name="widget_title">Café Legal - Convite</string>
+    <string name="widget_no_invites">Sem convites</string>
+    <string name="widget_textview_aceitar">Aceitar</string>
+    <string name="widget_convidar">Convidar</string>
 
 
 </resources>

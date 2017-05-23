@@ -34,7 +34,7 @@ public class ConviteService {
 
     }
 
-    public void sendConvite(long userId, String areaLocation) throws JSONException {
+    public void sendConvite(long userId, String areaLocation,boolean showSnack) throws JSONException {
         DateFormat df = new SimpleDateFormat(mContext.getString(R.string.date_format));
         Date today = Calendar.getInstance().getTime();
         String reportDate = df.format(today);
@@ -43,7 +43,7 @@ public class ConviteService {
 
         final NetworkRequests networkRequests = new NetworkRequests(mContext,mView);
 
-        networkRequests.stringRequest(Constant.CONVITE,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL,jsonConvite,true,convite);
+        networkRequests.stringRequest(Constant.CONVITE,Request.Method.POST,Constant.SERVER_API_CAFE_LEGAL + Constant.CONVITE_CAFE_LEGAL,jsonConvite,showSnack,convite);
 
     }
 

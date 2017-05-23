@@ -73,7 +73,7 @@ public class ConviteFragment extends Fragment  {
                             getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                     mAreaLocation =  sharedPref.getString(getString(R.string.preference_user_last_location),"");
 
-                    conviteService.sendConvite(UserType.getUserId(getActivity()),mAreaLocation);
+                    conviteService.sendConvite(UserType.getUserId(getActivity()),mAreaLocation,true);
                     resultMsg = getActivity().getString(R.string.convite_result_enviado_sucesso);
 
                 } catch (JSONException e) {
