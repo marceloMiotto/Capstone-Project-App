@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,11 +29,13 @@ import udacitynano.com.br.cafelegal.util.Constant;
 
 
 @SuppressWarnings({"unused", "AccessStaticViaInstance"})
-public class ListaConvitesAbertosFragment extends Fragment {
+public class ListaConvitesAbertosFragment extends Fragment
+{
+
 
     private RecyclerView.Adapter mAdapter;
     private List<Convite> myDataset;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private OnFragmentInteractionListener mListener;
 
@@ -56,11 +59,23 @@ public class ListaConvitesAbertosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_convites_abertos, container, false);
         getConvitesAbertos();
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.convites_abertos_recyclerView);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset = new ArrayList<>();
         mAdapter = new ConvitesAbertosAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getConvitesAbertos();
+                Log.e("Debug","onRefresh");
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return view;
 
     }
@@ -104,7 +119,7 @@ public class ListaConvitesAbertosFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         Log.e("Debug","Response length "+response.length());
                         try {
-
+                            myDataset.clear();
                             for(int i=0;i<response.length();i++){
                                 JSONObject jsonConvite = response.getJSONObject(i);
                                 myDataset.add(new Gson().fromJson(jsonConvite.toString(),Convite.class));

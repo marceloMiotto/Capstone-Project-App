@@ -44,9 +44,7 @@ class DatabaseHelper extends SQLiteOpenHelper{
                     DatabaseContract.PessoaEntry.COLUMN_LINKEDIN + " TEXT, " +
                     DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_UM + " TEXT, " +
                     DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_DOIS + " TEXT, " +
-                    DatabaseContract.PessoaEntry.COLUMN_NOTIFICATION_REGISTRADO + " TEXT, " +
-                    DatabaseContract.PessoaEntry.COLUMN_LATITUTE + " REAL, " +
-                    DatabaseContract.PessoaEntry.COLUMN_LONGITUDE + " REAL " +
+                    DatabaseContract.PessoaEntry.COLUMN_NOTIFICATION_REGISTRADO + " TEXT " +
                     " );";
 
 

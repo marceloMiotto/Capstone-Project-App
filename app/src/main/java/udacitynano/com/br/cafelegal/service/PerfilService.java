@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
+import java.util.ArrayList;
+
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
@@ -15,6 +17,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 public class PerfilService {
 
     private Context mContext;
+
 
     public PerfilService(Context context){
         mContext = context;
@@ -67,8 +70,6 @@ public class PerfilService {
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_UM, advogado.getEspecialistaUm());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_DOIS, advogado.getEspecialistaDois());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOTIFICATION_REGISTRADO, advogado.getNotificationRegistration());
-            pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_LATITUTE, advogado.getLatitude());
-            pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_LONGITUDE, advogado.getLongitude());
 
         }
 
@@ -124,9 +125,7 @@ public class PerfilService {
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_UM, advogado.getEspecialistaUm());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_ESPECIALISTA_DOIS, advogado.getEspecialistaDois());
             pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_NOTIFICATION_REGISTRADO, advogado.getNotificationRegistration());
-            pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_LATITUTE, advogado.getLatitude());
-            pessoaValues.put(DatabaseContract.PessoaEntry.COLUMN_LONGITUDE, advogado.getLongitude());
-
+          
         }
 
         Uri insertedUri = mContext.getContentResolver().insert(

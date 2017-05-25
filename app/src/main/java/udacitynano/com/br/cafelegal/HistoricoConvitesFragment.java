@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 import udacitynano.com.br.cafelegal.adapter.ConviteHistoricoAdapter;
+import udacitynano.com.br.cafelegal.adapter.DividerItemDecoration;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Convite;
 
@@ -56,10 +58,13 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         // use a linear layout manager
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), ContextCompat.getDrawable(getActivity(),R.drawable.item_divider),DividerItemDecoration.VERTICAL_LIST);
+
         myDataset = new ArrayList<>();
         // specify an adapter (see also next example)
         mAdapter = new ConviteHistoricoAdapter(getActivity(),myDataset);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
         getLoaderManager().initLoader(CONVITE_HISTORICO_LOADER_ID, null, this);
 
         return view;

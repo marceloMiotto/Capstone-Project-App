@@ -15,8 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/round_border"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@drawable/user_red_144" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

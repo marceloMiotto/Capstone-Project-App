@@ -1,16 +1,23 @@
 package udacitynano.com.br.cafelegal.adapter;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 import udacitynano.com.br.cafelegal.AdvogadoDetailsActivity;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.util.Constant;
+import udacitynano.com.br.cafelegal.util.UserHelper;
 
 
 public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAdapter.ViewHolder> {
@@ -32,7 +39,9 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
     @Override
     public void onBindViewHolder(ListaAdvogadosAdapter.ViewHolder holder, int position) {
         holder.mAdvogadoNome.setText(mAdvogadoList.get(position).getNome() + " - " + mAdvogadoList.get(position).getSobrenome());
-
+        UserHelper userHelper = new UserHelper(holder.context);
+        mAdvogadoList.get(position).setIconLista(userHelper.getRandomUserIcon());
+        holder.mListaAdvogadoIcone.setImageDrawable(ContextCompat.getDrawable(holder.context,mAdvogadoList.get(position).getIconLista()));
     }
 
     @Override
@@ -46,13 +55,16 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
         public TextView mAdvogadoNome;
         public TextView mAdvogadoEspecialidade;
         public TextView mAdvogadoEndereco;
-
+        public ImageView mListaAdvogadoIcone;
+        Context context;
 
         public ViewHolder(View v) {
             super(v);
             mAdvogadoNome = (TextView) v.findViewById(R.id.lista_advogados_nome);
             mAdvogadoEspecialidade = (TextView) v.findViewById(R.id.lista_advogados_especialidade);
             mAdvogadoEndereco = (TextView) v.findViewById(R.id.lista_advogados_endereco);
+            mListaAdvogadoIcone = (ImageView) v.findViewById(R.id.lista_advogados_perfil_icone);
+            context = v.getContext();
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override

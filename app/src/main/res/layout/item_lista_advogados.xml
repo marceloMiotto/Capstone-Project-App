@@ -5,37 +5,44 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    android:layout_width="342dp"
+    android:layout_width="match_parent"
     android:layout_height="140dp"
     android:layout_gravity="center"
-    card_view:cardCornerRadius="4dp">
+    card_view:cardCornerRadius="16dp"
+    android:layout_margin="@dimen/card_list_margin"
+    app:cardBackgroundColor="@color/drawer_start_color"
+    android:elevation="@dimen/card_list_elevation"
+
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:padding="@dimen/card_list_padding"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent">
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/lista_advogados_perfil_icone"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_gravity="center"
-                android:background="@android:color/white"
-                android:src="@drawable/icon_cafe"
-                app:civ_border_color="@color/colorAccent"
-                app:civ_border_width="2dp" />
+                android:background="@color/drawer_start_color"
+                android:src="@drawable/user_red_144"
+                 />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1.78"
             android:orientation="vertical">
 
             <TextView

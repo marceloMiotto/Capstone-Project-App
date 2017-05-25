@@ -1,5 +1,9 @@
 package udacitynano.com.br.cafelegal.util;
 
+import java.util.ArrayList;
+
+import udacitynano.com.br.cafelegal.R;
+
 public interface Constant {
 
     String INTENT_FRAGMENT_TYPE = "fragment_type";
@@ -32,4 +36,7 @@ public interface Constant {
     String word_cliente = "cliente";
     String content_application_json = "application/json; charset=utf-8";
     String content_header = "Content-Type";
+
+
+
 }

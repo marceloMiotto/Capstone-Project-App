@@ -1,6 +1,7 @@
 package udacitynano.com.br.cafelegal.model;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,8 +17,9 @@ public class Advogado extends Pessoa {
     private String linkedIn;
     private String especialistaUm;
     private String especialistaDois;
-    private double latitude;
-    private double longitude;
+    private int iconLista;
+
+
 
 
     public Advogado() { }
@@ -108,22 +110,14 @@ public class Advogado extends Pessoa {
         this.especialistaDois = especialistaDois;
     }
 
-    public double getLatitude() {
-        return latitude;
+
+    public int getIconLista() {
+        return iconLista;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setIconLista (int icon) {
+        this.iconLista = icon;
     }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
 
     //Parcelable
     public static final Parcelable.Creator<Advogado> CREATOR = new Parcelable.Creator<Advogado>() {

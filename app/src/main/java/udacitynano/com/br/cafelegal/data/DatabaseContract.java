@@ -44,9 +44,6 @@ public class DatabaseContract {
             public static final String COLUMN_ESPECIALISTA_UM = "especialista_um";
             public static final String COLUMN_ESPECIALISTA_DOIS = "especialista_dois";
             public static final String COLUMN_NOTIFICATION_REGISTRADO = "notification_registrado";
-            public static final String COLUMN_LATITUTE = "latitude";
-            public static final String COLUMN_LONGITUDE = "longitude";
-
 
             public static final Uri CONTENT_URI =
                     BASE_CONTENT_URI.buildUpon().appendPath(PATH_PESSOA).build();

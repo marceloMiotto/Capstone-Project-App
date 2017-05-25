@@ -3,16 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/card_list_padding"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cafezinho_item_convite_historico"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:src="@drawable/icon_cafe_convite"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/colorAccent"/>
+        />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -20,12 +21,12 @@
 
     <TextView
         android:id="@+id/item_convite_historico_data"
-        android:layout_width="wrap_content"
+        android:layout_width="257dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="2"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         tools:text="Test 10/03/2017 15:32"
 
         />
@@ -37,7 +38,7 @@
             android:layout_gravity="center"
             android:layout_weight="2"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
             tools:text="Test 10/03/2017 15:32"
 
             />
