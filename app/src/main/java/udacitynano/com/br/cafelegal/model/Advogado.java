@@ -141,6 +141,7 @@ public class Advogado extends Pessoa {
         out.writeString(linkedIn);
         out.writeString(especialistaUm);
         out.writeString(especialistaDois);
+        out.writeInt(iconLista);
     }
 
     private Advogado(Parcel in) {
@@ -154,6 +155,7 @@ public class Advogado extends Pessoa {
         this.linkedIn = in.readString();
         this.especialistaUm = in.readString();
         this.especialistaDois = in.readString();
+        this.iconLista = in.readInt();
     }
 
     @Override

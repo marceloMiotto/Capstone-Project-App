@@ -1,9 +1,12 @@
 package udacitynano.com.br.cafelegal.adapter;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,8 +22,12 @@ import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.util.Constant;
 import udacitynano.com.br.cafelegal.util.UserHelper;
 
+import static udacitynano.com.br.cafelegal.R.id.imageView;
+
 
 public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAdapter.ViewHolder> {
+
+
     private static List<Advogado> mAdvogadoList;
 
     public ListaAdvogadosAdapter(List<Advogado> advogadoList) {
@@ -38,10 +45,18 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
 
     @Override
     public void onBindViewHolder(ListaAdvogadosAdapter.ViewHolder holder, int position) {
-        holder.mAdvogadoNome.setText(mAdvogadoList.get(position).getNome() + " - " + mAdvogadoList.get(position).getSobrenome());
-        UserHelper userHelper = new UserHelper(holder.context);
-        mAdvogadoList.get(position).setIconLista(userHelper.getRandomUserIcon());
-        holder.mListaAdvogadoIcone.setImageDrawable(ContextCompat.getDrawable(holder.context,mAdvogadoList.get(position).getIconLista()));
+        holder.mAdvogadoNome.setText(mAdvogadoList.get(position).getNome() + " " + mAdvogadoList.get(position).getSobrenome());
+        holder.mAdvogadoEndereco.setText(mAdvogadoList.get(position).getEndereco()+ " "+
+                "nº "+mAdvogadoList.get(position).getNumero()
+        );
+
+        UserHelper userHelper = new UserHelper();
+        int iconRandom = userHelper.getRandom();
+        mAdvogadoList.get(position).setIconLista(iconRandom);
+        Log.e("Debug","Icon adapter: "+iconRandom);
+        Log.e("Debug","Icon advogado list:  "+mAdvogadoList.get(position).getIconLista());
+        holder.mListaAdvogadoIcone.setImageDrawable(ContextCompat.getDrawable(holder.context,userHelper.getUserIcon(mAdvogadoList.get(position).getIconLista())));
+        holder.mAdvogadoOABEspecialidade.setText("OAB: "+mAdvogadoList.get(position).getNumeroInscricaoOAB()+" - "+mAdvogadoList.get(position).getEspecialistaUm());
     }
 
     @Override
@@ -53,18 +68,20 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView mAdvogadoNome;
-        public TextView mAdvogadoEspecialidade;
+        public TextView mAdvogadoOABEspecialidade;
         public TextView mAdvogadoEndereco;
         public ImageView mListaAdvogadoIcone;
         Context context;
 
+
         public ViewHolder(View v) {
             super(v);
             mAdvogadoNome = (TextView) v.findViewById(R.id.lista_advogados_nome);
-            mAdvogadoEspecialidade = (TextView) v.findViewById(R.id.lista_advogados_especialidade);
+            mAdvogadoOABEspecialidade = (TextView) v.findViewById(R.id.lista_advogados_oab_especialidade);
             mAdvogadoEndereco = (TextView) v.findViewById(R.id.lista_advogados_endereco);
             mListaAdvogadoIcone = (ImageView) v.findViewById(R.id.lista_advogados_perfil_icone);
             context = v.getContext();
+
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
