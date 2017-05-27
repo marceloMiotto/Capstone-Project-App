@@ -62,11 +62,11 @@
 
     <!-- String Welcome Activity -->
     <string name="title_activity_welcome">WelcomeActivity</string>
-    <string name="welcome_text">Bem Vindo! </string>
-    <string name="welcome_question">Você é advogado?</string>
+    <string name="welcome_text">Bem Vindo(a)! </string>
+    <string name="welcome_question">Você é advogado(a)?</string>
     <string name="welcome_button_yes">Sim</string>
     <string name="welcome_button_no">Não</string>
-    <string name="welcome_advogado_aviso">Por favor, preencha o cadastro do perfil. Após este cadastro você estará disponível na lista de busca dos usuários</string>
+    <string name="welcome_advogado_aviso">Por favor, preencha o cadastro do perfil. Após este cadastro você estará disponível na lista de busca dos usuários.</string>
     <string name="welcome_cliente_aviso">Por favor, preencha o cadastro do perfil. Algumas funções do aplicativo funcionam somente após esta etapa.</string>
     <string name="welcome_button_aviso_perfil">Preencher agora</string>
     <string name="welcome_button_aviso_perfil_depois">Preencher depois</string>
