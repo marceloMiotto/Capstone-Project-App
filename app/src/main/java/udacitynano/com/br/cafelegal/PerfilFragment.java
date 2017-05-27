@@ -8,15 +8,19 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.android.volley.Request;
@@ -44,69 +48,70 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
     private static final int PERFIL_LOADER_ID = 11;
     @BindView(R.id.perfilNomeEditText)
-
     EditText mPerfilNomeEditText;
+
     @BindView(R.id.perfilNomeMeioEditText)
-
     EditText mPerfilNomeMeioEditText;
+
     @BindView(R.id.perfilSobrenomeEditText)
-
     EditText mPerfilSobrenomeEditText;
+
     @BindView(R.id.perfilCEPEditText)
-
     EditText mPerfilCEPEditText;
+
     @BindView(R.id.perfilEnderecoEditText)
-
     EditText mPerfilEnderecoEditText;
+
     @BindView(R.id.perfilNumeroEditText)
-
     EditText mPerfilNumeroEditText;
+
     @BindView(R.id.perfilComplementoEditText)
-
     EditText mPerfilComplementoEditText;
+
     @BindView(R.id.perfilBairroEditText)
-
     EditText mPerfilBairroEditText;
+
     @BindView(R.id.perfilCidadeEditText)
-
     EditText mPerfilCidadeEditText;
+
     @BindView(R.id.perfilEstadoEditText)
-
     EditText mPerfilEstadoEditText;
+
     @BindView(R.id.perfilPaisEditText)
-
     EditText mPerfilPaisEditText;
-    @BindView(R.id.perfil_sexo_spinner)
 
+    @BindView(R.id.perfil_sexo_spinner)
     Spinner sexoSpinner;
 
     @Nullable @BindView(R.id.perfilNumeroOABEditText)
-
     EditText mPerfilNumeroOABEditText;
+
     @Nullable @BindView(R.id.perfil_seccional_spinner)
-
     Spinner mSeccionalSpinner;
+
     @Nullable @BindView(R.id.perfilTipoInscricaoTextView)
-
     TextView mPerfilTipoInscricaoTextView;
+
     @Nullable @BindView(R.id.perfilFoneComercialEditText)
-
     EditText mPerfilFoneComercialEditText;
+
     @Nullable @BindView(R.id.perfilTwitterEditText)
-
     EditText mPerfilTwitterEditText;
+
     @Nullable @BindView(R.id.perfilLinkedInEditText)
-
     EditText mPerfilLinkedInEditText;
+
     @BindView(perfil_especialista_um_spinner)
-
     Spinner mPerfilEspecialistaUmSpinner;
+
     @BindView(R.id.perfil_especialista_dois_spinner)
-
     Spinner mPerfilEspecialistaDoisSpinner;
-    @BindView(R.id.perfil_fab)
 
+    @BindView(R.id.perfil_fab)
     FloatingActionButton mPerfilFab;
+
+    @BindView(R.id.nested_scroll_view_perfil_fragment)
+    NestedScrollView mNestedScrollView;
 
     private View view;
 
@@ -140,6 +145,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -154,6 +160,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         }
 
         ButterKnife.bind(this,view);
+
 
         sexoSpinner.setOnItemSelectedListener(this);
         mSeccionalSpinner.setOnItemSelectedListener(this);

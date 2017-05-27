@@ -12,18 +12,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="udacitynano.com.br.cafelegal.MainActivity">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/perfil_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_account_check_white_48dp" />
-
-    <ScrollView
-        android:id="@+id/perfil_fragment_advogado"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view_perfil_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
 
         <LinearLayout
@@ -161,7 +154,16 @@
             </LinearLayout>
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/perfil_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_account_check_white_48dp"
+        app:layout_behavior="udacitynano.com.br.cafelegal.extension.ScrollAwareFABBehavior"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

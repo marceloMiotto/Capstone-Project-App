@@ -20,16 +20,19 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:onClick="onClick"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:layout_behavior="udacitynano.com.br.cafelegal.extension.ScrollAwareFABBehavior"
+        app:srcCompat="@drawable/ic_account_check_white_48dp"
 
-    <ScrollView
-        android:id="@+id/perfil_fragment_cliente"
+        />
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view_perfil_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
      <include layout="@layout/fragment_perfil"/>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 

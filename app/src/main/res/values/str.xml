@@ -156,7 +156,7 @@
     <string name="advogado_details_label_bairro">Bairro:  </string>
     <string name="advogado_details_cidade_estado">Cidade:  </string>
     <string name="advogado_details_estado">Estado:  </string>
-    <string name="advogado_details_label_complemento">Complemento:  </string>
+    <string name="advogado_details_label_complemento">Comp:  </string>
     <string name="icon_advogado_transition_name">icon_advogado_transition_name</string>
 
 
