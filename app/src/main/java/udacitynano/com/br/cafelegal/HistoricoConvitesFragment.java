@@ -59,7 +59,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), ContextCompat.getDrawable(getActivity(),R.drawable.item_divider),DividerItemDecoration.VERTICAL_LIST);
-
+        getActivity().setTitle(getString(R.string.title_activity_historico));
         myDataset = new ArrayList<>();
         // specify an adapter (see also next example)
         mAdapter = new ConviteHistoricoAdapter(getActivity(),myDataset);

@@ -58,7 +58,7 @@ public class ConviteFragment extends Fragment  {
         //create instance google api client
         mGoogleClient = new GoogleClient(getActivity());
         mGoogleApiClient = mGoogleClient.createGoogleClientInstance();
-
+        getActivity().setTitle(getString(R.string.title_activity_convites));
 
         mConviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class ConviteFragment extends Fragment  {
                             getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                     mAreaLocation =  sharedPref.getString(getString(R.string.preference_user_last_location),"");
 
-                    conviteService.sendConvite(UserType.getUserId(getActivity()),mAreaLocation,true);
+                    conviteService.sendConvite(UserType.getUserId(getActivity()),mAreaLocation,false);
                     resultMsg = getActivity().getString(R.string.convite_result_enviado_sucesso);
 
                 } catch (JSONException e) {
@@ -81,7 +81,7 @@ public class ConviteFragment extends Fragment  {
                     e.printStackTrace();
                 }
 
-                Snackbar.make(mView, resultMsg, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mView, resultMsg, Snackbar.LENGTH_LONG).show();
             }
         });
 

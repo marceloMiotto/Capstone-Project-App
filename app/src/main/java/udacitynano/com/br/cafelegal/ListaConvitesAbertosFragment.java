@@ -66,7 +66,7 @@ public class ListaConvitesAbertosFragment extends Fragment
         myDataset = new ArrayList<>();
         mAdapter = new ConvitesAbertosAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
-
+        getActivity().setTitle(getString(R.string.title_convites_abertos));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

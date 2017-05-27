@@ -77,7 +77,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
         mRecyclerView.setAdapter(mAdapter);
         getLoaderManager().initLoader(LISTA_ADVOGADOS_LOADER_ID, null, this);
         String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADOS;
-
+        getActivity().setTitle(getString(R.string.title_lista_advogados));
         JsonArrayRequest jsonArrayObject = new JsonArrayRequest
                 (Request.Method.GET, apiURL,null, new Response.Listener<JSONArray>() {
 

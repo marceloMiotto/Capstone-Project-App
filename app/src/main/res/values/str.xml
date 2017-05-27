@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cafe Legal</string>
+    <string name="app_name">Café Legal</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -61,7 +61,7 @@
 
 
     <!-- String Welcome Activity -->
-    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_welcome">Bem Vindo(a)!</string>
     <string name="welcome_text">Bem Vindo(a)! </string>
     <string name="welcome_question">Você é advogado(a)?</string>
     <string name="welcome_button_yes">Sim</string>
@@ -121,10 +121,10 @@
     <string name="fresh_config">Fresh Config</string>
     <string name="cause_crash">Cause Crash</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="title_activity_convites">ConvitesActivity</string>
+    <string name="title_activity_convites">Convite Cafezinho</string>
 
-    <string name="title_activity_historico">HistoricoActivity</string>
-    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_historico">Convites Históricos</string>
+    <string name="title_activity_chat">Chat</string>
     <string name="login_informe_email">Por favor, informe o email</string>
 
     <string name="adapter_extra_convite">convite</string>
@@ -158,6 +158,8 @@
     <string name="advogado_details_estado">Estado:  </string>
     <string name="advogado_details_label_complemento">Comp:  </string>
     <string name="icon_advogado_transition_name">icon_advogado_transition_name</string>
+    <string name="title_login_window">Café Legal - Entrar</string>
+    <string name="text_convite_cafezinho">Para fazer um convite,\n aperte o cafezinho</string>
 
 
 </resources>

@@ -1,5 +1,4 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,14 +6,36 @@
     android:background="@android:color/white"
     tools:context="udacitynano.com.br.cafelegal.ConviteFragment">
 
-
-    <ImageButton
-        android:id="@+id/convite_button"
-        android:layout_width="208dp"
-        android:layout_height="215dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:onClick="onClick"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/cafe_convite" />
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/text_convite_cafezinho"
+            tools:text="@string/text_convite_cafezinho"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:textColor="@color/colorAccent"
+
+            />
+
+        <ImageButton
+            android:id="@+id/convite_button"
+            android:layout_width="208dp"
+            android:layout_height="215dp"
+            android:onClick="onClick"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/cafe_convite"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

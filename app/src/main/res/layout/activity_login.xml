@@ -14,15 +14,16 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="@dimen/toolbar_height"
             android:background="?attr/colorPrimary"
+            android:gravity="bottom"
             />
 
     </android.support.design.widget.AppBarLayout>
 
     <include
         layout="@layout/content_login"
-        />
+    />
 
 
 </android.support.design.widget.CoordinatorLayout>

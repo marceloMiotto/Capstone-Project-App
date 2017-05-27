@@ -16,14 +16,6 @@
 
     >
 
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/welcome_text"
-        android:textAppearance="?android:textAppearanceLarge"
-        tools:text="@string/welcome_text" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,11 +38,8 @@
             android:text="@string/welcome_question"
             tools:text="@string/welcome_question"
             android:layout_gravity="center"
-
-            android:textAppearance="?android:textAppearanceMedium"
+            android:textAppearance="?android:textAppearanceLarge"
             />
-
-
 
     </LinearLayout>
 

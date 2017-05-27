@@ -89,9 +89,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     @Nullable @BindView(R.id.perfil_seccional_spinner)
     Spinner mSeccionalSpinner;
 
-    @Nullable @BindView(R.id.perfilTipoInscricaoTextView)
-    TextView mPerfilTipoInscricaoTextView;
-
     @Nullable @BindView(R.id.perfilFoneComercialEditText)
     EditText mPerfilFoneComercialEditText;
 
@@ -121,6 +118,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     private String mEspecialidadeDoisChoosen;
     private String mFirebaseEmail;
     private String mFirebaseToken;
+    private String mPerfilTipoInscricao;
 
     private Pessoa mCliente;
     private Pessoa mAdvogado;
@@ -166,12 +164,12 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         mSeccionalSpinner.setOnItemSelectedListener(this);
         mPerfilEspecialistaUmSpinner.setOnItemSelectedListener(this);
         mPerfilEspecialistaDoisSpinner.setOnItemSelectedListener(this);
-
+        getActivity().setTitle(getString(R.string.title_perfil));
         SharedPreferences sharedPref = getActivity().getSharedPreferences(
          getActivity().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         mFirebaseEmail =  sharedPref.getString(getActivity().getString(R.string.preference_user_firebase_email),"x");
         mFirebaseToken =  sharedPref.getString(getActivity().getString(R.string.preference_user_firebase_token),"x");
-
+        mPerfilTipoInscricao = getString(R.string.perfil_tipo_inscricao_advogado);
         getLoaderManager().initLoader(PERFIL_LOADER_ID, null, this);
 
         mPerfilFab.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +204,7 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
                             , mSexoChoosen
                             , mPerfilNumeroOABEditText.getText().toString()
                             , mSeccionalChoosen
-                            , mPerfilTipoInscricaoTextView.getText().toString()
+                            , mPerfilTipoInscricao
                             , mPerfilFoneComercialEditText.getText().toString()
                             , mPerfilTwitterEditText.getText().toString()
                             , mPerfilLinkedInEditText.getText().toString()
@@ -401,8 +399,6 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 List<String> strSeccional = Arrays.asList(getResources().getStringArray(R.array.seccional));
                 mSeccionalSpinner.setSelection(strSeccional.indexOf(cursor.getString(14)));
-
-                mPerfilTipoInscricaoTextView.setText(cursor.getString(15));
                 mPerfilFoneComercialEditText.setText(cursor.getString(16));
                 mPerfilTwitterEditText.setText(cursor.getString(17));
                 mPerfilLinkedInEditText.setText(cursor.getString(18));

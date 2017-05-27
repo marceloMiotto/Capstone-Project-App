@@ -39,16 +39,17 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.welcome_aviso_textview)
     TextView mAviso;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private NetworkRequests mNetworkRequests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         ButterKnife.bind(this);
-
+        setSupportActionBar(toolbar);
     }
 
     @Override

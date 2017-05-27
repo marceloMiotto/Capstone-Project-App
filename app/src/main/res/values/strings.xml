@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_lista_advogados">Lista de Advogados</string>
+    <string name="title_convites_abertos">Lista Convites Abertos</string>
+    <string name="title_perfil">Perfil</string>
+</resources>
