@@ -117,7 +117,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
                 projection,
                 null,
                 null,
-                null);
+                DatabaseContract.ConviteEntry.COLUMN_DATA_CONVITE + " DESC");
     }
 
     @Override

@@ -57,6 +57,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/button_border"
+            android:layout_marginRight="8dp"
             android:onClick="onClick"
             android:text="@string/welcome_button_yes" />
 
@@ -102,8 +103,8 @@
             android:background="@drawable/button_border"
             android:onClick="onClick"
             android:text="@string/welcome_button_aviso_perfil"
+            android:layout_marginRight="8dp"
             tools:visibility="visible" />
-
 
         <Button
             android:id="@+id/welcome_button_aviso_perfil_depois"

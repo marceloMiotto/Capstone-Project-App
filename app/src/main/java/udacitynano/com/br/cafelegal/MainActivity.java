@@ -56,10 +56,11 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(getIntent().getStringExtra(Constant.INTENT_FRAGMENT_TYPE).equals(Constant.PERFIL_FRAGMENT)){
+
+        if (getIntent().getStringExtra(Constant.INTENT_FRAGMENT_TYPE).equals(Constant.PERFIL_FRAGMENT)) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance());
+            fragmentTransaction.replace(R.id.fragment_menu_switch, PerfilFragment.newInstance());
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }

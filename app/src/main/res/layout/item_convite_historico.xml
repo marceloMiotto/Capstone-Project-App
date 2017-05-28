@@ -8,12 +8,12 @@
     >
 
     <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cafezinho_item_convite_historico"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:src="@drawable/icon_cafe_convite"
         />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -28,7 +28,6 @@
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceListItem"
         tools:text="Test 10/03/2017 15:32"
-
         />
 
         <TextView
@@ -40,7 +39,6 @@
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             tools:text="Test 10/03/2017 15:32"
-
             />
 
     </LinearLayout>

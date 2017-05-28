@@ -34,118 +34,123 @@
             android:layout_marginTop="@dimen/advogado_details_margin"
             android:columnCount="2"
             android:orientation="vertical"
-            android:rowCount="12"
+            android:rowCount="10"
             android:visibility="visible"
-            tools:context="udacitynano.com.br.cafelegal.MainActivity">
-
+            tools:context="udacitynano.com.br.cafelegal.MainActivity"
+            >
 
             <!-- Labels Begin-->
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:text="@string/advogado_details_label_nome"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Nome:"
+                android:layout_marginBottom="8dp"
+                />
 
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="1"
-                android:text="@string/advogado_details_label_nome"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Nome:" />
+                android:text="@string/advogado_details_label_numero_oab"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Número OAB:"
+                android:layout_marginBottom="8dp"
+                />
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="2"
-                android:text="@string/advogado_details_label_numero_oab"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Número OAB:" />
+                android:text="@string/advogado_details_label_especialidades"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Especialidade(s):"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="8dp"
+                />
+
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_columnSpan="2"
                 android:layout_row="3"
-                android:text="@string/advogado_details_label_especialidades"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Especialidade(s):" />
+                android:layout_rowSpan="2"
+                android:layout_marginBottom="8dp"
+                />
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="4"
-                android:layout_rowSpan="2" />
+                android:text="@string/advogado_details_label_telefone"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Telefone:"
+                android:layout_marginBottom="8dp"
+                />
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="5"
-                android:layout_rowSpan="2" />
+                android:text="@string/advogado_details_label_endereco"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Endereço:"
+                android:layout_marginBottom="8dp"
+                />
+
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="6"
-                android:text="@string/advogado_details_label_telefone"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Telefone:" />
+                android:text="@string/advogado_details_label_complemento"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Comp:"
+                android:layout_marginBottom="8dp"
+                />
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="7"
-                android:text="@string/advogado_details_label_endereco"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Endereço:" />
-
+                android:text="@string/advogado_details_label_bairro"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Bairro:"
+                android:layout_marginBottom="8dp"
+                />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="8"
-                android:text="@string/advogado_details_label_complemento"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Complemento:" />
+                android:text="@string/advogado_details_cidade_estado"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Cidade:"
+                android:layout_marginBottom="8dp"
+                />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="9"
-                android:text="@string/advogado_details_label_bairro"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Bairro:" />
-
-            <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="10"
-                android:text="@string/advogado_details_cidade_estado"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Cidade:" />
-
-            <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="11"
                 android:text="@string/advogado_details_estado"
-                android:textAppearance="?android:textAppearanceListItem"
-                tools:text="Estado:" />
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Estado:"
+                android:layout_marginBottom="8dp"
+                />
 
             <!-- Labels End-->
 
@@ -155,7 +160,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="1"
+                android:layout_row="0"
                 android:text="@string/advogado_details_label_nome"
                 android:textAppearance="?android:textAppearanceLarge"
                 tools:text="Marcelo" />
@@ -165,25 +170,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="2"
+                android:layout_row="1"
                 android:text="@string/advogado_details_label_numero_oab"
                 android:textAppearance="?android:textAppearanceMedium"
                 tools:text="1234" />
-
-
-            <TextView
-                android:id="@+id/detailsAdvogadoEspaco"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="3" />
 
             <TextView
                 android:id="@+id/detailsAdvogadoEspecialidadeUm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="4"
+                android:layout_row="2"
                 android:text="@string/advogado_details_label_especialidades"
                 android:textAppearance="?android:textAppearanceMedium"
                 tools:text="Comercial" />
@@ -193,7 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="5"
+                android:layout_row="3"
                 android:text="@string/advogado_details_label_especialidades"
                 android:textAppearance="?android:textAppearanceMedium"
                 tools:text="Industrial" />
@@ -203,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="6"
+                android:layout_row="4"
                 android:text="@string/advogado_details_label_telefone"
                 android:textAppearance="?android:textAppearanceMedium"
                 tools:text="99999-9999" />
@@ -213,19 +210,19 @@
                 android:id="@+id/detailsAdvogadoEndereco"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_row="7"
+                android:layout_column="1"
+                android:layout_row="5"
                 android:text="@string/advogado_details_label_endereco"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 tools:text="Rua Marcilio Dias, nº 524" />
 
             <TextView
                 android:id="@+id/detailsAdvogadoComplemento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_row="8"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:layout_column="1"
+                android:layout_row="6"
+                android:textAppearance="?android:textAppearanceSmall"
                 tools:text="Ap 416" />
 
             <TextView
@@ -233,9 +230,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="9"
+                android:layout_row="7"
                 android:text="@string/advogado_details_label_bairro"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 tools:text="Menino Deus" />
 
             <TextView
@@ -243,9 +240,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="10"
+                android:layout_row="8"
                 android:text="@string/advogado_details_cidade_estado"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 tools:text="Porto Alegre" />
 
             <TextView
@@ -253,9 +250,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="11"
+                android:layout_row="9"
                 android:text="@string/advogado_details_estado"
-                android:textAppearance="?android:textAppearanceMedium"
+                android:textAppearance="?android:textAppearanceSmall"
                 tools:text="Rio Grande do Sul" />
 
 

@@ -66,7 +66,6 @@ public class AdvogadoDetailsActivityFragment extends Fragment {
         Bundle data = getActivity().getIntent().getExtras();
         Advogado advogado = data.getParcelable(Constant.ADVOGADO_ESCOLHIDO);
 
-
         detailsAdvogadoNome.setText(advogado.getNome() + " " + advogado.getSobrenome());
         detailsAdvogadoNumeroOAB.setText(advogado.getNumeroInscricaoOAB());
         detailsAdvogadoEspecialidadeUm.setText(advogado.getEspecialistaUm());
@@ -81,6 +80,8 @@ public class AdvogadoDetailsActivityFragment extends Fragment {
         Log.e("Debug","icon: "+advogado.getIconLista());
         UserHelper userHelper = new UserHelper();
         advogadoIconDetails.setImageDrawable(getActivity().getResources().getDrawable(userHelper.getUserIcon(advogado.getIconLista())));
+
+        getActivity().setTitle(advogado.getNome() + " - OAB: "+ advogado.getNumeroInscricaoOAB());
 
         return view;
     }

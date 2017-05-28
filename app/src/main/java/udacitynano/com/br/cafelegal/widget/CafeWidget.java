@@ -29,12 +29,8 @@ public class CafeWidget extends AppWidgetProvider {
 
         for (int i = 0; i < count; i++) {
             int widgetId = appWidgetIds[i];
-            String number = String.format("%03d", (new Random().nextInt(900) + 100));
-
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.cafe_widget);
-            remoteViews.setTextViewText(R.id.textView, number);
-
             Intent intent = new Intent(context, CafeWidget.class);
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);

@@ -28,7 +28,6 @@ public interface Constant {
     int ANDROID_SERVICE = 3;
     int CONVITE_ACEITO = 4;
 
-    String FRIENDLY_MSG_LENGTH = "friendly_msg_length";
     String ADVOGADO_ESCOLHIDO = "ADVOGADO_ESCOLHIDO";
 
 
