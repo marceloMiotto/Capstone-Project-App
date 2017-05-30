@@ -21,6 +21,35 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="420dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorSecondary"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        >
+
+        <FrameLayout
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:elevation="16dp">
+
+            <include layout="@layout/content_welcome" />
+
+        </FrameLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <!--
+    <LinearLayout
+        android:layout_width="420dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorSecondary"
+        >
+
     <ScrollView
         android:layout_width="350dp"
         android:layout_height="match_parent"
@@ -31,5 +60,7 @@
             <include layout="@layout/content_welcome" />
 
     </ScrollView>
+    </LinearLayout>
 
+    -->
 </android.support.design.widget.CoordinatorLayout>

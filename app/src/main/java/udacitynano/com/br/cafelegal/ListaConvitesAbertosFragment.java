@@ -36,6 +36,7 @@ public class ListaConvitesAbertosFragment extends Fragment
     private RecyclerView.Adapter mAdapter;
     private List<Convite> myDataset;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private boolean mIsTablet;
 
     private OnFragmentInteractionListener mListener;
 
@@ -43,8 +44,20 @@ public class ListaConvitesAbertosFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static ListaConvitesAbertosFragment newInstance() {
-        return new ListaConvitesAbertosFragment();
+
+    public static ListaConvitesAbertosFragment newInstance(boolean isTablet) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isTablet",true);
+        ListaConvitesAbertosFragment listaConvitesAbertosFragment = new ListaConvitesAbertosFragment();
+        listaConvitesAbertosFragment.setArguments(bundle);
+        return listaConvitesAbertosFragment;
+    }
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            mIsTablet = bundle.getBoolean("isTablet");
+        }
     }
 
     @Override
@@ -58,13 +71,14 @@ public class ListaConvitesAbertosFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_lista_convites_abertos, container, false);
         getConvitesAbertos();
+        readBundle(getArguments());
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.convites_abertos_recyclerView);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset = new ArrayList<>();
-        mAdapter = new ConvitesAbertosAdapter(myDataset);
+        mAdapter = new ConvitesAbertosAdapter(myDataset,mIsTablet);
         mRecyclerView.setAdapter(mAdapter);
         getActivity().setTitle(getString(R.string.title_convites_abertos));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

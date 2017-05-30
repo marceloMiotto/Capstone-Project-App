@@ -45,15 +45,28 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
     private RecyclerView.Adapter mAdapter;
     private List<Advogado> myDataset;
     private OnFragmentInteractionListener mListener;
-
+    private boolean mIsTablet;
 
     public ListaAdvogadosFragment() {
         // Required empty public constructor
     }
 
-    public static ListaAdvogadosFragment newInstance() {
-        return new ListaAdvogadosFragment();
+
+    public static ListaAdvogadosFragment newInstance(boolean isTablet) {
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isTablet",true);
+        ListaAdvogadosFragment listaAdvogadosFragment = new ListaAdvogadosFragment();
+        listaAdvogadosFragment.setArguments(bundle);
+        return listaAdvogadosFragment;
     }
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            mIsTablet = bundle.getBoolean("isTablet");
+        }
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,8 +85,9 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         myDataset = new ArrayList<>();
+        readBundle(getArguments());
         // specify an adapter (see also next example)
-        mAdapter = new ListaAdvogadosAdapter(myDataset);
+        mAdapter = new ListaAdvogadosAdapter(myDataset,mIsTablet);
         mRecyclerView.setAdapter(mAdapter);
         getLoaderManager().initLoader(LISTA_ADVOGADOS_LOADER_ID, null, this);
         String apiURL = Constant.SERVER_API_CAFE_LEGAL + Constant.ADVOGADOS;

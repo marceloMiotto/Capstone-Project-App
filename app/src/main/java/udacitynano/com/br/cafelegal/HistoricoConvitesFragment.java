@@ -27,7 +27,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
     private static final int CONVITE_HISTORICO_LOADER_ID = 12;
     private RecyclerView.Adapter mAdapter;
     private List<Convite> myDataset;
-
+    private boolean mIsTablet;
 
 
     private OnFragmentInteractionListener mListener;
@@ -36,10 +36,21 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         // Required empty public constructor
     }
 
-    public static HistoricoConvitesFragment newInstance() {
+    public static HistoricoConvitesFragment newInstance(boolean isTablet) {
 
-        return new HistoricoConvitesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isTablet",true);
+        HistoricoConvitesFragment historicoConvitesFragment = new HistoricoConvitesFragment();
+        historicoConvitesFragment.setArguments(bundle);
+       return historicoConvitesFragment;
     }
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            mIsTablet = bundle.getBoolean("isTablet");
+        }
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,8 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         View view = inflater.inflate(R.layout.fragment_historico_convites, container, false);
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.convite_historico_recyclerView);
 
+        readBundle(getArguments());
+
         // use a linear layout manager
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -62,7 +75,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
         getActivity().setTitle(getString(R.string.title_activity_historico));
         myDataset = new ArrayList<>();
         // specify an adapter (see also next example)
-        mAdapter = new ConviteHistoricoAdapter(getActivity(),myDataset);
+        mAdapter = new ConviteHistoricoAdapter(getActivity(),myDataset,mIsTablet);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
         getLoaderManager().initLoader(CONVITE_HISTORICO_LOADER_ID, null, this);

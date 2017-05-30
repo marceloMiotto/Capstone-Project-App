@@ -13,8 +13,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -23,18 +26,29 @@ import udacitynano.com.br.cafelegal.util.Constant;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
-                  ,ConviteFragment.OnFragmentInteractionListener
-                  ,HistoricoConvitesFragment.OnFragmentInteractionListener
-                  ,ListaAdvogadosFragment.OnFragmentInteractionListener
-                  ,PerfilFragment.OnFragmentInteractionListener
-                  ,ListaConvitesAbertosFragment.OnFragmentInteractionListener
-{
+        , ConviteFragment.OnFragmentInteractionListener
+        , HistoricoConvitesFragment.OnFragmentInteractionListener
+        , ListaAdvogadosFragment.OnFragmentInteractionListener
+        , PerfilFragment.OnFragmentInteractionListener
+        , ListaConvitesAbertosFragment.OnFragmentInteractionListener {
+
+    boolean mPhone;
+    LinearLayout mLinearLayoutOnePanel;
+    LinearLayout mLinearLayoutTwoPanel;
 
     @Override
     @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (findViewById(R.id.frame_layout_content_main_container) != null) {
+            mPhone = false;
+            mLinearLayoutOnePanel = (LinearLayout) findViewById(R.id.one_panel);
+            mLinearLayoutTwoPanel = (LinearLayout) findViewById(R.id.two_panel);
+        } else {
+            mPhone = true;
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,25 +61,31 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-        if(UserType.isAdvogado(this)){
+        if (UserType.isAdvogado(this)) {
             navigationView.inflateMenu(R.menu.activity_main_advogado_drawer);
-        }
-        else{
+        } else {
             navigationView.inflateMenu(R.menu.activity_main_cliente_drawer);
         }
 
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        if (getIntent().getStringExtra(Constant.INTENT_FRAGMENT_TYPE).equals(Constant.PERFIL_FRAGMENT)) {
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch, PerfilFragment.newInstance());
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+        if (mPhone) {
+            if (getIntent().getStringExtra(Constant.INTENT_FRAGMENT_TYPE).equals(Constant.PERFIL_FRAGMENT)) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                if (mPhone) {
+                    fragmentTransaction.replace(R.id.fragment_menu_switch, PerfilFragment.newInstance());
+                } else {
+                    inflateLayout(true);
+                    fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, PerfilFragment.newInstance());
+                }
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
+            }
         }
-
-
     }
 
     @Override
@@ -107,13 +127,20 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
         if (id == R.id.nav_convite) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,ConviteFragment.newInstance());
+
+            if (mPhone) {
+                fragmentTransaction.replace(R.id.fragment_menu_switch, ConviteFragment.newInstance());
+            } else {
+                inflateLayout(true);
+                fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, ConviteFragment.newInstance());
+            }
+
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+
 
         } else if (id == R.id.nav_map) {
 
@@ -123,7 +150,13 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,PerfilFragment.newInstance());
+            if (mPhone) {
+                fragmentTransaction.replace(R.id.fragment_menu_switch, PerfilFragment.newInstance());
+            } else {
+                inflateLayout(true);
+                fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, PerfilFragment.newInstance());
+            }
+
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -131,7 +164,14 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,HistoricoConvitesFragment.newInstance());
+
+            if (mPhone) {
+                fragmentTransaction.replace(R.id.fragment_menu_switch, HistoricoConvitesFragment.newInstance(false));
+            } else {
+                inflateLayout(true);
+                fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, HistoricoConvitesFragment.newInstance(true));
+            }
+
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -139,7 +179,14 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaAdvogadosFragment.newInstance());
+
+            if (mPhone) {
+                fragmentTransaction.replace(R.id.fragment_menu_switch, ListaAdvogadosFragment.newInstance(false));
+            } else {
+                inflateLayout(true);
+                fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaAdvogadosFragment.newInstance(true));
+            }
+
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -147,7 +194,14 @@ public class MainActivity extends AppCompatActivity
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_menu_switch,ListaConvitesAbertosFragment.newInstance());
+
+            if (mPhone) {
+                fragmentTransaction.replace(R.id.fragment_menu_switch, ListaConvitesAbertosFragment.newInstance(false));
+            } else {
+                inflateLayout(true);
+                fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaConvitesAbertosFragment.newInstance(true));
+            }
+
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -166,6 +220,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-       Log.e("Debug","Fragment listner "+uri );
+        Log.e("Debug", "Fragment listner " + uri);
     }
+
+    public void inflateLayout(boolean onePanel) {
+
+        if (onePanel) {
+            mLinearLayoutTwoPanel.setVisibility(View.GONE);
+            mLinearLayoutOnePanel.setVisibility(View.VISIBLE);
+
+
+        } else {
+            mLinearLayoutOnePanel.setVisibility(View.GONE);
+            mLinearLayoutTwoPanel.setVisibility(View.VISIBLE);
+        }
+
+    }
+
 }

@@ -75,7 +75,9 @@ public class ChatFragment extends Fragment implements
     private static final String ANONYMOUS = "anonymous";
     private static final String MESSAGE_SENT_EVENT = "message_sent";
     private static final String MESSAGE_URL = "http://cafelegal.firebase.google.com/message/";
-
+    String MESSAGE_NOME_ADVOGADO;
+    String MESSAGE_ADVOGADO_OAB;
+    String MESSAGE_NOME_CONVIDA;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,9 +86,25 @@ public class ChatFragment extends Fragment implements
     }
 
 
-    public static ChatFragment newInstance(String param1, String param2) {
-        return new ChatFragment();
+    public static ChatFragment newInstance(String messageChild, String messageNomeAdvogado, String messageAdvogadoOAB, String messageNomeConvida) {
+        Bundle bundle = new Bundle();
+        bundle.putString("messageChild",messageChild);
+        bundle.putString("messageNomeAdvogado",messageNomeAdvogado);
+        bundle.putString("messageAdvogadoOAB",messageAdvogadoOAB);
+        bundle.putString("messageNomeConvida",messageNomeConvida);
+        ChatFragment chatFragment = new ChatFragment();
+        return chatFragment;
     }
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
+            MESSAGES_CHILD =  bundle.getString("messageChild");
+            MESSAGE_NOME_ADVOGADO =  bundle.getString("messageNomeAdvogado");
+            MESSAGE_ADVOGADO_OAB =  bundle.getString("messageAdvogadoOAB");
+            MESSAGE_NOME_CONVIDA =  bundle.getString("messageNomeConvida");
+        }
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,10 +120,15 @@ public class ChatFragment extends Fragment implements
 
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        MESSAGES_CHILD = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_convite));
-        String MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_advoagdo));
-        String MESSAGE_ADVOGADO_OAB = "OAB: " + getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_advogado_oab));
-        String MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_convida));
+        if (getArguments() != null) {
+            readBundle(getArguments());
+        }else{
+            MESSAGES_CHILD = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_convite));
+            MESSAGE_NOME_ADVOGADO = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_advoagdo));
+            MESSAGE_ADVOGADO_OAB = "OAB: " + getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_advogado_oab));
+            MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_convida));
+
+        }
 
 
         if(UserType.isAdvogado(getActivity())){
@@ -123,10 +146,6 @@ public class ChatFragment extends Fragment implements
         }
 
         getActivity().setTitle(getString(R.string.title_activity_chat));
-
-        // Initialize Firebase Auth
-        //FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        //FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);

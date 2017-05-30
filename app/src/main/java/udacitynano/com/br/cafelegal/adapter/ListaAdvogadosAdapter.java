@@ -2,6 +2,8 @@ package udacitynano.com.br.cafelegal.adapter;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -17,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.List;
 import udacitynano.com.br.cafelegal.AdvogadoDetailsActivity;
+import udacitynano.com.br.cafelegal.AdvogadoDetailsActivityFragment;
+import udacitynano.com.br.cafelegal.ChatFragment;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.util.Constant;
@@ -27,11 +31,12 @@ import static udacitynano.com.br.cafelegal.R.id.imageView;
 
 public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAdapter.ViewHolder> {
 
-
+    private static boolean mIsTablet;
     private static List<Advogado> mAdvogadoList;
 
-    public ListaAdvogadosAdapter(List<Advogado> advogadoList) {
+    public ListaAdvogadosAdapter(List<Advogado> advogadoList, boolean isTablet) {
         mAdvogadoList = advogadoList;
+        mIsTablet = isTablet;
     }
 
 
@@ -86,11 +91,22 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     int position = getAdapterPosition();
-                    Intent intent = new Intent(v.getContext(), AdvogadoDetailsActivity.class);
-                    intent.putExtra(Constant.ADVOGADO_ESCOLHIDO, mAdvogadoList.get(position));
-                    v.getContext().startActivity(intent);
+                    if (mIsTablet) {
+                        Activity activity = (Activity) v.getContext();
+                        FragmentManager fm =  activity.getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_menu_second_panel, AdvogadoDetailsActivityFragment.newInstance(
+                                mAdvogadoList.get(position)
+                        ));
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+
+                    }else {
+                        Intent intent = new Intent(v.getContext(), AdvogadoDetailsActivity.class);
+                        intent.putExtra(Constant.ADVOGADO_ESCOLHIDO, mAdvogadoList.get(position));
+                        v.getContext().startActivity(intent);
+                    }
                 }
             });
         }
