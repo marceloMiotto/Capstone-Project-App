@@ -48,7 +48,7 @@ public class ListaConvitesAbertosFragment extends Fragment
     public static ListaConvitesAbertosFragment newInstance(boolean isTablet) {
 
         Bundle bundle = new Bundle();
-        bundle.putBoolean("isTablet",true);
+        bundle.putBoolean("isTablet",isTablet);
         ListaConvitesAbertosFragment listaConvitesAbertosFragment = new ListaConvitesAbertosFragment();
         listaConvitesAbertosFragment.setArguments(bundle);
         return listaConvitesAbertosFragment;

@@ -39,7 +39,7 @@ public class HistoricoConvitesFragment extends Fragment implements LoaderManager
     public static HistoricoConvitesFragment newInstance(boolean isTablet) {
 
         Bundle bundle = new Bundle();
-        bundle.putBoolean("isTablet",true);
+        bundle.putBoolean("isTablet",isTablet);
         HistoricoConvitesFragment historicoConvitesFragment = new HistoricoConvitesFragment();
         historicoConvitesFragment.setArguments(bundle);
        return historicoConvitesFragment;

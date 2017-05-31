@@ -6,36 +6,39 @@
     android:background="@android:color/white"
     tools:context="udacitynano.com.br.cafelegal.ConviteFragment">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical"
         >
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/text_convite_cafezinho"
-            tools:text="@string/text_convite_cafezinho"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:textColor="@color/colorAccent"
+            android:orientation="vertical">
 
-            />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:text="@string/text_convite_cafezinho"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/colorAccent"
+                tools:text="@string/text_convite_cafezinho"
 
-        <ImageButton
-            android:id="@+id/convite_button"
-            android:layout_width="208dp"
-            android:layout_height="215dp"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/cafe_convite"
-            android:layout_gravity="center"
-            />
+                />
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/convite_button"
+                android:layout_width="208dp"
+                android:layout_height="215dp"
+                android:layout_gravity="center"
+                android:onClick="onClick"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/cafe_convite" />
 
+        </LinearLayout>
 
+    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

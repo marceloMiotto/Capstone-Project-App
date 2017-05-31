@@ -15,13 +15,6 @@ public class ChatActivity extends AppCompatActivity implements ChatFragment.OnFr
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // TODO USAR QUANDO FOR TABLET
-        //FragmentManager fm = getFragmentManager();
-        //FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        //fragmentTransaction.replace(R.id.fragment_chat,ChatFragment.newInstance("",""));
-        //fragmentTransaction.addToBackStack(null);
-        //fragmentTransaction.commit();
     }
 
     @Override

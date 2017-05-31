@@ -160,6 +160,7 @@
     <string name="icon_advogado_transition_name">icon_advogado_transition_name</string>
     <string name="title_login_window">Café Legal - Entrar</string>
     <string name="text_convite_cafezinho">Para fazer um convite,\n aperte o cafezinho</string>
+    <string name="escolha_um_item">Escolha um item</string>
 
 
 </resources>

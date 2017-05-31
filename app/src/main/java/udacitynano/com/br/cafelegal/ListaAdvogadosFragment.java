@@ -55,7 +55,7 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
     public static ListaAdvogadosFragment newInstance(boolean isTablet) {
 
         Bundle bundle = new Bundle();
-        bundle.putBoolean("isTablet",true);
+        bundle.putBoolean("isTablet",isTablet);
         ListaAdvogadosFragment listaAdvogadosFragment = new ListaAdvogadosFragment();
         listaAdvogadosFragment.setArguments(bundle);
         return listaAdvogadosFragment;

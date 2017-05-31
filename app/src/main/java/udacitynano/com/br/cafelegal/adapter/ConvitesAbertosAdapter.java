@@ -101,14 +101,20 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
                                     conviteService.createConvite(v.getContext(), convite);
 
                                     if (mIsTablet) {
+
+                                        Log.e("Debug","id "+String.valueOf(convite.getId()));
+                                        Log.e("Debug","nome advogado "+ convite.getNomeAdvogado());
+                                        Log.e("Debug","advogado oab "+convite.getAdvogadoOAB());
+                                        Log.e("Debug","nome convida "+convite.getNomeConvida());
+
                                         Activity activity = (Activity) v.getContext();
                                         FragmentManager fm = activity.getFragmentManager();
                                         FragmentTransaction fragmentTransaction = fm.beginTransaction();
                                         fragmentTransaction.replace(R.id.fragment_menu_second_panel, ChatFragment.newInstance(
-                                                String.valueOf(mConviteList.get(getAdapterPosition()).getId()),
-                                                mConviteList.get(getAdapterPosition()).getNomeConvida(),
-                                                mConviteList.get(getAdapterPosition()).getNomeAdvogado(),
-                                                mConviteList.get(getAdapterPosition()).getAdvogadoOAB()
+                                                String.valueOf(convite.getId()),
+                                                convite.getNomeAdvogado(),
+                                                convite.getAdvogadoOAB(),
+                                                convite.getNomeConvida()
                                         ));
                                         fragmentTransaction.addToBackStack(null);
                                         fragmentTransaction.commit();

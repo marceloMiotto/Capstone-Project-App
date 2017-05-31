@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity
         , HistoricoConvitesFragment.OnFragmentInteractionListener
         , ListaAdvogadosFragment.OnFragmentInteractionListener
         , PerfilFragment.OnFragmentInteractionListener
-        , ListaConvitesAbertosFragment.OnFragmentInteractionListener {
+        , ListaConvitesAbertosFragment.OnFragmentInteractionListener
+        , ChatFragment.OnFragmentInteractionListener{
 
     boolean mPhone;
     LinearLayout mLinearLayoutOnePanel;
@@ -40,11 +41,13 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.frame_layout_content_main_container) != null) {
             mPhone = false;
             mLinearLayoutOnePanel = (LinearLayout) findViewById(R.id.one_panel);
             mLinearLayoutTwoPanel = (LinearLayout) findViewById(R.id.two_panel);
+            inflateLayout(true);
         } else {
             mPhone = true;
         }
@@ -131,6 +134,8 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
+            Log.e("Debug","mPhone "+mPhone);
+
             if (mPhone) {
                 fragmentTransaction.replace(R.id.fragment_menu_switch, ConviteFragment.newInstance());
             } else {
@@ -156,7 +161,6 @@ public class MainActivity extends AppCompatActivity
                 inflateLayout(true);
                 fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, PerfilFragment.newInstance());
             }
-
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -168,7 +172,7 @@ public class MainActivity extends AppCompatActivity
             if (mPhone) {
                 fragmentTransaction.replace(R.id.fragment_menu_switch, HistoricoConvitesFragment.newInstance(false));
             } else {
-                inflateLayout(true);
+                inflateLayout(false);
                 fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, HistoricoConvitesFragment.newInstance(true));
             }
 
@@ -183,7 +187,7 @@ public class MainActivity extends AppCompatActivity
             if (mPhone) {
                 fragmentTransaction.replace(R.id.fragment_menu_switch, ListaAdvogadosFragment.newInstance(false));
             } else {
-                inflateLayout(true);
+                inflateLayout(false);
                 fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaAdvogadosFragment.newInstance(true));
             }
 
@@ -198,7 +202,7 @@ public class MainActivity extends AppCompatActivity
             if (mPhone) {
                 fragmentTransaction.replace(R.id.fragment_menu_switch, ListaConvitesAbertosFragment.newInstance(false));
             } else {
-                inflateLayout(true);
+                inflateLayout(false);
                 fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaConvitesAbertosFragment.newInstance(true));
             }
 
@@ -225,6 +229,8 @@ public class MainActivity extends AppCompatActivity
 
     public void inflateLayout(boolean onePanel) {
 
+        Log.e("Debug","onePanel "+onePanel);
+
         if (onePanel) {
             mLinearLayoutTwoPanel.setVisibility(View.GONE);
             mLinearLayoutOnePanel.setVisibility(View.VISIBLE);
@@ -235,6 +241,11 @@ public class MainActivity extends AppCompatActivity
             mLinearLayoutTwoPanel.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
 }

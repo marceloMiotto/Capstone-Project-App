@@ -77,14 +77,15 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
                 public void onClick(View v) {
 
                     if (mIsTablet) {
+                        Log.e("Debug","Entrou para pegar argumentos");
                         Activity activity = (Activity) v.getContext();
                         FragmentManager fm =  activity.getFragmentManager();
                         FragmentTransaction fragmentTransaction = fm.beginTransaction();
                         fragmentTransaction.replace(R.id.fragment_menu_second_panel,ChatFragment.newInstance(
                                 String.valueOf(mConviteList.get(getAdapterPosition()).getId()),
-                                mConviteList.get(getAdapterPosition()).getNomeConvida(),
                                 mConviteList.get(getAdapterPosition()).getNomeAdvogado(),
-                                mConviteList.get(getAdapterPosition()).getAdvogadoOAB()
+                                mConviteList.get(getAdapterPosition()).getAdvogadoOAB(),
+                                mConviteList.get(getAdapterPosition()).getNomeConvida()
                         ));
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();

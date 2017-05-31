@@ -16,10 +16,11 @@
     >
     <LinearLayout
         android:id="@+id/one_panel"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_weight="1"
+        android:visibility="invisible"
         >
 
         <FrameLayout
@@ -46,10 +47,10 @@
     <LinearLayout
         android:id="@+id/two_panel"
         android:orientation="horizontal"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
         android:layout_weight="1"
+        android:visibility="invisible"
         >
 
         <fragment
@@ -63,16 +64,19 @@
             android:layout_weight="1"
             tools:layout="@layout/fragment_perfil" />
 
-        <fragment
+        <LinearLayout
             android:id="@+id/fragment_menu_second_panel"
-            android:name="udacitynano.com.br.cafelegal.ConviteFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            tools:layout="@layout/fragment_perfil" />
+            tools:layout="@layout/none_layout"
+            android:orientation="vertical"
+            >
+            <include layout="@layout/none_layout"/>
+            </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>

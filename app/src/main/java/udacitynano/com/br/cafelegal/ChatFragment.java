@@ -87,21 +87,29 @@ public class ChatFragment extends Fragment implements
 
 
     public static ChatFragment newInstance(String messageChild, String messageNomeAdvogado, String messageAdvogadoOAB, String messageNomeConvida) {
+        Log.e("Debug","new instance ");
         Bundle bundle = new Bundle();
         bundle.putString("messageChild",messageChild);
         bundle.putString("messageNomeAdvogado",messageNomeAdvogado);
         bundle.putString("messageAdvogadoOAB",messageAdvogadoOAB);
         bundle.putString("messageNomeConvida",messageNomeConvida);
         ChatFragment chatFragment = new ChatFragment();
+        chatFragment.setArguments(bundle);
         return chatFragment;
     }
 
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
+
+            Log.e("Debug","read Bundle ");
             MESSAGES_CHILD =  bundle.getString("messageChild");
             MESSAGE_NOME_ADVOGADO =  bundle.getString("messageNomeAdvogado");
             MESSAGE_ADVOGADO_OAB =  bundle.getString("messageAdvogadoOAB");
             MESSAGE_NOME_CONVIDA =  bundle.getString("messageNomeConvida");
+            Log.e("Debug","MESSAGES_CHILD "+ bundle.getString("messageChild"));
+            Log.e("Debug","MESSAGE_NOME_ADVOGADO "+bundle.getString("messageNomeAdvogado"));
+            Log.e("Debug","MESSAGE_ADVOGADO_OAB "+bundle.getString("messageAdvogadoOAB"));
+            Log.e("Debug","MESSAGE_NOME_CONVIDA "+ bundle.getString("messageNomeConvida"));
         }
     }
 
@@ -121,6 +129,7 @@ public class ChatFragment extends Fragment implements
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         if (getArguments() != null) {
+            Log.e("Debug","Arguments chat "+getArguments().toString());
             readBundle(getArguments());
         }else{
             MESSAGES_CHILD = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_convite));
@@ -129,7 +138,6 @@ public class ChatFragment extends Fragment implements
             MESSAGE_NOME_CONVIDA = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_nome_convida));
 
         }
-
 
         if(UserType.isAdvogado(getActivity())){
             if(MESSAGE_NOME_ADVOGADO.equals("X")){
