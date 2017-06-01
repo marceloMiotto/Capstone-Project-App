@@ -5,11 +5,10 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /*
-**  Get FAB action code from https://guides.codepath.com/android/Floating-Action-Buttons
+**  This extension was from https://guides.codepath.com/android/Floating-Action-Buttons
  */
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 
@@ -21,7 +20,6 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout,
                                        FloatingActionButton child, View directTargetChild, View target, int nestedScrollAxes) {
 
-        Log.e("Debug","entrou onStartNestedScroll");
         return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL ||
                 super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target,
                         nestedScrollAxes);

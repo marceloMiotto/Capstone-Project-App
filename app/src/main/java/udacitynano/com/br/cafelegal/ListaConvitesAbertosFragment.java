@@ -7,7 +7,7 @@ import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +85,6 @@ public class ListaConvitesAbertosFragment extends Fragment
             @Override
             public void onRefresh() {
                 getConvitesAbertos();
-                Log.e("Debug","onRefresh");
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -131,7 +130,7 @@ public class ListaConvitesAbertosFragment extends Fragment
 
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.e("Debug","Response length "+response.length());
+
                         try {
                             myDataset.clear();
                             for(int i=0;i<response.length();i++){
@@ -139,10 +138,10 @@ public class ListaConvitesAbertosFragment extends Fragment
                                 myDataset.add(new Gson().fromJson(jsonConvite.toString(),Convite.class));
                             }
                             mAdapter.notifyDataSetChanged();
-                            Log.e("Debug","Entrou response fragment");
+
 
                         } catch (JSONException e) {
-                            Log.e("Debug","Error response "+ e.getMessage());
+
                             e.printStackTrace();
                         }
 

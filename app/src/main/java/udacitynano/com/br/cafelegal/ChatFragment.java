@@ -28,8 +28,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.appindexing.Action;
 import com.google.firebase.appindexing.FirebaseAppIndex;
@@ -37,22 +35,15 @@ import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Indexables;
 import com.google.firebase.appindexing.builders.PersonBuilder;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import udacitynano.com.br.cafelegal.model.CafeLegalMessage;
 import udacitynano.com.br.cafelegal.singleton.UserType;
-import udacitynano.com.br.cafelegal.util.Constant;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 @SuppressWarnings("unused")
 public class ChatFragment extends Fragment implements
@@ -101,15 +92,11 @@ public class ChatFragment extends Fragment implements
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
 
-            Log.e("Debug","read Bundle ");
             MESSAGES_CHILD =  bundle.getString("messageChild");
             MESSAGE_NOME_ADVOGADO =  bundle.getString("messageNomeAdvogado");
             MESSAGE_ADVOGADO_OAB =  bundle.getString("messageAdvogadoOAB");
             MESSAGE_NOME_CONVIDA =  bundle.getString("messageNomeConvida");
-            Log.e("Debug","MESSAGES_CHILD "+ bundle.getString("messageChild"));
-            Log.e("Debug","MESSAGE_NOME_ADVOGADO "+bundle.getString("messageNomeAdvogado"));
-            Log.e("Debug","MESSAGE_ADVOGADO_OAB "+bundle.getString("messageAdvogadoOAB"));
-            Log.e("Debug","MESSAGE_NOME_CONVIDA "+ bundle.getString("messageNomeConvida"));
+
         }
     }
 
@@ -126,10 +113,10 @@ public class ChatFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
 
-        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
 
         if (getArguments() != null) {
-            Log.e("Debug","Arguments chat "+getArguments().toString());
+
             readBundle(getArguments());
         }else{
             MESSAGES_CHILD = getActivity().getIntent().getStringExtra(getActivity().getString(R.string.adapter_extra_convite));
@@ -183,7 +170,7 @@ public class ChatFragment extends Fragment implements
                 if (cafeLegalMessage.getText() != null) {
                     viewHolder.messageTextView.setText(cafeLegalMessage.getText());
                     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
-                    Log.e("Debug","Nomes: "+mUsername+" "+cafeLegalMessage.getName());
+
                     if(mUsername.equals(cafeLegalMessage.getName())){
                         viewHolder.mMessengerImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.user_green_144));
                     }else{
@@ -293,9 +280,9 @@ public class ChatFragment extends Fragment implements
 
 
         public static class MessageViewHolder extends RecyclerView.ViewHolder {
-            public TextView messageTextView;
-            public TextView messengerTextView;
-            public ImageView mMessengerImageView;
+            public final TextView messageTextView;
+            public final TextView messengerTextView;
+            public final ImageView mMessengerImageView;
 
             public MessageViewHolder(View v) {
                 super(v);

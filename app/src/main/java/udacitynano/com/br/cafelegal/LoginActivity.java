@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,6 +49,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Context mContext;
     private String mFirebaseEmail;
 
+    private static final String TAG = "LoginActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +91,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                                     if (task.isSuccessful()) {
-                                        String idToken = task.getResult().getToken();
 
                                         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-
                                         SharedPreferences sharedPref = getSharedPreferences(
                                                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPref.edit();
@@ -103,14 +102,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         editor.apply();
 
                                     } else {
-                                        Log.e("Debug","Erro");
+                                        Log.e(TAG,"Erro para autenticar");
                                     }
                                 }
                             });
-                    String uid = user.getUid();
+
 
                     Intent intent;
-                    UserType userType = UserType.getInstance(mContext);
 
                     //if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
                         intent = new Intent(getApplicationContext(), WelcomeActivity.class);

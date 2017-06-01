@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
-import java.util.ArrayList;
-
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
@@ -16,7 +14,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 
 public class PerfilService {
 
-    private Context mContext;
+    private final Context mContext;
 
 
     public PerfilService(Context context){

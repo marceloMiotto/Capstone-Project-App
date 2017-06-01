@@ -52,7 +52,7 @@ public class MapaAdvogadosProximosFragment  extends FragmentActivity implements 
     private List<Advogado> mAdvogadosList;
     private Geocoder mCoder;
 
-    private int REQUEST_LOCATION = 1;
+    private final int REQUEST_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

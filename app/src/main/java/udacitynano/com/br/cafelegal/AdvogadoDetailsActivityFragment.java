@@ -3,8 +3,7 @@ package udacitynano.com.br.cafelegal;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +73,7 @@ public class AdvogadoDetailsActivityFragment extends Fragment {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,23 +87,24 @@ public class AdvogadoDetailsActivityFragment extends Fragment {
             mAdvogado = data.getParcelable(Constant.ADVOGADO_ESCOLHIDO);
         }
 
-        detailsAdvogadoNome.setText(mAdvogado.getNome() + " " + mAdvogado.getSobrenome());
-        detailsAdvogadoNumeroOAB.setText(mAdvogado.getNumeroInscricaoOAB());
-        detailsAdvogadoEspecialidadeUm.setText(mAdvogado.getEspecialistaUm());
-        detailsAdvogadoEspecialidadeDois.setText(mAdvogado.getEspecialistaDois());
-        detailsAdvogadoTelefone.setText(mAdvogado.getTelefoneComercial());
-        detailsAdvogadoEndereco.setText(mAdvogado.getEndereco()+ " " +
-                                        "nº"+mAdvogado.getNumero());
-        detailsAdvogadoBairro.setText(mAdvogado.getComplemento());
-        detailsAdvogadoBairro.setText(mAdvogado.getBairro());
-        detailsAdvogadoCidade.setText(mAdvogado.getCidade());
-        detailsAdvogadoEstado.setText(mAdvogado.getEstado());
-        Log.e("Debug","icon: "+mAdvogado.getIconLista());
-        UserHelper userHelper = new UserHelper();
-        advogadoIconDetails.setImageDrawable(getActivity().getResources().getDrawable(userHelper.getUserIcon(mAdvogado.getIconLista())));
+        if(mAdvogado != null) {
+            detailsAdvogadoNome.setText(mAdvogado.getNome() + " " + mAdvogado.getSobrenome());
+            detailsAdvogadoNumeroOAB.setText(mAdvogado.getNumeroInscricaoOAB());
+            detailsAdvogadoEspecialidadeUm.setText(mAdvogado.getEspecialistaUm());
+            detailsAdvogadoEspecialidadeDois.setText(mAdvogado.getEspecialistaDois());
+            detailsAdvogadoTelefone.setText(mAdvogado.getTelefoneComercial());
+            detailsAdvogadoEndereco.setText(mAdvogado.getEndereco() + " " +
+                    "nº" + mAdvogado.getNumero());
+            detailsAdvogadoBairro.setText(mAdvogado.getComplemento());
+            detailsAdvogadoBairro.setText(mAdvogado.getBairro());
+            detailsAdvogadoCidade.setText(mAdvogado.getCidade());
+            detailsAdvogadoEstado.setText(mAdvogado.getEstado());
 
-        getActivity().setTitle(mAdvogado.getNome() + " - OAB: "+ mAdvogado.getNumeroInscricaoOAB());
+            UserHelper userHelper = new UserHelper();
+            advogadoIconDetails.setImageDrawable(getActivity().getResources().getDrawable(userHelper.getUserIcon(mAdvogado.getIconLista())));
 
+            getActivity().setTitle(mAdvogado.getNome() + " - OAB: " + mAdvogado.getNumeroInscricaoOAB());
+        }
         return view;
     }
 }

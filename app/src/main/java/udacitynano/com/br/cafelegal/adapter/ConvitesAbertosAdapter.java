@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,6 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
     @Override
     public void onBindViewHolder(ConvitesAbertosAdapter.ViewHolder holder, int position) {
         holder.mConviteTitle.setText(mConviteList.get(position).getDataCriacao());
-        Log.e("Debug", "onBindViewHolder " + mConviteList.get(position).getId());
     }
 
     @Override
@@ -73,8 +71,8 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
     @SuppressWarnings("AccessStaticViaInstance")
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mConviteTitle;
-        public Button mConviteAceito;
+        public final TextView mConviteTitle;
+        public final Button mConviteAceito;
 
         public ViewHolder(View v) {
             super(v);
@@ -94,18 +92,11 @@ public class ConvitesAbertosAdapter extends RecyclerView.Adapter<ConvitesAbertos
                                 @Override
                                 public void onResponse(JSONObject response) {
 
-                                    Log.e("Debug", "Entrou response adapter");
-
                                     Convite convite = new Gson().fromJson(response.toString(), Convite.class);
                                     ConviteService conviteService = new ConviteService(v.getContext(), null);
                                     conviteService.createConvite(v.getContext(), convite);
 
                                     if (mIsTablet) {
-
-                                        Log.e("Debug","id "+String.valueOf(convite.getId()));
-                                        Log.e("Debug","nome advogado "+ convite.getNomeAdvogado());
-                                        Log.e("Debug","advogado oab "+convite.getAdvogadoOAB());
-                                        Log.e("Debug","nome convida "+convite.getNomeConvida());
 
                                         Activity activity = (Activity) v.getContext();
                                         FragmentManager fm = activity.getFragmentManager();

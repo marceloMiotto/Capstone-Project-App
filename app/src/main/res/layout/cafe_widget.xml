@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/fab_margin"
-    android:background="#55000000">
+    >
 
     <ImageView
         android:id="@+id/imageView"
@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:src="@drawable/cafe_convite"/>
+        android:src="@drawable/cafe_convite"
+        android:contentDescription="@string/imagem_convite"
+        />
 
     <Button
         android:id="@+id/widget_convite_button"

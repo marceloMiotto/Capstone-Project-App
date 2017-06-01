@@ -1,7 +1,6 @@
 package udacitynano.com.br.cafelegal.model;
 
 
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 

@@ -161,6 +161,11 @@
     <string name="title_login_window">Café Legal - Entrar</string>
     <string name="text_convite_cafezinho">Para fazer um convite,\n aperte o cafezinho</string>
     <string name="escolha_um_item">Escolha um item</string>
+    <string name="imagem_convite">Esta imagem é do botão convite</string>
+    <string name="advogado_briefcase">Esta imagem é de uma pasta de advogado</string>
+    <string name="user_details_icon">Icone do advogado</string>
+    <string name="fragment_perfil_icon">Icone do perfil</string>
+    <string name="icone_cafezinho">Icone cafezinho</string>
 
 
 </resources>

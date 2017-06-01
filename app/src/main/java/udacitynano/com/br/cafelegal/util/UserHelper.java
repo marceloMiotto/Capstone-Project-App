@@ -1,21 +1,15 @@
 package udacitynano.com.br.cafelegal.util;
 
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import udacitynano.com.br.cafelegal.R;
 
 public class UserHelper {
 
 
-    List<Integer> userIconImg = new ArrayList<>();
+    private final List<Integer> userIconImg = new ArrayList<>();
 
     public UserHelper() {
 

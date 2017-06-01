@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+
     tools:context="udacitynano.com.br.cafelegal.ConviteFragment">
 
     <android.support.v4.widget.NestedScrollView
@@ -36,7 +36,9 @@
                 android:layout_gravity="center"
                 android:onClick="onClick"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/cafe_convite" />
+                app:srcCompat="@drawable/cafe_convite"
+                android:contentDescription="@string/imagem_convite"
+                />
 
         </LinearLayout>
 

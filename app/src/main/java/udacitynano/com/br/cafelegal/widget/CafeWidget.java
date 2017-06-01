@@ -7,15 +7,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 
-import android.content.SharedPreferences;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import org.json.JSONException;
-
-import java.util.Random;
 
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.service.ConviteService;
@@ -23,6 +18,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 
 public class CafeWidget extends AppWidgetProvider {
 
+    @SuppressWarnings("ForLoopReplaceableByForEach")
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int count = appWidgetIds.length;

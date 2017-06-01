@@ -8,7 +8,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -18,9 +17,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
 import udacitynano.com.br.cafelegal.LoginActivity;
-import udacitynano.com.br.cafelegal.MainActivity;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Convite;
+import udacitynano.com.br.cafelegal.util.Constant;
 
 @SuppressWarnings("unused")
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -47,35 +46,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d("Debug", "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.d("Debug", "Message data payload: " + remoteMessage.getData());
-
             // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
             scheduleJob();
 
         }
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d("Debug", "Message Notification Body: " + remoteMessage.getNotification().getBody());
-        }
-
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
 
-        //TODO CHAT TEST
-        // Handle data payload of FCM messages.
-        Log.e("Debug", "FCM Message Id: " + remoteMessage.getMessageId());
-        Log.e("Debug", "FCM Notification Message: " + remoteMessage.getNotification());
-        Log.e("Debug", "FCM Data Message: " + remoteMessage.getData().toString());
 
-        //TODO update convite here
-
-        if(remoteMessage.getData().get("tipoConvite").toString().equals("convite_cliente")){
-            Log.e("Debug", "FCM : entrou cliente");
+        if(remoteMessage.getData().get(Constant.tipo_convite).equals(Constant.convite_cliente)){
             Convite convite = new Gson().fromJson(remoteMessage.getData().toString(), Convite.class);
             ConviteService conviteService = new ConviteService(getApplicationContext(),null);
             conviteService.updateConvite(getApplicationContext(),convite);
@@ -104,7 +87,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Handle time allotted to BroadcastReceivers.
      */
     private void handleNow() {
-        Log.d("Debug", "Short lived task is done.");
+
     }
 
     /**

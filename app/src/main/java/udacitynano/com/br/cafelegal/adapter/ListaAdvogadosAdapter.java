@@ -1,17 +1,15 @@
 package udacitynano.com.br.cafelegal.adapter;
 
-import android.annotation.TargetApi;
+
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.os.Build;
-import android.support.v4.app.ActivityOptionsCompat;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +18,13 @@ import android.widget.TextView;
 import java.util.List;
 import udacitynano.com.br.cafelegal.AdvogadoDetailsActivity;
 import udacitynano.com.br.cafelegal.AdvogadoDetailsActivityFragment;
-import udacitynano.com.br.cafelegal.ChatFragment;
+
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.util.Constant;
 import udacitynano.com.br.cafelegal.util.UserHelper;
 
-import static udacitynano.com.br.cafelegal.R.id.imageView;
+
 
 
 public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAdapter.ViewHolder> {
@@ -58,8 +56,6 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
         UserHelper userHelper = new UserHelper();
         int iconRandom = userHelper.getRandom();
         mAdvogadoList.get(position).setIconLista(iconRandom);
-        Log.e("Debug","Icon adapter: "+iconRandom);
-        Log.e("Debug","Icon advogado list:  "+mAdvogadoList.get(position).getIconLista());
         holder.mListaAdvogadoIcone.setImageDrawable(ContextCompat.getDrawable(holder.context,userHelper.getUserIcon(mAdvogadoList.get(position).getIconLista())));
         holder.mAdvogadoOABEspecialidade.setText("OAB: "+mAdvogadoList.get(position).getNumeroInscricaoOAB()+" - "+mAdvogadoList.get(position).getEspecialistaUm());
     }
@@ -72,11 +68,11 @@ public class ListaAdvogadosAdapter extends RecyclerView.Adapter<ListaAdvogadosAd
     @SuppressWarnings("unused")
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mAdvogadoNome;
-        public TextView mAdvogadoOABEspecialidade;
-        public TextView mAdvogadoEndereco;
-        public ImageView mListaAdvogadoIcone;
-        Context context;
+        public final TextView mAdvogadoNome;
+        public final TextView mAdvogadoOABEspecialidade;
+        public final TextView mAdvogadoEndereco;
+        public final ImageView mListaAdvogadoIcone;
+        final Context context;
 
 
         public ViewHolder(View v) {

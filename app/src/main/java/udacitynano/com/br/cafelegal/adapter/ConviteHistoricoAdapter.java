@@ -7,7 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 import java.util.List;
 import udacitynano.com.br.cafelegal.ChatActivity;
 import udacitynano.com.br.cafelegal.ChatFragment;
-import udacitynano.com.br.cafelegal.PerfilFragment;
 import udacitynano.com.br.cafelegal.R;
 import udacitynano.com.br.cafelegal.model.Convite;
 import udacitynano.com.br.cafelegal.singleton.UserType;
@@ -23,7 +22,7 @@ import udacitynano.com.br.cafelegal.singleton.UserType;
 public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistoricoAdapter.ViewHolder>{
 
     private static List<Convite> mConviteList;
-    private Context mContext;
+    private final Context mContext;
     private static boolean mIsTablet;
 
     public ConviteHistoricoAdapter(Context context, List<Convite> conviteList, boolean isTablet) {
@@ -50,7 +49,7 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
         }else{
             holder.mConviteSolicita.setText(mConviteList.get(position).getNomeAdvogado()+ " - OAB: " + mConviteList.get(position).getAdvogadoOAB());
         }
-        Log.e("Debug","onBindViewHolder "+mConviteList.get(position).getId());
+
 
     }
 
@@ -63,8 +62,8 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mConviteTitle;
-        public TextView mConviteSolicita;
+        public final TextView mConviteTitle;
+        public final TextView mConviteSolicita;
 
         public ViewHolder(View v) {
             super(v);
@@ -77,7 +76,6 @@ public class ConviteHistoricoAdapter extends RecyclerView.Adapter<ConviteHistori
                 public void onClick(View v) {
 
                     if (mIsTablet) {
-                        Log.e("Debug","Entrou para pegar argumentos");
                         Activity activity = (Activity) v.getContext();
                         FragmentManager fm =  activity.getFragmentManager();
                         FragmentTransaction fragmentTransaction = fm.beginTransaction();

@@ -19,7 +19,7 @@ import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 public class GoogleClient implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-    private Context mContext;
+    private final Context mContext;
     private GoogleApiClient mGoogleApiClient;
 
     public GoogleClient(Context context){

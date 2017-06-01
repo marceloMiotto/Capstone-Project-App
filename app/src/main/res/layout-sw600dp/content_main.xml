@@ -13,7 +13,7 @@
     android:id="@+id/frame_layout_content_main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    tools:ignore="InconsistentLayout">
     <LinearLayout
         android:id="@+id/one_panel"
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:orientation="vertical"
         android:layout_weight="1"
         android:visibility="invisible"
-        >
+        tools:ignore="InconsistentLayout">
 
         <FrameLayout
             android:layout_width="400dp"
@@ -38,7 +38,8 @@
                 android:layout_width="350dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                tools:layout="@layout/fragment_perfil" />
+                tools:layout="@layout/fragment_perfil"
+                tools:ignore="InconsistentLayout" />
 
         </FrameLayout>
     </LinearLayout>
@@ -51,7 +52,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:visibility="invisible"
-        >
+        tools:ignore="InconsistentLayout"
+        android:baselineAligned="false">
 
         <fragment
             android:id="@+id/fragment_menu_switch_two_panel"
@@ -62,7 +64,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            tools:layout="@layout/fragment_perfil" />
+            tools:layout="@layout/fragment_perfil"
+            tools:ignore="InconsistentLayout" />
 
         <LinearLayout
             android:id="@+id/fragment_menu_second_panel"
@@ -74,7 +77,7 @@
             android:layout_weight="1"
             tools:layout="@layout/none_layout"
             android:orientation="vertical"
-            >
+            tools:ignore="InconsistentLayout">
             <include layout="@layout/none_layout"/>
             </LinearLayout>
 

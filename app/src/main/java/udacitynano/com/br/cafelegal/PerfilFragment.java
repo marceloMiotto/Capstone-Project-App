@@ -20,9 +20,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.google.gson.Gson;
 import org.json.JSONException;

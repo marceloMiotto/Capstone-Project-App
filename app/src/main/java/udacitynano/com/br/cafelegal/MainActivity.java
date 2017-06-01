@@ -12,8 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,9 +32,9 @@ public class MainActivity extends AppCompatActivity
         , ListaConvitesAbertosFragment.OnFragmentInteractionListener
         , ChatFragment.OnFragmentInteractionListener{
 
-    boolean mPhone;
-    LinearLayout mLinearLayoutOnePanel;
-    LinearLayout mLinearLayoutTwoPanel;
+    private boolean mPhone;
+    private LinearLayout mLinearLayoutOnePanel;
+    private LinearLayout mLinearLayoutTwoPanel;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -134,7 +133,6 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
-            Log.e("Debug","mPhone "+mPhone);
 
             if (mPhone) {
                 fragmentTransaction.replace(R.id.fragment_menu_switch, ConviteFragment.newInstance());
@@ -224,12 +222,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        Log.e("Debug", "Fragment listner " + uri);
     }
 
-    public void inflateLayout(boolean onePanel) {
+    private void inflateLayout(boolean onePanel) {
 
-        Log.e("Debug","onePanel "+onePanel);
+
 
         if (onePanel) {
             mLinearLayoutTwoPanel.setVisibility(View.GONE);
