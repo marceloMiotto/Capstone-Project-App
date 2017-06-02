@@ -112,8 +112,7 @@ public class ChatFragment extends Fragment implements
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-
-
+        UserType userType = UserType.getInstance(getActivity());
 
         if (getArguments() != null) {
 

@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="udacitynano.com.br.cafelegal.MainActivity">
+    tools:context="udacitynano.com.br.cafelegal.MainActivity"
+    android:background="@android:color/white"
+    >
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nested_scroll_view_perfil_fragment"

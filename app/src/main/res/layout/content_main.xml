@@ -18,6 +18,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         tools:layout="@layout/fragment_perfil"
-        tools:ignore="InconsistentLayout" />
+        />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        UserType userType = UserType.getInstance(this);
+
         if (UserType.isAdvogado(this)) {
             navigationView.inflateMenu(R.menu.activity_main_advogado_drawer);
         } else {
@@ -132,7 +134,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_convite) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
 
             if (mPhone) {
                 fragmentTransaction.replace(R.id.fragment_menu_switch, ConviteFragment.newInstance());

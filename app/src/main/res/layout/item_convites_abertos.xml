@@ -29,7 +29,7 @@
                 android:layout_height="96dp"
                 android:layout_gravity="center"
                 android:background="@color/colorCoffeBackground"
-                android:src="@drawable/icon_cafe_convite"
+                android:src="@drawable/icon_cafe_convite_aberto"
                  />
         </LinearLayout>
 

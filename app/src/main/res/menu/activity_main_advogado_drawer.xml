@@ -29,12 +29,6 @@
             android:icon="@drawable/logout"
             android:title="@string/menu_app_sair_item_title" />
 
-        <!-- Test only -->
-
-        <item
-            android:id="@+id/nav_adv_list"
-            android:icon="@drawable/briefcase"
-            android:title="@string/menu_lista_advogados_item_title" />
 
     </group>
 

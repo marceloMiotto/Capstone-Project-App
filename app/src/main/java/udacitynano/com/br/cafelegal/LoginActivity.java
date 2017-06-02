@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 import udacitynano.com.br.cafelegal.singleton.UserType;
+import udacitynano.com.br.cafelegal.util.Constant;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener  {
@@ -110,12 +111,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     Intent intent;
 
-                    //if(userType.getAppUserType().equals(mContext.getString(R.string.preference_user_type_not_defined))){
+                    UserType userType = UserType.getInstance(mContext);
+                    if(userType.getAppUserType(mContext).equals(mContext.getString(R.string.preference_user_type_not_defined))){
                         intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    //}else{
-                    //    intent = new Intent(getApplicationContext(), MainActivity.class);
-                    //    intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
-                    //}
+                    }else{
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra(Constant.INTENT_FRAGMENT_TYPE,Constant.CONVITE_FRAGMENT);
+                    }
 
                     startActivity(intent);
                     finish();

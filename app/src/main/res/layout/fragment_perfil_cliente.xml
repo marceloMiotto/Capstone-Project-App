@@ -6,7 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="udacitynano.com.br.cafelegal.MainActivity">
+    tools:context="udacitynano.com.br.cafelegal.MainActivity"
+    android:background="@android:color/white"
+    >
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/perfil_fab"
