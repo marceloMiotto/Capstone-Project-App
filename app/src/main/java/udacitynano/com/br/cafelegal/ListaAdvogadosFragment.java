@@ -35,6 +35,7 @@ import udacitynano.com.br.cafelegal.data.DatabaseContract;
 import udacitynano.com.br.cafelegal.model.Advogado;
 import udacitynano.com.br.cafelegal.service.PerfilService;
 import udacitynano.com.br.cafelegal.singleton.NetworkSingleton;
+import udacitynano.com.br.cafelegal.singleton.UserType;
 import udacitynano.com.br.cafelegal.util.Constant;
 
 
@@ -192,12 +193,14 @@ public class ListaAdvogadosFragment extends Fragment implements LoaderManager.Lo
 
         };
 
+        UserType userType = UserType.getInstance(getActivity());
+
         return new CursorLoader(
                 this.getActivity(),
                 DatabaseContract.PessoaEntry.CONTENT_URI,
                 projection,
-                null,
-                null,
+                DatabaseContract.PessoaEntry.COLUMN_ID_SERVER + " != ?",
+                new String[]{String.valueOf(userType.getUserId(getActivity()))},
                 null);
     }
 

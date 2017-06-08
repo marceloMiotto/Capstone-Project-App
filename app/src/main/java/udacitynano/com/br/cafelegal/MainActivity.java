@@ -131,88 +131,101 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_convite) {
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        switch (id) {
+            case R.id.nav_convite: {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
-            if (mPhone) {
-                fragmentTransaction.replace(R.id.fragment_menu_switch, ConviteFragment.newInstance());
-            } else {
-                inflateLayout(true);
-                fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, ConviteFragment.newInstance());
+                if (mPhone) {
+                    fragmentTransaction.replace(R.id.fragment_menu_switch, ConviteFragment.newInstance());
+                } else {
+                    inflateLayout(true);
+                    fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, ConviteFragment.newInstance());
+                }
+
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
+                break;
             }
+            case R.id.nav_map:
 
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+                startActivity(new Intent(this, MapaAdvogadosProximosFragment.class));
 
+                break;
+            case R.id.nav_perfil: {
 
-        } else if (id == R.id.nav_map) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                if (mPhone) {
+                    fragmentTransaction.replace(R.id.fragment_menu_switch, PerfilFragment.newInstance());
+                } else {
+                    inflateLayout(true);
+                    fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, PerfilFragment.newInstance());
+                }
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
 
-            startActivity(new Intent(this, MapaAdvogadosProximosFragment.class));
-
-        } else if (id == R.id.nav_perfil) {
-
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            if (mPhone) {
-                fragmentTransaction.replace(R.id.fragment_menu_switch, PerfilFragment.newInstance());
-            } else {
-                inflateLayout(true);
-                fragmentTransaction.replace(R.id.fragment_menu_switch_one_panel, PerfilFragment.newInstance());
+                break;
             }
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            case R.id.nav_historico_convites: {
 
-        } else if (id == R.id.nav_historico_convites) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                if (mPhone) {
+                    fragmentTransaction.replace(R.id.fragment_menu_switch, HistoricoConvitesFragment.newInstance(false));
+                } else {
+                    inflateLayout(false);
+                    fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, HistoricoConvitesFragment.newInstance(true));
+                }
 
-            if (mPhone) {
-                fragmentTransaction.replace(R.id.fragment_menu_switch, HistoricoConvitesFragment.newInstance(false));
-            } else {
-                inflateLayout(false);
-                fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, HistoricoConvitesFragment.newInstance(true));
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+                break;
             }
+            case R.id.nav_adv_list: {//only for clients
 
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
-        } else if (id == R.id.nav_adv_list) {//only for clients
+                if (mPhone) {
+                    fragmentTransaction.replace(R.id.fragment_menu_switch, ListaAdvogadosFragment.newInstance(false));
+                } else {
+                    inflateLayout(false);
+                    fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaAdvogadosFragment.newInstance(true));
+                }
 
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
 
-            if (mPhone) {
-                fragmentTransaction.replace(R.id.fragment_menu_switch, ListaAdvogadosFragment.newInstance(false));
-            } else {
-                inflateLayout(false);
-                fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaAdvogadosFragment.newInstance(true));
+                break;
             }
+            case R.id.nav_convites_abertos: {//only for lawyers
 
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
-        } else if (id == R.id.nav_convites_abertos) {//only for lawyers
+                if (mPhone) {
+                    fragmentTransaction.replace(R.id.fragment_menu_switch, ListaConvitesAbertosFragment.newInstance(false));
+                } else {
+                    inflateLayout(false);
+                    fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaConvitesAbertosFragment.newInstance(true));
+                }
 
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
 
-            if (mPhone) {
-                fragmentTransaction.replace(R.id.fragment_menu_switch, ListaConvitesAbertosFragment.newInstance(false));
-            } else {
-                inflateLayout(false);
-                fragmentTransaction.replace(R.id.fragment_menu_switch_two_panel, ListaConvitesAbertosFragment.newInstance(true));
+                break;
             }
+            case R.id.nav_app_sair: //only for lawyers
 
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+                FirebaseAuth.getInstance().signOut();
+                finish();
 
-        } else if (id == R.id.nav_app_sair) {//only for lawyers
-
-            FirebaseAuth.getInstance().signOut();
-            finish();
-
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

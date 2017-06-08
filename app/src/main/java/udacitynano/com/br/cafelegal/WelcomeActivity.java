@@ -93,7 +93,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 editor = sharedPref.edit();
                 editor.putString(this.getString(R.string.preference_user_type_key), this.getString(R.string.preference_user_type_cliente));
                 editor.commit();
-
+                mNetworkRequests = new NetworkRequests(this);
                 //Create user
                 final Cliente cliente = new Cliente(0,"","","",email,0,"","","","","","","","",fcmToken);
 

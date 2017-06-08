@@ -97,10 +97,10 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
     @Nullable @BindView(R.id.perfilLinkedInEditText)
     EditText mPerfilLinkedInEditText;
 
-    @BindView(perfil_especialista_um_spinner)
+    @Nullable @BindView(R.id.perfil_especialista_um_spinner)
     Spinner mPerfilEspecialistaUmSpinner;
 
-    @BindView(R.id.perfil_especialista_dois_spinner)
+    @Nullable @BindView(R.id.perfil_especialista_dois_spinner)
     Spinner mPerfilEspecialistaDoisSpinner;
 
     @BindView(R.id.perfil_fab)
@@ -160,9 +160,11 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
 
         sexoSpinner.setOnItemSelectedListener(this);
-        mSeccionalSpinner.setOnItemSelectedListener(this);
-        mPerfilEspecialistaUmSpinner.setOnItemSelectedListener(this);
-        mPerfilEspecialistaDoisSpinner.setOnItemSelectedListener(this);
+        if (UserType.isAdvogado(getActivity())) {
+            mSeccionalSpinner.setOnItemSelectedListener(this);
+            mPerfilEspecialistaUmSpinner.setOnItemSelectedListener(this);
+            mPerfilEspecialistaDoisSpinner.setOnItemSelectedListener(this);
+        }
         getActivity().setTitle(getString(R.string.title_perfil));
         SharedPreferences sharedPref = getActivity().getSharedPreferences(
          getActivity().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -263,17 +265,19 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sexoSpinner.setAdapter(adapter);
 
-        ArrayAdapter<CharSequence> seccionalAdapter = ArrayAdapter.createFromResource(getActivity(),
-                seccional, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSeccionalSpinner.setAdapter(seccionalAdapter);
+        if (UserType.isAdvogado(getActivity())) {
 
-        ArrayAdapter<CharSequence> especialidadeAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.especialidade, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mPerfilEspecialistaUmSpinner.setAdapter(especialidadeAdapter);
-        mPerfilEspecialistaDoisSpinner.setAdapter(especialidadeAdapter);
+            ArrayAdapter<CharSequence> seccionalAdapter = ArrayAdapter.createFromResource(getActivity(),
+                    seccional, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSeccionalSpinner.setAdapter(seccionalAdapter);
 
+            ArrayAdapter<CharSequence> especialidadeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                    R.array.especialidade, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mPerfilEspecialistaUmSpinner.setAdapter(especialidadeAdapter);
+            mPerfilEspecialistaDoisSpinner.setAdapter(especialidadeAdapter);
+        }
         return view;
     }
 
