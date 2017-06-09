@@ -1,6 +1,23 @@
 apply plugin: 'com.android.application'
 
+
+//def keystorePropertiesFile = rootProject.file("keystore.properties")
+//def keystoreProperties = new Properties()
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+    signingConfigs {
+        configRelease {
+           // keyAlias keystoreProperties['keyAlias']
+           // keyPassword keystoreProperties['keyPassword']
+           // storeFile file(keystoreProperties['storeFile'])
+           // storePassword keystoreProperties['storePassword']
+            keyAlias 'keys'
+            keyPassword '123456'
+            storeFile file('C:/Users/Dell/Documents/ToSubmit/Capstone/CafeLegal/CafeLegal/app/keystoreUdacity.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -15,20 +32,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.configRelease
         }
     }
-    buildTypes.each {
-        it.buildConfigField 'String', 'GOOGLE_MAPS_API_KEY', GoogleMapsAPIKey
-    }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-
     //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:25.0.0'
     //noinspection GradleDependency
@@ -64,8 +78,7 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:25.1.0'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
-
-    androidTestCompile("com.android.support.test.espresso:espresso-contrib:2.2.2") {
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'support-v7'
@@ -73,7 +86,6 @@ dependencies {
         exclude module: 'support-annotations'
         exclude module: 'recyclerview-v7'
     }
-
 }
 
 
