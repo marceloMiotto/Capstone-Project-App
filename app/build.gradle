@@ -29,14 +29,10 @@ dependencies {
     })
 
 
-
-
-
     //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:25.0.0'
     //noinspection GradleDependency
     compile 'com.android.support:design:25.0.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
     //noinspection GradleDependency
     compile 'com.android.support:support-v4:25.0.0'
@@ -55,10 +51,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:10.2.0'
     //noinspection GradleDependency
     compile 'com.google.android.gms:play-services-maps:10.2.0'
-    compile 'com.google.firebase:firebase-storage:10.2.0'
     compile 'com.google.firebase:firebase-config:10.2.0'
-    //noinspection GradleDependency
-    compile 'com.google.android.gms:play-services-appinvite:10.2.0'
     compile 'com.google.firebase:firebase-appindexing:10.2.0'
     compile 'com.google.firebase:firebase-crash:10.2.0'
     compile 'com.google.firebase:firebase-analytics:10.2.0'

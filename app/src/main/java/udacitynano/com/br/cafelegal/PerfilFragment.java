@@ -221,12 +221,18 @@ public class PerfilFragment extends Fragment implements AdapterView.OnItemSelect
 
                 }else{
 
+                    int cep;
+                    if(mPerfilCEPEditText.getText().toString().equals("")){
+                        cep = 0;
+                    }else{
+                        cep = Integer.valueOf(mPerfilCEPEditText.getText().toString());
+                    }
                     mCliente = new Cliente(UserType.getUserId(getActivity())
                             , mPerfilNomeEditText.getText().toString()
                             , mPerfilNomeMeioEditText.getText().toString()
                             , mPerfilSobrenomeEditText.getText().toString()
                             , mFirebaseEmail
-                            , Integer.valueOf(mPerfilCEPEditText.getText().toString())
+                            , cep
                             , mPerfilEnderecoEditText.getText().toString()
                             , mPerfilNumeroEditText.getText().toString()
                             , mPerfilComplementoEditText.getText().toString()
